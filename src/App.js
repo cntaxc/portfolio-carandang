@@ -1,0 +1,25 @@
+import Sidebar from "./components/sidebar";
+import Dashboard from "./components/dashboard";
+import Projects from "./components/projects";
+import Skills from "./components/skills";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+function App() {
+  return (
+    <Router>
+      <div className="d-flex">
+        <Sidebar />
+
+        <main className="flex-grow-1">
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/skills" element={<Skills />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
