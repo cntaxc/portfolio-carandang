@@ -1,13 +1,12 @@
 import React from "react";
-import "./dbStyle.css";
 import profilePic from "./profilepic.png";
 
 function Dashboard() {
     return (
 
-        <div className="dashboard-container p-4">
+        <div className="container-fluid dashboard-container p-4">
 
-            <div className="content-section p-4">
+            <div className="content-section p-5">
                 <div className="row align-items-center mb-5">
 
                     {/* Profile Image */}
@@ -23,8 +22,8 @@ function Dashboard() {
 
                     {/* Profile Info */}
                     <div className="col-md-8">
-                        <h1 className="hero-title">CHRISTIAN RAPHAEL A. CARANDANG</h1>
-                        <p className="hero-subtitle">Web Developer • Game Developer • Designer</p>
+                        <h1 className="hero-title">Hello! I'm Christian</h1>
+                        <p className="hero-subtitle">UI/UX Designer • Game Designer • Front-End</p>
 
                         <p className="hero-description">
                             Student/Educator from Pamantasan ng Cabuyao, City of Cabuyao, Laguna
@@ -36,7 +35,7 @@ function Dashboard() {
 
                         {/* Buttons */}
                         <div className="btn-group mt-4">
-                            <a className="main-btn" href="">Contact Me</a>
+                            <a className="main-btn" href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRwPxQhLWtZzbrGZhTBvnrtPwsbWQzgjPhHhbPcNFWPVgMGfxFFmDpGHJfHjmqKCDLQWDKlW">Email Me</a>
 
                             <a className="icon-btn" href="https://github.com/cntaxc" target="_blank">
                                 <i className="ri-github-fill"></i>
@@ -47,6 +46,17 @@ function Dashboard() {
                             </a>
                         </div>
                     </div>
+                </div>
+
+                {/* Divider */}
+                <hr className="custom-divider my-4" />
+
+                {/* About Me Card */}
+                <div className="about-card p-4 mt-4 shadow-sm">
+                    <h4 className="section-title">About Me</h4>
+                    <p>
+                        Hello! I'm Christian Raphael A. Carandang, a 3rd-year college student at Pamantasan ng Cabuyao, currently pursuing a Bachelor of Science in Computer Science. I have a strong passion for creating and planning games, as it brings me joy and a sense of accomplishment when I see ideas come to life. I also enjoy working on web applications, especially taking on roles that combine front-end development with UI/UX design, because I love designing intuitive and visually appealing interfaces.
+                    </p>
                 </div>
 
                 {/* Divider */}
@@ -122,14 +132,6 @@ function Dashboard() {
                 {/* Divider */}
                 <hr className="custom-divider my-4" />
 
-                {/* About Me Card */}
-                <div className="about-card p-4 mt-4 shadow-sm">
-                    <h4 className="section-title">About Me</h4>
-                    <p>
-                        Hello! I'm Christian Raphael A. Carandang, a 3rd-year college student at Pamantasan ng Cabuyao, currently pursuing a Bachelor of Science in Computer Science. I have a strong passion for creating and planning games, as it brings me joy and a sense of accomplishment when I see ideas come to life. I also enjoy working on web applications, especially taking on roles that combine front-end development with UI/UX design, because I love designing intuitive and visually appealing interfaces.
-                    </p>
-                </div>
-
                 {/* ===== Projects Section ===== */}
                 <div className="projects-section mt-5">
                     <h4 className="smp mb-4">SAMPLE PROJECT</h4>
@@ -164,6 +166,92 @@ function Dashboard() {
                         </div>
                     </div>
                 </div>
+
+                {/* ===== Experiences Section ===== */}
+                <div className="experiences-section mt-5">
+                    <h4 className="section-title mb-4">Experiences</h4>
+
+                    <div className="row g-4">
+                        {/* Experience Card 1 */}
+                        <div className="col-md-4">
+                            <div className="experience-card p-3 h-100">
+                                <div className="experience-title mb-2">Junior Blockchain Education Consortium of the Philippines - Dangals </div>
+                                {/* Divider */}
+                                <hr className="custom-divider" />
+                                <div className="experience-detail"><strong>Position:</strong> Volunteer</div>
+                                <div className="experience-detail"><strong>Participation:</strong> Organization</div>
+                                <div className="experience-detail"><strong>Year:</strong> 2024</div>
+                            </div>
+                        </div>
+
+                        {/* Experience Card 2 */}
+                        <div className="col-md-4">
+                            <div className="experience-card p-3 h-100">
+                                <div className="experience-title mb-2">AWS Cloud Club - University of Cabuyao (Directors and Officers)</div>
+                                {/* Divider */}
+                                <hr className="custom-divider" />
+                                <div className="experience-detail"><strong>Position:</strong> Logistic Officer</div>
+                                <div className="experience-detail"><strong>Participation:</strong> Organization</div>
+                                <div className="experience-detail"><strong>Year:</strong> 2024</div>
+                            </div>
+                        </div>
+
+                        {/* Experience Card 3 */}
+                        <div className="col-md-4">
+                            <div className="experience-card p-3 h-100">
+                                <div className="experience-title mb-2">Junior Blockchain Education Consortium of the Philippines - Laguna </div>
+                                {/* Divider */}
+                                <hr className="custom-divider" />
+                                <div className="experience-detail"><strong>Position:</strong> Logistic Officer</div>
+                                <div className="experience-detail"><strong>Participation:</strong> Organization</div>
+                                <div className="experience-detail"><strong>Year:</strong> 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ===== Education Section ===== */}
+                <div className="education-section mt-5">
+                    <h4 className="section-title mb-4">Education</h4>
+
+                    <div className="edu-card">
+                        {/* College */}
+                        <div className="edu-row">
+                            <div className="edu-name">Pamantasan ng Cabuyao</div>
+                            <div className="edu-location">📍 Cabuyao, Laguna</div>
+                            <div className="edu-grade">College (3rd Year)</div>
+                            <div className="edu-year">2023 – Present</div>
+                        </div>
+                        <hr />
+
+                        {/* Senior High */}
+                        <div className="edu-row">
+                            <div className="edu-name">Pamantasan ng Cabuyao SHS Department</div>
+                            <div className="edu-location">📍 Cabuyao, Laguna</div>
+                            <div className="edu-grade">Senior High School</div>
+                            <div className="edu-year">2023 Graduate</div>
+                        </div>
+                        <hr />
+
+                        {/* Junior High */}
+                        <div className="edu-row">
+                            <div className="edu-name">Liceo De Cabuyao</div>
+                            <div className="edu-location">📍 Cabuyao, Laguna</div>
+                            <div className="edu-grade">Junior High School</div>
+                            <div className="edu-year">2021 Graduate</div>
+                        </div>
+                        <hr />
+
+                        {/* Elementary */}
+                        <div className="edu-row">
+                            <div className="edu-name">Liceo De Calamba</div>
+                            <div className="edu-location">📍 Calamba, Laguna</div>
+                            <div className="edu-grade">Elementary</div>
+                            <div className="edu-year">2017 Graduate</div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* ===== Contact Me Section ===== */}
                 <div className="contact-card p-4 mt-5 shadow-sm text-center">
                     <h4 className="section-title">Contact Me</h4>

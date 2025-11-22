@@ -1,0 +1,31 @@
+.project-card {
+  background: rgba(255, 255, 255, 0.02); /* more transparent like dashboard */
+  border: 1px solid rgba(255, 255, 255, 0.05); /* subtle border */
+  border-radius: 18px; /* match dashboard rounded corners */
+  backdrop-filter: blur(10px); /* glass blur effect */
+  color: #eaeaea;
+  transition: 0.3s ease;
+  padding: 1.5rem;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(255, 40, 40, 0.4); /* red accent shadow */
+}
+
+.project-title {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #ff2a2a; /* dashboard red accent */
+  margin-bottom: 10px;
+}
+
+.label {
+  font-weight: 700;
+  color: #ff2a2a;
+}
+
+.project-link {
+  font-weight: 700;
+  color: #eaeaea;
+}

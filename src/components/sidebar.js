@@ -1,39 +1,30 @@
-import React from 'react';
-import { Nav } from 'react-bootstrap';
-import './sidebarStyle.css';
+import React from "react";
+import { Nav } from "react-bootstrap"; 
 
 const Sidebar = () => {
   return (
-    <aside className="d-flex flex-column p-4 sidebar-container" style={{ minHeight: '100vh', width: '270px' }}>
-      
-      {/* Sidebar Top / Logo */}
-      <div className="sidebar-name text-white fw-bold fs-4 mb-5 text-center" style={{ letterSpacing: '3px' }}>
-        PORTFOLIO
-      </div>
+    <aside className="sidebar-container">
+      <div className="sidebar-name">PORTFOLIO</div>
 
-      {/* Navigation */}
-      <Nav className="flex-column gap-3">
+      <Nav className="flex-column">
         <Nav.Item>
-          <Nav.Link href="/" className="d-flex align-items-center text-light px-4 py-3 rounded sidebar-link">
-            <i className="ri-dashboard-line fs-5 me-3"></i> Home
+          <Nav.Link href="/" className="sidebar-link">
+            <i className="ri-dashboard-line fs-5 me-2"></i> Home
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link href="projects" className="d-flex align-items-center text-light px-4 py-3 rounded sidebar-link">
-            <i className="ri-folders-line fs-5 me-3"></i> Projects
+          <Nav.Link href="/projects" className="sidebar-link">
+            <i className="ri-folders-line fs-5 me-2"></i> Projects
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link href="skills" className="d-flex align-items-center text-light px-4 py-3 rounded sidebar-link">
-            <i className="ri-settings-line fs-5 me-3"></i> Skills
+          <Nav.Link href="/skills" className="sidebar-link">
+            <i className="ri-settings-line fs-5 me-2"></i> Skills
           </Nav.Link>
         </Nav.Item>
       </Nav>
 
-      {/* Sidebar Footer */}
-      <div className="sidebar-footer mt-auto text-center">
-        <small>&copy; 2025 Christian Carandang</small>
-      </div>
+      <div className="sidebar-footer">&copy; 2025 Christian Carandang</div>
     </aside>
   );
 };

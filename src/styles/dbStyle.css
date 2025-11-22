@@ -134,3 +134,97 @@
     transform: translateY(-4px);
     box-shadow: 0 6px 18px rgba(255, 40, 40, 0.5);
 }
+
+.experiences-section .experience-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  color: #eaeaea;
+  transition: 0.3s;
+  text-align: left;
+}
+
+.experiences-section .experience-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(255,40,40,0.3);
+}
+
+.experience-title {
+  font-weight: 700;
+  color: #ff2a2a;
+  font-size: 1.1rem;
+  margin-bottom: 5px; /* space between title and first detail */
+}
+
+.experience-detail {
+  color: #ccc;
+  font-size: 0.95rem;
+  margin-bottom: 6px; /* space between details */
+}
+
+.experiences-section .row {
+  justify-content: center;
+}
+
+.experience-card a.main-btn {
+  width: 100%;
+  text-align: center;
+}
+
+.education-section {
+  width: 100%;
+  padding: 0 1rem; /* padding to prevent touching screen edges */
+}
+
+.edu-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%; /* fill container width */
+  box-sizing: border-box; /* include padding in width */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.edu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 40, 40, 0.3);
+}
+
+.edu-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  padding: 10px 0; /* spacing between rows */
+}
+
+.edu-name {
+  flex: 2; /* takes more space */
+  font-weight: 600;
+}
+
+.edu-location {
+  flex: 1;
+  text-align: center;
+  color: #ff5722;
+  font-weight: 500;
+}
+
+.edu-grade {
+  flex: 1;
+  text-align: center;
+}
+
+.edu-year {
+  flex: 1;
+  text-align: right;
+  font-weight: 500;
+}
+
+.edu-card hr {
+  border: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0;
+}

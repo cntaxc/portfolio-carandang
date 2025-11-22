@@ -1,5 +1,4 @@
 import React from "react";
-import "./projectStyle.css";
 
 function Projects() {
   const projectList = [
@@ -78,54 +77,53 @@ function Projects() {
   ];
 
   return (
-    <div className="container dashboard-container" id="projects">
+    <div className="container-fluid dashboard-container" id="projects">
+      {/* My Projects Section */}
       <h2 className="section-title mb-4">My Projects</h2>
-
-      <div className="row g-4 justify-content-center">
-        {projectList.map((proj, index) => (
-          <div className="col-md-4" key={index}>
-            <div className="project-card p-4 h-100">
-              <h4 className="project-title">{proj.title}</h4>
-
-              <p><span className="label">Purpose:</span> {proj.purpose}</p>
-              <p><span className="label">Term:</span> {proj.term}</p>
-              <p><span className="label">Activity Type:</span> {proj.activityType}</p>
-              <p><span className="label">Course Code:</span> {proj.courseCode}</p>
-              <p><span className="label">Submitted To:</span> {proj.submittedTo}</p>
-              <p><span className="label">Date Submitted:</span> {proj.dateSubmitted}</p>
-              <p><span className="label">Platform Submitted:</span> {proj.platformSubmitted}</p>
-
-              <p>
-                <span className="label">Link:</span>
-                <a href={proj.link} target="_blank" rel="noopener noreferrer" className="project-link">
-                  View Project
-                </a>
-              </p>
+      <div className="content-section p-5">
+        <div className="row g-4 justify-content-center">
+          {projectList.map((proj, index) => (
+            <div className="col-md-4" key={index}>
+              <div className="project-card p-4 h-100">
+                <h4 className="project-title">{proj.title}</h4>
+                <p><span className="label">Purpose:</span> {proj.purpose}</p>
+                <p><span className="label">Term:</span> {proj.term}</p>
+                <p><span className="label">Activity Type:</span> {proj.activityType}</p>
+                <p><span className="label">Course Code:</span> {proj.courseCode}</p>
+                <p><span className="label">Submitted To:</span> {proj.submittedTo}</p>
+                <p><span className="label">Date Submitted:</span> {proj.dateSubmitted}</p>
+                <p><span className="label">Platform Submitted:</span> {proj.platformSubmitted}</p>
+                <p>
+                  <span className="label">Link:</span>
+                  <a href={proj.link} target="_blank" rel="noopener noreferrer" className="project-link">
+                    View Project
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      {}
+      {/* Self Projects Section */}
       <h2 className="section-title mt-5 mb-4">Self Projects</h2>
-
-      <div className="row g-4 justify-content-center">
-        {selfProjects.map((proj, index) => (
-          <div className="col-md-4" key={index}>
-            <div className="project-card p-4 h-100">
-              <h4 className="project-title">{proj.title}</h4>
-
-              <p><span className="label">Purpose:</span> {proj.purpose}</p>
-
-              <p>
-                <span className="label">Link:</span>
-                <a href={proj.link} target="_blank" rel="noopener noreferrer" className="project-link">
-                  View Project
-                </a>
-              </p>
+      <div className="content-section p-5">
+        <div className="row g-4 justify-content-center">
+          {selfProjects.map((proj, index) => (
+            <div className="col-md-4" key={index}>
+              <div className="project-card p-4 h-100">
+                <h4 className="project-title">{proj.title}</h4>
+                <p><span className="label">Purpose:</span> {proj.purpose}</p>
+                <p>
+                  <span className="label">Link:</span>
+                  <a href={proj.link} target="_blank" rel="noopener noreferrer" className="project-link">
+                    View Project
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
