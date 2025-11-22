@@ -14,7 +14,7 @@ const Sidebar = () => {
       {/* Navigation */}
       <Nav className="flex-column gap-3">
         <Nav.Item>
-          <Nav.Link href="dashboard" className="d-flex align-items-center text-light px-4 py-3 rounded sidebar-link">
+          <Nav.Link href="/" className="d-flex align-items-center text-light px-4 py-3 rounded sidebar-link">
             <i className="ri-dashboard-line fs-5 me-3"></i> Home
           </Nav.Link>
         </Nav.Item>

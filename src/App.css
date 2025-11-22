@@ -1,51 +1,194 @@
-.App {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+                                          /* Global Style */
+* {
+  font-family: "Inter", sans-serif;
 }
 
-.navbar {
-  background-color: #282c34;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  border-radius: 8px;
+html {
+  scroll-behavior: smooth;
 }
 
-.nav-link {
-  color: #61dafb;
-  text-decoration: none;
-  margin: 0 1rem;
-  font-size: 1.2rem;
-  transition: color 0.3s;
+.dashboard-container {
+  width: 100%;
+  background: #0f0f0f;
+  color: #e6e6e6;
+  min-height: 100vh;
+  padding-top: 50px;
 }
 
-.nav-link:hover {
+.hero-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: #bbbbbb;
+}
+
+.hero-description {
+  color: #cccccc;
+  line-height: 1.6;
+}
+
+                                            /* Divider */
+.custom-divider {
+  border: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 14px;
+}
+
+                                            /* Buttons */
+.btn-group {
+  display: flex;
+  gap: 12px;
+}
+
+.main-btn {
+  padding: 10px 22px;
+  background: #ff2a2a;
   color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.25s;
+  box-shadow: 0 0 12px rgba(255, 20, 20, 0.4);
 }
 
-.main-content {
-  min-height: 400px;
+.main-btn:hover {
+  background: #ff1414;
+  transform: translateY(-3px);
 }
 
-h1 {
-  color: #282c34;
-  margin-bottom: 1rem;
+.main-btn,
+.icon-btn {
+  text-decoration: none;
+}
+
+.icon-btn {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  font-size: 1.4rem;
+  color: white;
+  transition: 0.3s;
+}
+
+.icon-btn:hover {
+  background: #ff2a2a;
+  transform: translateY(-3px);
+  box-shadow: 0 0 12px rgba(255, 20, 20, 0.5);
+}
+
+                                            /* Skills Section */
+
+.skills-section {
+  margin-top: 30px;
+}
+
+.skills-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.skill-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 58px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  transition: 0.3s;
+  cursor: default;
+}
+
+.skill-badge i {
+  font-size: 1.2rem;
+}
+
+.skill-badge:hover {
+  background: #ff2a2a;
+  box-shadow: 0 4px 12px rgba(255, 40, 40, 0.5);
+  transform: translateY(-2px);
+}
+
+                                            /* Category Section */
+
+.category-box {
+  padding: 14px 22px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: white;
+  transition: 0.25s;
+}
+
+.category-box i {
+  font-size: 1.8rem;
+}
+
+.category-box:hover {
+  background: rgba(255, 40, 40, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 0 15px rgba(255,40,40,0.4);
+}
+
+                                           /* Project Section */
+
+.projects-section {
+  margin-top: 40px;
+}
+
+.project-img {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 40, 40, 0.4); /* red accent like dashboard */
+}
+
+.project-title {
+  font-weight: 700;
+  color: #fff;
+  margin-top: 8px;
+}
+
+.project-subtitle {
+  font-weight: 1000;
+  color: #ff2a2a;
+}
+
+.project-description {
+  color: #ccc;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.section-title {
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
 }
 
 p {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
-
-ul {
-  text-align: left;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-li {
-  margin-bottom: 0.5rem;
-  color: #666;
+  font-size: 0.95rem;
+  color: #cccccc;
 }

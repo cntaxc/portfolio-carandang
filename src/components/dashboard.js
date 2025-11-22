@@ -36,13 +36,13 @@ function Dashboard() {
 
                         {/* Buttons */}
                         <div className="btn-group mt-4">
-                            <a className="main-btn" href="#contact">Contact Me</a>
+                            <a className="main-btn" href="">Contact Me</a>
 
                             <a className="icon-btn" href="https://github.com/cntaxc" target="_blank">
                                 <i className="ri-github-fill"></i>
                             </a>
 
-                            <a className="icon-btn" href="https://www.linkedin.com/in/christian-raphael-carandang-b30015334" target="_blank">
+                            <a className="icon-btn" href="https:linkedin.com/in/christian-carandang-b30015334" target="_blank">
                                 <i className="ri-linkedin-box-fill"></i>
                             </a>
                         </div>
@@ -132,7 +132,7 @@ function Dashboard() {
 
                 {/* ===== Projects Section ===== */}
                 <div className="projects-section mt-5">
-                    <h4 className="smp mb-4">Sample Project</h4>
+                    <h4 className="smp mb-4">SAMPLE PROJECT</h4>
 
                     {/* Project 1 */}
                     <div className="row align-items-start mb-4">
