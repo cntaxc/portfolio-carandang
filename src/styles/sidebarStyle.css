@@ -63,14 +63,13 @@
 
 .sidebar-footer {
   margin-top: auto;
-  text-align: center; /* center footer text */
+  text-align: center; 
   font-size: 0.8rem;
   color: #ff2a2a;
 }
 
-/* Sidebar Container */
 aside {
-  background-color: #141414; /* matches dashboard dark theme */
+  background-color: #141414;
   color: #fff;
   display: flex;
   flex-direction: column;

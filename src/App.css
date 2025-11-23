@@ -17,12 +17,12 @@ html, body {
 .app-container {
   display: flex;
   width: 100%;
-  height: 100vh; /* fill viewport height */
+  height: 100vh;
   overflow-x: hidden;
 }
 
 .main-content {
-  flex: 1; /* fill remaining width */
+  flex: 1;
   padding: 2rem;
   min-height: 100vh;
   background-color: #0f0f0f;
@@ -184,7 +184,7 @@ html, body {
 
 .project-img:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(255, 40, 40, 0.4); /* red accent like dashboard */
+  box-shadow: 0 8px 20px rgba(255, 40, 40, 0.4); 
 }
 
 .project-title {
@@ -195,7 +195,7 @@ html, body {
 
 .project-subtitle {
   font-weight: 1000;
-  color: #ff2a2a; /* dashboard red accent */
+  color: #ff2a2a; 
 }
 
 .project-description {

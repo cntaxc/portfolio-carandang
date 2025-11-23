@@ -44,7 +44,7 @@ function Projects() {
       submittedTo: "Prof. Renzo F. Evangelista",
       dateSubmitted: "October 13, 2025",
       platformSubmitted: "Pinnacle",
-      link: "https://www.figma.com/proto/NE740EQbitPrFPVNmf5hq9/DISASTRO",
+      link: "https://www.figma.com/proto/NE740EQbitPrFPVNmf5hq9/DISASTRO?node-id=2001-2&p=f&t=2RhRPrFEwy3o4tYj-0&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2001%3A2&show-proto-sidebar=1",
     },
     {
       title: "Crafting Narrative & Player Experience",
@@ -56,6 +56,17 @@ function Projects() {
       dateSubmitted: "August 15, 2025",
       platformSubmitted: "Pinnacle",
       link: "https://drive.google.com/file/d/1fptTo-cyGd7U3OrwsltTm_u6rLJ7Zpz_/view",
+    },
+    {
+      title: "REORDER",
+      purpose: "Building a React Forecast A pp with TensorFlow.js .",
+      term: "Finals",
+      activityType: "Individual",
+      courseCode: "CCS112",
+      submittedTo: "Prof. Joseph D. Cartagenas",
+      dateSubmitted: "Novemeber 23, 2025",
+      platformSubmitted: "Laboratory Checking",
+      link: "http://localhost:3000",
     },
   ];
 
