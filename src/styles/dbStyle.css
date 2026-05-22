@@ -1,228 +1,129 @@
-.content-section {
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
+.dashboard-container {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  max-width: 1500px;
+  margin: 0 auto;
 }
 
-.profile-img-wrapper {
-  position: relative;
+.profile-left {
+  flex-shrink: 0;
 }
 
-.profile-img-wrapper::before {
-  content: "";
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(
-    circle,
-    rgba(255, 30, 30, 0.7),
-    rgba(255, 0, 0, 0.2),
-    transparent
-  );
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  filter: blur(40px);
-  border-radius: 50%;
-  z-index: 0;
-}
-
-.profile-img {
-  width: 250px;
-  height: 250px;
+.profile-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 10px;
   object-fit: cover;
-  border-radius: 20%;
-  position: relative;
-  z-index: 2;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* About Card */
-.about-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  color: #eaeaea;
-  text-align: justify;
+.profile-right {
+  flex: 1;
 }
 
-.section-title {
+.profile-name {
+  font-size: 32px;
   font-weight: 700;
-  margin-bottom: 12px;
-  text-align: center;
+  margin: 0 0 8px 0;
+  color: #333;
 }
 
-.smp {
-  text-align: center;
+.profile-location {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.project-title-link {
-  font-weight: 1000;
-  color: #ff2a2a;
+.profile-role {
+  font-size: 18px;
+  font-weight: 500;
+  color: #555;
+  margin: 0 0 30px 0;
 }
 
-.info-cards-section {
-  margin-top: 50px;
+.button-group {
+  display: flex;
+  gap: 15px;
 }
 
-.info-card {
+.emailBtn {
+  padding: 12px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #000000;
+  color: white;
+}
+    
+.emailBtn:hover {
+  background-color: #292929;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chatBtn {
+  padding: 12px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f0f0f0;
+  color: black;
+}
+
+.chatBtn:hover {
+  background-color: #bbbbbb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.time-temp-card {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px;
-  padding: 25px 20px;
-  color: #eaeaea;
-  transition: 0.3s;
+  gap: 20px;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  min-width: 420px;
+  min-height: 30px;
+  color: black;
 }
 
-.info-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(255,40,40,0.4);
-}
-
-.info-card-title {
-  font-weight: 700;
-  color: #ff2a2a; /* dashboard red accent */
-  margin-bottom: 15px;
-}
-
-.info-card-text {
-  color: #ccc;
-  line-height: 1.6;
-  text-align: justify;
-}
-
-.info-card-list {
-  list-style-type: disc;
-  padding-left: 20px;
-  color: #ccc;
-  text-align: left;
-}
-
-.contact-card {
-    border-radius: 16px;
-    color: #eaeaea;
-}
-
-.contact-icons {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 15px;
-}
-
-.contact-icon {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 55px;
-    height: 55px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    color: #fff;
-    font-size: 1.5rem;
-    transition: 0.3s;
-}
-
-.contact-icon:hover {
-    background: #ff2a2a;
-    transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(255, 40, 40, 0.5);
-}
-
-.experiences-section .experience-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  color: #eaeaea;
-  transition: 0.3s;
-  text-align: left;
-}
-
-.experiences-section .experience-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(255,40,40,0.3);
-}
-
-.experience-title {
-  font-weight: 700;
-  color: #ff2a2a;
-  font-size: 1.1rem;
-  margin-bottom: 5px; 
-}
-
-.experience-detail {
-  color: #ccc;
-  font-size: 0.95rem;
-  margin-bottom: 6px;
-}
-
-.experiences-section .row {
-  justify-content: center;
-}
-
-.experience-card a.main-btn {
-  width: 100%;
-  text-align: center;
-}
-
-.education-section {
-  width: 100%;
-  padding: 0 1rem; 
-}
-
-.edu-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 20px;
-  width: 100%; 
-  box-sizing: border-box; 
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.edu-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(255, 40, 40, 0.3);
-}
-
-.edu-row {
+.time-section,
+.temp-section {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.95rem;
-  padding: 10px 0; 
+  flex-direction: column;
+  gap: 8px;
 }
 
-.edu-name {
-  flex: 2;
+.time-label,
+.temp-label {
+  font-size: 12px;
   font-weight: 600;
-}
-
-.edu-location {
-  flex: 1;
-  text-align: center;
-  color: #ff5722;
-  font-weight: 500;
-}
-
-.edu-grade {
-  flex: 1;
-  text-align: center;
-}
-
-.edu-year {
-  flex: 1;
-  text-align: right;
-  font-weight: 500;
-}
-
-.edu-card hr {
-  border: 0;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.time-display,
+.temp-display {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
 }
