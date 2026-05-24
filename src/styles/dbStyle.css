@@ -1,10 +1,60 @@
+/* ==========================================================================
+   THEME DESIGN VARIABLES CORE ENGINE
+   ========================================================================== */
+.main-wrapper[data-theme="light"] {
+  --bg-viewport: #f8f9fa;
+  --bg-card: #ffffff;
+  --border-element: #e9ecef;
+  --text-main: #1a1a1a;
+  --text-muted: #6c757d;
+  --text-low-contrast: #868e96;
+  --btn-bg: #24292e;       /* Pure solid dark color remains identical */
+  --btn-text: #ffffff;
+  --btn-hover-border: #1a1a1a;
+  --shadow-profile: 0 4px 15px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --accent-marker: #1a1a1a;
+  --toggle-track-bg: #e9ecef;
+}
+
+.main-wrapper[data-theme="dark"] {
+  --bg-viewport: #151515;
+  --bg-card: #1e1e1e;
+  --border-element: #2d2d2d;
+  --text-main: #ffffff;
+  --text-muted: #aaaaaa;
+  --text-low-contrast: #666666;
+  --btn-bg: #24292e;       /* Pure solid dark color remains identical */
+  --btn-text: #ffffff;
+  --btn-hover-border: #ffffff;
+  --shadow-profile: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --accent-marker: #ffffff;
+  --toggle-track-bg: #2d2d2d;
+}
+
+/* ==========================================================================
+   BASE STYLES & HERO HEADER LAYOUT
+   ========================================================================== */
+.main-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--bg-viewport);
+  color: var(--text-main);
+  font-family: 'Consolas', 'Courier New', monospace;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .dashboard-container {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   gap: 40px;
-  padding: 40px;
+  padding: 60px 40px 20px 40px;
   max-width: 1500px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .profile-left {
@@ -12,118 +62,226 @@
 }
 
 .profile-image {
-  width: 180px;
-  height: 180px;
-  border-radius: 10px;
+  width: 160px;
+  height: 160px;
+  border-radius: 12px;
   object-fit: cover;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-element);
+  box-shadow: var(--shadow-profile);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-right {
   flex: 1;
+  min-width: 280px;
+}
+
+.profile-name-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
 }
 
 .profile-name {
-  font-size: 32px;
+  font-family: inherit;
+  font-size: 34px;
   font-weight: 700;
-  margin: 0 0 8px 0;
-  color: #333;
+  letter-spacing: -0.5px;
+  margin: 0;
+  color: var(--text-main);
+  transition: color 0.3s ease;
 }
 
 .profile-location {
-  font-size: 16px;
-  color: #666;
-  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 6px 0 6px 0;
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.profile-location i {
+  color: var(--text-main);
+  transition: color 0.3s ease;
 }
 
 .profile-role {
-  font-size: 18px;
-  font-weight: 500;
-  color: #555;
-  margin: 0 0 30px 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin: 0 0 24px 0;
+  letter-spacing: 0.3px;
+  transition: color 0.3s ease;
 }
 
+/* ==========================================================================
+   CUSTOM COMPACT TOGGLE SWITCH COMPONENT
+   ========================================================================== */
+/* ==========================================================================
+   CUSTOM COMPACT TOGGLE SWITCH COMPONENT
+   ========================================================================== */
+.theme-switch-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 34px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.theme-switch-wrapper input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-switch-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--toggle-track-bg);
+  border: 1px solid var(--border-element);
+  border-radius: 34px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.theme-switch-ball {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Light mode knob details */
+.main-wrapper[data-theme="light"] .theme-switch-ball {
+  background-color: #1a1a1a;
+}
+
+.theme-switch-slider i {
+  font-size: 14px;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+/* Updated high-contrast icon colors */
+.icon-sun {
+  color: #ffffff; /* Crisp white sun */
+}
+
+.icon-moon {
+  color: #000000; /* Deep black moon */
+}
+
+.theme-switch-wrapper input:checked + .theme-switch-slider .theme-switch-ball {
+  transform: translateX(30px);
+}
+
+.theme-switch-slider:hover {
+  border-color: var(--accent-marker);
+}
+
+/* ==========================================================================
+   BUTTON STRUCTURAL MANAGEMENT (SOLID DARK, OUTLINE ONLY ON HOVER)
+   ========================================================================== */
 .button-group {
   display: flex;
-  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
 .emailBtn {
-  padding: 12px 40px;
+  height: 44px;
+  padding: 0 40px;
   font-size: 16px;
   font-weight: 600;
-  border: none;
-  border-radius: 15px;
+  font-family: inherit;
+  border: 1px solid transparent;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #000000;
-  color: white;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
     
 .emailBtn:hover {
-  background-color: #292929;
+  border-color: var(--btn-hover-border); /* Changes outline border color only */
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.chatBtn {
-  padding: 12px 40px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 15px;
+.social-link-btn {
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #f0f0f0;
-  color: black;
+  box-sizing: border-box;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
 }
 
-.chatBtn:hover {
-  background-color: #bbbbbb;
+.social-link-btn:hover {
+  border-color: var(--btn-hover-border); /* Changes outline border color only */
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.time-temp-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 25px;
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  min-width: 420px;
-  min-height: 30px;
-  color: black;
-}
-
-.time-section,
-.temp-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.time-label,
-.temp-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.9;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.time-display,
-.temp-display {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 0.5px;
+@media (max-width: 600px) {
+  .dashboard-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px 10px 20px;
+    gap: 24px;
+  }
+  .profile-location {
+    justify-content: center;
+  }
+  .button-group {
+    justify-content: center;
+    width: 100%;
+  }
+  .emailBtn {
+    width: 100%;
+  }
+  .social-link-btn {
+    flex-grow: 1;
+    max-width: calc(50% - 6px);
+  }
+  .profile-name-container {
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
 }

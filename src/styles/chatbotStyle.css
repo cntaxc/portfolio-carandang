@@ -1,0 +1,326 @@
+/* ==========================================================================
+   FLOATING VIEWPORT CORNER LAYOUT & NEOMORPHIC SHADOW CONTAINER
+   ========================================================================== */
+.floating-chatbot-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  
+  /* Retains Kabak's signature external neomorphic ambient box shadow */
+  -webkit-box-shadow: -1px -5px 15px #41465b, 5px 5px 15px #41465b;
+  box-shadow: -1px -5px 15px #41465b, 5px 5px 15px #41465b;
+  
+  -webkit-transition: 500ms;
+  transition: 500ms;
+}
+
+/* Modifies the container's shadow footprint when the child button transitions */
+.floating-chatbot-container:has(.uiverse-kabak-btn:hover) {
+  -webkit-box-shadow: 1px 1px 13px #20232e, -1px -1px 13px #545b78, 0px 0px 16px rgba(255, 255, 255, 0.2);
+  box-shadow: 1px 1px 13px #20232e, -1px -1px 13px #545b78, 0px 0px 16px rgba(255, 255, 255, 0.2);
+}
+
+.floating-chatbot-container:has(.uiverse-kabak-btn:active) {
+  -webkit-box-shadow: 1px 1px 13px #20232e, -1px -1px 33px #545b78;
+  box-shadow: 1px 1px 13px #20232e, -1px -1px 33px #545b78;
+}
+
+/* ==========================================================================
+   UIVERSE.IO BY KABAK - UPGRADED WITH THICKER WHITE REVOLVING RGB BORDER
+   ========================================================================== */
+.uiverse-kabak-btn {
+  height: 54px; 
+  width: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden; 
+  border-radius: 50%; 
+  border: none;
+  background: #212121;
+  
+  /* Typography Profile */
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgb(161, 161, 161);
+  text-align: center;
+  z-index: 1;
+
+  -webkit-transition: 500ms;
+  transition: 500ms;
+}
+
+/* The Revolving Laser Ray Line Layer (Pure White Profiles) */
+.uiverse-kabak-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    transparent, 
+    rgba(255, 255, 255, 0.05), 
+    rgba(255, 255, 255, 0.7), 
+    #ffffff, 
+    transparent 50%
+  );
+  animation: white-rgb-spin 3.5s linear infinite;
+  z-index: -2;
+}
+
+/* Dark Core Shield Plate - Offsets make the white line THICKER */
+.uiverse-kabak-btn::after {
+  content: '';
+  position: absolute;
+  top: 3px;          
+  left: 3px;         
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  background: linear-gradient(145deg, #2e2d2d, #212121);
+  border-radius: 50%;
+  z-index: -1;
+  
+  /* Kabak's Inset Shadow Core remains inside the clip bounds */
+  -webkit-box-shadow: inset 5px 5px 10px #212121, inset -5px -5px 10px #212121;
+  box-shadow: inset 5px 5px 10px #212121, inset -5px -5px 10px #212121;
+  
+  transition: 500ms;
+}
+
+/* Infinite Angular Tracking Keyframe Engine */
+@keyframes white-rgb-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* HOVER EFFECT - Higher contrast design profiles */
+.uiverse-kabak-btn:hover {
+  color: #ffffff;
+}
+
+.uiverse-kabak-btn:hover::before {
+  animation-duration: 1.8s; 
+}
+
+/* ACTIVE STATE - Hard Press Feedback Layer */
+.uiverse-kabak-btn:active {
+  color: #d6d6d6;
+}
+
+/* ==========================================================================
+   MODERN MONOCHROME CHATBOT INTERFACE (CONSISTENT WITH KABAK DESIGN STACK)
+   ========================================================================== */
+.chatbot-window.messenger-dark {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 360px;
+  height: 520px;
+  background-color: #1a1a1a; /* Dark consistent background */
+  border: 1px solid #333333;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Consolas', 'Courier New', monospace; /* Consistent tech font profile */
+  z-index: 1000;
+  
+  /* Matches Kabak Button's External Neomorphic Ambient Box Shadow System */
+  -webkit-box-shadow: -1px -5px 25px #41465b, 5px 5px 25px #41465b;
+  box-shadow: -1px -5px 25px #41465b, 5px 5px 25px #41465b;
+}
+
+.chatbot-window.messenger-dark .chatbot-header {
+  background: linear-gradient(145deg, #2e2d2d, #212121); /* Matches button style core */
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #333333;
+}
+
+.chatbot-window.messenger-dark .chatbot-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #d3d3d3;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.chatbot-header-badge {
+  width: 26px;
+  height: 26px;
+  background-color: #d3d3d3;
+  color: #212121;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 5px; /* Boxy aesthetic matching console profiles */
+}
+
+.chatbot-window.messenger-dark .chatbot-close-btn {
+  background: none;
+  border: none;
+  color: rgb(161, 161, 161);
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.chatbot-window.messenger-dark .chatbot-close-btn:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.chatbot-window.messenger-dark .chatbot-messages {
+  flex: 1;
+  padding: 20px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #1a1a1a;
+}
+
+/* Custom Minimalist Scrollbar */
+.chatbot-window.messenger-dark .chatbot-messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chatbot-window.messenger-dark .chatbot-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatbot-window.messenger-dark .chatbot-messages::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 10px;
+}
+
+/* Chat Bubbles Layout */
+.chatbot-window.messenger-dark .chat-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  border-radius: 6px; /* Modern cleaner square rounding */
+  word-wrap: break-word;
+}
+
+/* AI Bot Reply styling */
+.chatbot-window.messenger-dark .chat-bubble.bot {
+  background-color: #242424;
+  color: rgb(180, 180, 180);
+  align-self: flex-start;
+  border: 1px solid #2e2e2e;
+}
+
+/* User Bubble styling - Clean Monochrome design with a white left accent strip */
+.chatbot-window.messenger-dark .chat-bubble.user {
+  background-color: #2b2b2b;
+  color: #ffffff;
+  align-self: flex-end;
+  border: 1px solid #3a3a3a;
+  border-right: 3px solid #ffffff; /* White profile highlight matching button theme */
+}
+
+/* Input Form Tray Elements */
+.chatbot-window.messenger-dark .chatbot-input-area {
+  padding: 14px;
+  background-color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #282828;
+}
+
+.chatbot-window.messenger-dark .chatbot-input-area input {
+  flex: 1;
+  background-color: #212121;
+  border: 1px solid #333333;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.chatbot-window.messenger-dark .chatbot-input-area input:focus {
+  border-color: #ffffff; /* Lights up white on focus matching button edge */
+}
+
+.chatbot-window.messenger-dark .chatbot-input-area input::placeholder {
+  color: #555555;
+}
+
+.chatbot-window.messenger-dark .chatbot-input-area button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.chatbot-window.messenger-dark .chatbot-input-area button:hover {
+  transform: scale(1.15);
+  color: rgb(161, 161, 161);
+}
+
+/* Processing Animated Typing Indicators */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 48px;
+  justify-content: center;
+  padding: 12px 16px !important;
+}
+
+.typing-dot {
+  width: 5px;
+  height: 5px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  animation: consoleTyping 1.3s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes consoleTyping {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Mobile Configurations */
+@media (max-width: 600px) {
+  .floating-chatbot-container {
+    right: 16px;
+    bottom: 16px;
+  }
+  .chatbot-window.messenger-dark {
+    width: calc(100% - 32px);
+    right: 16px;
+    bottom: 16px;
+    height: 460px;
+  }
+}
