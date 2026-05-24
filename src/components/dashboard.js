@@ -142,7 +142,6 @@ export default function Dashboard() {
           <div className="tech-stack-card">
             <div className="tech-stack-header">
               <h2 className="tech-stack-title">Expertise</h2>
-              <a href="#" className="view-all-link">View All <i className="ri-arrow-right-s-line"></i></a>
             </div>
 
             <div className="tech-category">

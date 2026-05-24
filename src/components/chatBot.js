@@ -15,7 +15,7 @@ export default function ChatBot({ showChatbot, setShowChatbot }) {
     const userText = inputMessage.trim();
     
     // Normalize string: clear out punctuation marks to isolate true words
-    const cleanText = userText.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "");
+    const cleanText = userText.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()?]/g, "");
     
     const newMessages = [...messages, { sender: 'user', text: userText }];
     setMessages(newMessages);

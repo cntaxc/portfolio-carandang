@@ -72,18 +72,6 @@
   margin-bottom: 28px;
 }
 
-.view-all-link {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-main);
-  text-decoration: none;
-  opacity: 0.6;
-}
-
-.view-all-link:hover {
-  opacity: 1;
-}
-
 .tech-category {
   margin-bottom: 24px;
 }
