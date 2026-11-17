@@ -1,188 +1,160 @@
-# 🐳 Docker React Development Environment
+# Christian Carandang — Portfolio
 
-A complete Docker-based development and production environment for React applications with hot reload, optimized builds, and production-ready deployment.
+A React single-page portfolio with a small Node.js backend for recommendations,
+run with Docker Compose.
 
-## 🚀 Quick Start
+| Part | Folder | Stack | Dev URL |
+|------|--------|-------|---------|
+| Frontend | [`frontend/`](frontend) | React 18 (Create React App), Three.js | http://localhost:3000 |
+| Backend | [`backend/`](backend) | Node.js 20, Express | http://localhost:8000 |
 
-### Development Mode (Recommended for coding)
----powershell
-# Easy way - use the script
-.\start-dev.ps1
+## Quick start
 
-# Manual way
-docker-compose up -d
+```powershell
+# Development (hot reload)
+.\start-dev.ps1                 # or: docker compose up -d --build
 
+# Production (Nginx on :8080, backend internal)
+.\start-prod.ps1                # or: docker compose -f docker-compose.prod.yml up -d --build
+```
 
-### Production Mode (Optimized build)
----powershell
-# Easy way - use the script  
-.\start-prod.ps1
+The first development start runs `npm install` inside the frontend container,
+so allow a minute before http://localhost:3000 responds.
 
-# Manual way
-docker-compose -f docker-compose.prod.yml up -d --build
+Development and production use separate Compose project names, so they can run
+at the same time without affecting each other.
 
+## Project structure
 
-## 📦 What's Included
+```
+.
+├── frontend/                 React app (own package.json, Dockerfile, nginx.conf)
+│   ├── public/               index.html, resume PDF, 3D models (models/*.glb)
+│   ├── src/
+│   │   ├── assets/images/    projects/ (backgrounds), logos/, profile/
+│   │   ├── components/       UI components and section components (sections/)
+│   │   ├── context/          RecommendationsContext (shared recommendations state)
+│   │   ├── data/portfolio.js All site content: nav, projects, hub, 3D models, ...
+│   │   ├── hooks/            useActiveSection, useScrollReveal
+│   │   ├── styles/           theme, layout, sections, portfolio, background-profile
+│   │   └── setupProxy.js     Dev server: forwards /api to the backend
+│   ├── Dockerfile            Production image: build, then serve with Nginx
+│   └── nginx.conf            Serves the SPA and proxies /api/ to the backend
+├── backend/                  Recommendation API (own package.json, Dockerfile)
+│   ├── lib/                  recommendation-store.js, profanity-filter.js
+│   ├── test/                 node:test suites
+│   └── server.js             Entry point
+├── docker-compose.yml        Development stack
+├── docker-compose.prod.yml   Production stack
+├── start-dev.ps1
+└── start-prod.ps1
+```
 
-### 🛠️ Development Environment
-- **React 18** with hot reload
-- **React Router** for client-side routing
-- **Fast Refresh** for instant updates
-- **Volume mounting** for live code editing
-- **Node.js 20** Alpine-based image
+## Configuration
 
-### 🏭 Production Environment
-- **Multi-stage build** for optimized size
-- **Nginx** web server with custom configuration
-- **Gzip compression** for faster loading
-- **Security headers** built-in
-- **Health checks** for monitoring
-- **Non-root user** for security
+### Frontend — `frontend/.env.local`
 
-## 🌐 Access Points
+Copy `frontend/.env.example` to `frontend/.env.local`:
 
-| Environment | URL | Port |
-|------------|-----|------|
-| Development | http://localhost:3000 | 3000 |
-| Production | http://localhost:8080 | 8080 |
-| Health Check | http://localhost:8080/health | 8080 |
+```env
+REACT_APP_WEB3FORMS_ACCESS_KEY=your-web3forms-access-key
+```
 
-## 📁 Project Structure
+The Contact form posts directly from the browser to
+[Web3Forms](https://web3forms.com/). Create the key for
+`carandangchristianra@gmail.com`. Create React App reads the key when the app
+starts or is built, so after changing it:
 
----
-docker-react/
-├── src/                    # React source code
-│   ├── App.js              # Main React component
-│   ├── App.css             # Styles
-│   └── index.js            # React entry point
-├── public/                 # Public assets
-│   └── index.html          # HTML template
-├── Dockerfile              # Production build configuration
-├── docker-compose.yml      # Development environment
-├── docker-compose.prod.yml # Production environment
-├── nginx.conf              # Nginx configuration
-├── .dockerignore           # Docker ignore rules
-├── start-dev.ps1           # Development startup script
-├── start-prod.ps1          # Production startup script
-└── README.md               # This file
----
+```powershell
+docker compose restart frontend                                   # development
+docker compose -f docker-compose.prod.yml up -d --build frontend  # production
+```
 
-## 🛠️ Development Commands
+### Backend
 
----powershell
-# Start development environment
-docker-compose up -d
+The backend needs no secrets. Docker Compose sets `PORT`, `NODE_ENV` and
+`RECOMMENDATIONS_DATA_FILE`. See `backend/.env.example` for running it outside
+Docker.
 
-# View logs
-docker-compose logs -f react-dev
+## Backend API
 
-# Stop environment
-docker-compose down
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/health` | Service status |
+| `GET` | `/api/recommendations` | Published recommendations, newest first |
+| `POST` | `/api/recommendations` | Validate, profanity-check and publish a recommendation |
 
-# Restart services
-docker-compose restart
+- Recommendations publish immediately; there is no review step.
+- Submissions containing profanity (English, Tagalog/Filipino, Spanish,
+  including leetspeak) are rejected with `422` and never stored.
+- Rate limit: 5 submissions per 15 minutes per IP.
+- Data is stored in the `recommendation-data-dev` / `recommendation-data-prod`
+  Docker volumes. `docker compose down -v` deletes it.
 
-# Execute commands inside container
-docker-compose exec react-dev npm install package-name
-docker-compose exec react-dev npm test
+### Moderating recommendations
 
+All recommendations live in one JSON file inside the backend container:
+`/app/data/recommendations.json` (Docker volume
+`docker-react-portfolio_recommendation-data-dev` in development,
+`docker-react-portfolio-prod_recommendation-data-prod` in production; when
+running the backend outside Docker: `backend/data/recommendations.json`).
 
-## 🏭 Production Commands
+```powershell
+# List everything (shows each id)
+docker compose exec backend npm run recommendations -- list
 
----powershell
-# Build and start production
-docker-compose -f docker-compose.prod.yml up -d --build
+# Delete one or more by id
+docker compose exec backend npm run recommendations -- delete <id>
 
-# View production logs
-docker-compose -f docker-compose.prod.yml logs -f react-prod
+# Delete everything
+docker compose exec backend npm run recommendations -- clear --yes
 
-# Stop production environment
-docker-compose -f docker-compose.prod.yml down
+# Production: add -f docker-compose.prod.yml, e.g.
+docker compose -f docker-compose.prod.yml exec backend npm run recommendations -- list
+```
 
-# Check health
-curl http://localhost:8080/health
+You can also edit the file by hand (for example in Docker Desktop:
+Containers, then `portfolio-backend-dev`, then Files, then `/app/data`). The
+running backend notices the change and serves the new data on its next
+request; open browser tabs update within a minute or on refresh. If an edit
+leaves invalid JSON, the backend keeps serving the last good data and logs an
+error until the file is fixed.
 
+## Common commands
 
-## 🔧 Customization
+```powershell
+# Logs
+docker compose logs -f frontend backend
 
-### Adding New Dependencies
----powershell
-# Add to package.json, then rebuild
-docker-compose exec react-dev npm install new-package
----
+# Install a frontend dependency
+docker compose exec frontend npm install some-package
 
-### Environment Variables
-Create a `.env` file in the root directory:
----env
-REACT_APP_API_URL=http://localhost:8000
-REACT_APP_ENVIRONMENT=development
----
+# Backend tests (run on the host)
+npm --prefix backend install
+npm --prefix backend test
 
-### Nginx Configuration
-Edit `nginx.conf` for custom server settings, caching rules, or proxy configurations.
+# Frontend production build check (run on the host)
+npm --prefix frontend install
+npm --prefix frontend run build
+```
 
-## 🚨 Troubleshooting
+## Content
 
-### Development Issues
-- **Port 3000 in use**: Change port in `docker-compose.yml`
-- **Hot reload not working**: Ensure `CHOKIDAR_USEPOLLING=true` is set
-- **Permission errors**: Check Docker Desktop file sharing settings
+Most content lives in [`frontend/src/data/portfolio.js`](frontend/src/data/portfolio.js):
 
-### Production Issues
-- **Build fails**: Check `docker-compose -f docker-compose.prod.yml logs react-prod`
-- **Nginx errors**: Verify `nginx.conf` syntax
-- **Static files not loading**: Check build output in `/app/build`
+- `showcaseProjects`: projects shown on the home page and in Developed Software.
+- `portfolioHub`: the three Portfolio hub cards. Set `image` to replace a
+  placeholder. Developed Software cycles through project background images.
+- `modelShowcase`: 3D models. Set `model` to a `.glb` in
+  `frontend/public/models/`, or `placeholder` for a stand-in shape.
 
-### Windows-Specific
-- **File watching issues**: The environment variables `CHOKIDAR_USEPOLLING` and `WATCHPACK_POLLING` are set for Windows compatibility
-- **Path issues**: Use PowerShell or CMD, not WSL for running scripts
+## Troubleshooting
 
-## 📈 Performance Features
-
-### Development
-- ✅ Hot reload with Fast Refresh
-- ✅ Persistent node_modules volume
-- ✅ Optimized file watching for Windows
-
-### Production  
-- ✅ Multi-stage build (smaller image size)
-- ✅ Gzip compression
-- ✅ Static asset caching
-- ✅ Security headers
-- ✅ Health monitoring
-- ✅ Non-root user execution
-
-## 🔍 Monitoring
-
-### Health Checks
-Both environments include health checks:
-- Development: Checks React dev server
-- Production: Nginx health endpoint
-
-### Logs
----powershell
-# Development logs
-docker-compose logs -f react-dev
-
-# Production logs  
-docker-compose -f docker-compose.prod.yml logs -f react-prod
----
-
-## 🛡️ Security Features
-
-- Non-root user in production
-- Security headers (X-Frame-Options, X-Content-Type-Options, etc.)
-- Minimal attack surface with Alpine images
-- Proper signal handling with dumb-init
-
----
-
-## 🤝 Usage Tips
-
-1. **Always use development mode** when coding
-2. **Test production builds** before deployment
-3. **Use the PowerShell scripts** for convenience
-4. **Check logs** if something doesn't work
-5. **Keep Docker Desktop updated** for best performance
-
-Happy coding! 🎉
+- **Port 3000 / 8000 / 8080 in use**: change the host port in the Compose file.
+- **Hot reload not working on Windows**: `CHOKIDAR_USEPOLLING` and
+  `WATCHPACK_POLLING` are already set. Restart the `frontend` service.
+- **Contact form fails with a missing-key error in the console**: add
+  `REACT_APP_WEB3FORMS_ACCESS_KEY` to `frontend/.env.local` and restart the
+  `frontend` service.
+- **Recommendations missing after recreating containers**: don't use
+  `down -v`, which deletes the data volume.

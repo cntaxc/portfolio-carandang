@@ -1,12 +1,18 @@
-version: "3.9"
+# Development environment
+#   frontend -> React dev server with hot reload   http://localhost:3000
+#   backend  -> recommendation API                 http://localhost:8000
+#
+# Start:  docker compose up -d
+# Stop:   docker compose down          (add -v ONLY to wipe recommendation data)
 
 services:
-  react-dev:
+  frontend:
     image: node:20-alpine
-    container_name: react-dev-portfolio
+    container_name: portfolio-frontend-dev
     working_dir: /app
     volumes:
-      - .:/app
+      - ./frontend:/app
+      # Keeps container-built node_modules separate from the host's.
       - node_modules-portfolio:/app/node_modules
     ports:
       - "3000:3000"
@@ -14,15 +20,51 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
       - FAST_REFRESH=true
-    command: sh -c "npm install && npm start"
+      # Used by frontend/src/setupProxy.js to forward /api to the backend.
+      - API_PROXY_TARGET=http://backend:8000
+    command: sh -c "npm install --no-audit --no-fund && npm start"
     stdin_open: true
     tty: true
     restart: unless-stopped
+    depends_on:
+      - backend
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
 
+  backend:
+    build:
+      context: ./backend
+    container_name: portfolio-backend-dev
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+      - RECOMMENDATIONS_DATA_FILE=/app/data/recommendations.json
+    volumes:
+      - recommendation-data-dev:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
 volumes:
   node_modules-portfolio:
+  recommendation-data-dev:

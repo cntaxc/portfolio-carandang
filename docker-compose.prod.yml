@@ -1,16 +1,24 @@
-version: "3.9"
+# Production environment
+#   frontend -> Nginx serving the built React app   http://localhost:8080
+#               (proxies /api/ to the backend service)
+#   backend  -> recommendation API, internal only
+#
+# Start:  docker compose -f docker-compose.prod.yml up -d --build
+# Stop:   docker compose -f docker-compose.prod.yml down
+
+# Separate project name so the production stack never touches the dev
+# containers (both files use the service names "frontend" and "backend").
+name: docker-react-portfolio-prod
 
 services:
-  react-prod:
+  frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
-    container_name: react-prod-portfolio
+    container_name: portfolio-frontend
     ports:
       - "8080:8080"
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
       interval: 30s
@@ -22,8 +30,41 @@ services:
       - "traefik.http.routers.react.rule=Host(`localhost`)"
       - "traefik.http.services.react.loadbalancer.server.port=8080"
     networks:
-      - react-network
+      - portfolio-network
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: portfolio-backend
+    expose:
+      - "8000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - RECOMMENDATIONS_DATA_FILE=/app/data/recommendations.json
+    volumes:
+      - recommendation-data-prod:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - portfolio-network
 
 networks:
-  react-network:
+  portfolio-network:
     driver: bridge
+
+volumes:
+  recommendation-data-prod:

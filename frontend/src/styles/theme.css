@@ -1,0 +1,192 @@
+:root {
+  --accent: #f5f5f0;
+  --accent-strong: #faf9f5;
+  --accent-soft: rgba(245, 245, 240, 0.12);
+  --accent-glow: 0 0 28px rgba(245, 245, 240, 0.16);
+
+  --bg: #0c0c0c;
+  --surface: #0c0c0c;
+  --surface-glass: #0c0c0c;
+  --surface-alt: #0c0c0c;
+  --lower-sections-bg: #0c0c0c;
+  --text: #f5f5f0;
+  --text-muted: rgba(245, 245, 240, 0.72);
+  --border: rgba(245, 245, 240, 0.1);
+  --border-strong: rgba(245, 245, 240, 0.2);
+
+  --on-bg: #f5f5f0;
+  --on-bg-muted: rgba(245, 245, 240, 0.74);
+  --on-bg-line: rgba(245, 245, 240, 0.2);
+  --on-bg-marker: #0c0c0c;
+  --on-bg-halo: rgba(12, 12, 12, 0.78);
+  --on-bg-accent: #f5f5f0;
+  --on-bg-accent-soft: rgba(245, 245, 240, 0.1);
+
+  /* Neutral card surfaces ("Cozy Black"): charcoal gradient, frosted
+     glass border, and a placeholder for projects without artwork. */
+  --surface-card-from: #141414;
+  --surface-card-to: #1f1f1f;
+  --surface-card: linear-gradient(
+    160deg,
+    var(--surface-card-from),
+    var(--surface-card-to)
+  );
+  --surface-frost: rgba(20, 20, 20, 0.72);
+  --border-glass: rgba(245, 245, 240, 0.12);
+  --border-glass-strong: rgba(245, 245, 240, 0.3);
+  --art-placeholder: radial-gradient(
+      circle at 70% 26%,
+      rgba(245, 245, 240, 0.08),
+      transparent 40%
+    ),
+    linear-gradient(135deg, #141414 0%, #1f1f1f 52%, #0c0c0c 100%);
+
+  --shadow-sm: 0 8px 24px -16px rgba(0, 0, 0, 0.72);
+  --shadow-md: 0 24px 56px -32px rgba(0, 0, 0, 0.82);
+  --shadow-accent: 0 18px 44px -28px rgba(245, 245, 240, 0.24);
+
+  --radius-sm: 9px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --font-body: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-heading: 'Space Grotesk', 'Inter', 'Segoe UI', sans-serif;
+
+  /* Typography scale, shared by every title, label and button.
+     Headings use --font-heading at weight 700; labels and buttons use
+     --font-body in uppercase with positive tracking. */
+  --type-heading-weight: 700;
+  /* Oversized display headlines (contact, AI chat, project carousel). */
+  --type-display-tracking: -0.05em;
+  /* Page / major section titles: PROJECTS, DEVELOPED SOFTWARE, 3D MODELS. */
+  --type-page-size: clamp(34px, 4.5vw, 54px);
+  --type-page-tracking: -0.04em;
+  --type-page-leading: 0.95;
+  /* Section headings: ABOUT ME, EXPERIENCES, SUBMIT A RECOMMENDATION. */
+  --type-section-size: clamp(24px, 2.6vw, 32px);
+  --type-section-tracking: -0.03em;
+  --type-section-leading: 1.1;
+  /* Card titles: timeline entries, model cards, project cards. */
+  --type-card-size: clamp(17px, 1.6vw, 20px);
+  --type-card-tracking: -0.02em;
+  --type-card-leading: 1.2;
+  /* Small list-item titles. */
+  --type-item-size: 15px;
+  --type-item-tracking: -0.01em;
+  /* Uppercase sub-headings inside a section (Space Grotesk). */
+  --type-subhead-size: 13px;
+  --type-subhead-tracking: 0.14em;
+  /* Uppercase labels above headings (Inter). */
+  --type-eyebrow-size: 11px;
+  --type-eyebrow-tracking: 0.18em;
+  /* Small uppercase tags, chips, dates and counters (Inter). */
+  --type-meta-size: 10px;
+  --type-meta-tracking: 0.12em;
+  /* Buttons (Inter, uppercase). Outline buttons use the small size,
+     filled call-to-action buttons the large size. */
+  --type-button-size: 11px;
+  --type-button-size-lg: 12px;
+  --type-button-tracking: 0.12em;
+  --content-max: 1480px;
+  --content-gutter: clamp(24px, 4vw, 64px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text);
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal].is-navigation-target {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

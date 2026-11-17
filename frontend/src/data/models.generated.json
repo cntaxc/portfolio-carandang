@@ -1,0 +1,158 @@
+[
+  {
+    "id": "basyo-props",
+    "file": "Basyo_Props.glb",
+    "title": "Basyo",
+    "category": "Props"
+  },
+  {
+    "id": "bluecar-vehicle",
+    "file": "BlueCar_Vehicle.glb",
+    "title": "Blue Car",
+    "category": "Vehicle"
+  },
+  {
+    "id": "garbage-props",
+    "file": "Garbage_Props.glb",
+    "title": "Garbage",
+    "category": "Props"
+  },
+  {
+    "id": "gasul-props",
+    "file": "Gasul_Props.glb",
+    "title": "Gasul",
+    "category": "Props"
+  },
+  {
+    "id": "gocart-vehicle",
+    "file": "GoCart_Vehicle.glb",
+    "title": "Go Cart",
+    "category": "Vehicle"
+  },
+  {
+    "id": "graycar-vehicle",
+    "file": "GrayCar_Vehicle.glb",
+    "title": "Gray Car",
+    "category": "Vehicle"
+  },
+  {
+    "id": "jeep-vehicles",
+    "file": "Jeep_Vehicles.glb",
+    "title": "Jeep",
+    "category": "Vehicle"
+  },
+  {
+    "id": "kamote-character",
+    "file": "Kamote_Character.glb",
+    "title": "Kamote",
+    "category": "Character"
+  },
+  {
+    "id": "lowpolytrees-enviroment",
+    "file": "LowPolyTrees_Enviroment.glb",
+    "title": "Low Poly Trees",
+    "category": "Environment"
+  },
+  {
+    "id": "mangdodong-character",
+    "file": "MangDodong_Character.glb",
+    "title": "Mang Dodong",
+    "category": "Character"
+  },
+  {
+    "id": "marites-character",
+    "file": "Marites_Character.glb",
+    "title": "Marites",
+    "category": "Character"
+  },
+  {
+    "id": "noparking-environment",
+    "file": "NoParking_Environment.glb",
+    "title": "No Parking",
+    "category": "Environment"
+  },
+  {
+    "id": "police-character",
+    "file": "Police_Character.glb",
+    "title": "Police",
+    "category": "Character"
+  },
+  {
+    "id": "police-patrol-vehicles",
+    "file": "Police_Patrol_Vehicles.glb",
+    "title": "Police Patrol",
+    "category": "Vehicle"
+  },
+  {
+    "id": "police-sedan-vehicles",
+    "file": "Police_Sedan_Vehicles.glb",
+    "title": "Police Sedan",
+    "category": "Vehicle"
+  },
+  {
+    "id": "poste-environment",
+    "file": "Poste_Environment.glb",
+    "title": "Poste",
+    "category": "Environment"
+  },
+  {
+    "id": "racer-character",
+    "file": "Racer_Character.glb",
+    "title": "Racer",
+    "category": "Character"
+  },
+  {
+    "id": "sedan-vehicles",
+    "file": "Sedan_Vehicles.glb",
+    "title": "Sedan",
+    "category": "Vehicle"
+  },
+  {
+    "id": "sorbetero-environment",
+    "file": "Sorbetero_Environment.glb",
+    "title": "Sorbetero",
+    "category": "Environment"
+  },
+  {
+    "id": "spaceship-vehicle",
+    "file": "spaceship_vehicle.glb",
+    "title": "Spaceship",
+    "category": "Vehicle"
+  },
+  {
+    "id": "totoy-character",
+    "file": "Totoy_Character.glb",
+    "title": "Totoy",
+    "category": "Character"
+  },
+  {
+    "id": "tricycle-vehicle",
+    "file": "Tricycle_Vehicle.glb",
+    "title": "Tricycle",
+    "category": "Vehicle"
+  },
+  {
+    "id": "truck-vehicles",
+    "file": "Truck_Vehicles.glb",
+    "title": "Truck",
+    "category": "Vehicle"
+  },
+  {
+    "id": "vintagemonitor-props",
+    "file": "VintageMonitor_Props.glb",
+    "title": "Vintage Monitor",
+    "category": "Props"
+  },
+  {
+    "id": "vintagepc-props",
+    "file": "VintagePC_Props.glb",
+    "title": "Vintage PC",
+    "category": "Props"
+  },
+  {
+    "id": "wheelchair-vehicles",
+    "file": "WheelChair_Vehicles.glb",
+    "title": "Wheel Chair",
+    "category": "Vehicle"
+  }
+]

@@ -1,0 +1,13 @@
+# .env.local is intentionally NOT ignored: the production build needs
+# REACT_APP_WEB3FORMS_ACCESS_KEY at build time.
+node_modules
+build
+coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.git
+.gitignore
+*.md
+.DS_Store
+Thumbs.db

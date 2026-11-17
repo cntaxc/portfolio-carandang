@@ -1,0 +1,201 @@
+.background-profile {
+  width: 100%;
+}
+
+.background-profile__card {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(150px, 18vw, 208px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 72px);
+  min-height: 300px;
+  padding: clamp(26px, 4vw, 52px);
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 10% 50%,
+      rgba(245, 245, 240, 0.1),
+      transparent 32%
+    ),
+    linear-gradient(115deg, rgba(245, 245, 240, 0.035), transparent 60%),
+    var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035), var(--shadow-sm);
+}
+
+.background-profile__card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--accent) 28%,
+    var(--accent) 72%,
+    transparent
+  );
+  content: '';
+  opacity: 0.7;
+}
+
+.background-profile__card::after {
+  position: absolute;
+  right: -150px;
+  bottom: -190px;
+  width: 420px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(245, 245, 240, 0.1);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 26px rgba(245, 245, 240, 0.018),
+    0 0 0 54px rgba(245, 245, 240, 0.012);
+  content: '';
+  pointer-events: none;
+}
+
+.background-profile__portrait-frame {
+  position: relative;
+  z-index: 1;
+  width: clamp(150px, 18vw, 208px);
+  aspect-ratio: 4 / 5;
+  padding: 5px;
+  background: linear-gradient(
+    145deg,
+    rgba(245, 245, 240, 0.75),
+    rgba(245, 245, 240, 0.14) 50%,
+    rgba(245, 245, 240, 0.42)
+  );
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 4px rgba(245, 245, 240, 0.035),
+    0 0 36px rgba(245, 245, 240, 0.12);
+}
+
+.background-profile__portrait-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 24%;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.background-profile__content {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.background-profile__eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow-size);
+  font-weight: 700;
+  letter-spacing: var(--type-eyebrow-tracking);
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 18px;
+  margin: 0 0 18px;
+}
+
+.background-profile__eyebrow span + span {
+  color: var(--text-muted);
+  font-size: 8px;
+}
+
+.background-profile__content h1 {
+  font-family: var(--font-heading);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-display-tracking);
+  text-transform: uppercase;
+  display: grid;
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(34px, 5.2vw, 62px);
+  line-height: 0.98;
+}
+
+.background-profile__content h1 span + span {
+  color: var(--on-bg-accent);
+}
+
+.background-profile__roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 18px 0 0;
+  color: var(--text-muted);
+  font-size: clamp(12px, 1.3vw, 15px);
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  line-height: 1.7;
+}
+
+.background-profile__roles span {
+  color: var(--on-bg-line);
+}
+
+.background-profile__location {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 0 12px;
+  color: var(--text);
+  background-color: rgba(245, 245, 240, 0.035);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: var(--type-meta-size);
+  font-weight: 700;
+  letter-spacing: var(--type-meta-tracking);
+  text-transform: uppercase;
+}
+
+.background-profile__location i {
+  color: var(--on-bg-accent);
+  font-size: 14px;
+}
+
+@media (max-width: 860px) {
+  .background-profile__card {
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: clamp(22px, 4vw, 36px);
+    min-height: 260px;
+    padding: 28px;
+  }
+
+  .background-profile__portrait-frame {
+    width: 150px;
+  }
+}
+
+@media (max-width: 560px) {
+  .background-profile__card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .background-profile__portrait-frame {
+    width: min(132px, 45vw);
+  }
+
+  .background-profile__content h1 {
+    font-size: clamp(28px, 8vw, 42px);
+  }
+
+  .background-profile__card::after {
+    right: -230px;
+    bottom: -240px;
+  }
+}
