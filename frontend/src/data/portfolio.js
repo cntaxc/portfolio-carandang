@@ -426,17 +426,19 @@ export const achievementHighlights = [
 ];
 
 export const education = {
-  title: 'Educations',
+  title: 'Education',
   items: [
     {
       date: '2023 – 2027',
+      level: 'Undergraduate',
       school: 'Bachelor of Science in Computer Science',
       institutions: ['University of Cabuyao'],
       description:
         'University of Cabuyao (Pamantasan ng Cabuyao) is one of the leading local colleges and universities in the Philippines',
     },
     {
-      date: '2021 - 2023',
+      date: '2021 – 2023',
+      level: 'Senior High School',
       school: 'Science, Technology, Engineering, and Mathematics (STEM)',
       institutions: ['Pamantasan ng Cabuyao'],
       description:
@@ -444,6 +446,7 @@ export const education = {
     },
     {
       date: '2016 – 2021',
+      level: 'Junior High School',
       school: 'Junior High School',
       institutions: ['Liceo De Cabuyao', 'Liceo De Calamba'],
       description:

@@ -1,201 +1,244 @@
+/* ==========================================================================
+   Overview profile card (#background)
+   Formal "document" layout: header bar, framed portrait, name, roles and a
+   details grid, separated by hairline borders on the Cozy Black surface.
+   ========================================================================== */
+
 .background-profile {
   width: 100%;
 }
 
-.background-profile__card {
+.profile-card {
   position: relative;
-  display: grid;
-  grid-template-columns: clamp(150px, 18vw, 208px) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(28px, 5vw, 72px);
-  min-height: 300px;
-  padding: clamp(26px, 4vw, 52px);
   overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 10% 50%,
-      rgba(245, 245, 240, 0.1),
-      transparent 32%
-    ),
-    linear-gradient(115deg, rgba(245, 245, 240, 0.035), transparent 60%),
-    var(--bg);
-  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  border: 1px solid var(--border-glass-strong);
   border-radius: 2px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035), var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
-.background-profile__card::before {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent) 28%,
-    var(--accent) 72%,
-    transparent
-  );
-  content: '';
-  opacity: 0.7;
-}
-
-.background-profile__card::after {
-  position: absolute;
-  right: -150px;
-  bottom: -190px;
-  width: 420px;
-  aspect-ratio: 1;
-  border: 1px solid rgba(245, 245, 240, 0.1);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 26px rgba(245, 245, 240, 0.018),
-    0 0 0 54px rgba(245, 245, 240, 0.012);
-  content: '';
-  pointer-events: none;
-}
-
-.background-profile__portrait-frame {
-  position: relative;
-  z-index: 1;
-  width: clamp(150px, 18vw, 208px);
-  aspect-ratio: 4 / 5;
-  padding: 5px;
-  background: linear-gradient(
-    145deg,
-    rgba(245, 245, 240, 0.75),
-    rgba(245, 245, 240, 0.14) 50%,
-    rgba(245, 245, 240, 0.42)
-  );
-  border: 1px solid var(--border-strong);
-  border-radius: 2px;
-  box-shadow:
-    0 0 0 4px rgba(245, 245, 240, 0.035),
-    0 0 36px rgba(245, 245, 240, 0.12);
-}
-
-.background-profile__portrait-frame img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 24%;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-}
-
-.background-profile__content {
-  position: relative;
-  z-index: 1;
-  min-width: 0;
-}
-
-.background-profile__eyebrow {
+/* Header strip */
+.profile-card__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px clamp(22px, 3.4vw, 44px);
+  color: var(--text-muted);
   font-family: var(--font-body);
   font-size: var(--type-eyebrow-size);
   font-weight: 700;
   letter-spacing: var(--type-eyebrow-tracking);
   line-height: 1.3;
   text-transform: uppercase;
-  color: var(--text-muted);
-  display: flex;
-  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.profile-card__bar span + span {
+  color: rgba(245, 245, 240, 0.5);
+}
+
+/* Body: portrait | content */
+.profile-card__body {
+  display: grid;
+  grid-template-columns: clamp(170px, 19vw, 232px) minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 8px 18px;
-  margin: 0 0 18px;
+  gap: clamp(28px, 4.6vw, 64px);
+  padding: clamp(26px, 3.6vw, 48px) clamp(22px, 3.4vw, 44px);
 }
 
-.background-profile__eyebrow span + span {
-  color: var(--text-muted);
-  font-size: 8px;
+/* Portrait: thin outer rule with an inset mat (passe-partout) and corner
+   marks, like a formal ID or press photo. */
+.profile-card__portrait {
+  position: relative;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--border-glass-strong);
 }
 
-.background-profile__content h1 {
-  font-family: var(--font-heading);
-  font-weight: var(--type-heading-weight);
-  letter-spacing: var(--type-display-tracking);
-  text-transform: uppercase;
+.profile-card__portrait::before,
+.profile-card__portrait::after {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  content: '';
+  pointer-events: none;
+  border-color: rgba(245, 245, 240, 0.7);
+  border-style: solid;
+}
+
+.profile-card__portrait::before {
+  top: -1px;
+  left: -1px;
+  border-width: 1px 0 0 1px;
+}
+
+.profile-card__portrait::after {
+  right: -1px;
+  bottom: -1px;
+  border-width: 0 1px 1px 0;
+}
+
+.profile-card__frame {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #101010;
+  border: 1px solid var(--border-glass);
+}
+
+.profile-card__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+/* Content */
+.profile-card__content {
+  min-width: 0;
+}
+
+.profile-card__name {
   display: grid;
   margin: 0;
   color: var(--text);
-  font-size: clamp(34px, 5.2vw, 62px);
-  line-height: 0.98;
+  font-family: var(--font-heading);
+  font-size: clamp(32px, 4.6vw, 58px);
+  font-weight: var(--type-heading-weight);
+  line-height: 1;
+  letter-spacing: var(--type-display-tracking);
+  text-transform: uppercase;
 }
 
-.background-profile__content h1 span + span {
-  color: var(--on-bg-accent);
+.profile-card__name span + span {
+  color: rgba(245, 245, 240, 0.62);
 }
 
-.background-profile__roles {
+/* Roles: separated by hairline dividers, under a short rule. */
+.profile-card__roles {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 10px;
-  margin: 18px 0 0;
-  color: var(--text-muted);
-  font-size: clamp(12px, 1.3vw, 15px);
-  font-weight: 500;
-  letter-spacing: 0.015em;
-  line-height: 1.7;
-}
-
-.background-profile__roles span {
-  color: var(--on-bg-line);
-}
-
-.background-profile__location {
-  display: inline-flex;
-  min-height: 36px;
   align-items: center;
-  gap: 8px;
-  margin-top: 22px;
-  padding: 0 12px;
+  gap: 8px 0;
+  margin: 22px 0 0;
+  padding: 18px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--border-glass);
+}
+
+.profile-card__roles li {
   color: var(--text);
-  background-color: rgba(245, 245, 240, 0.035);
-  border: 1px solid var(--border);
-  border-radius: 2px;
+  font-size: clamp(13px, 1.25vw, 15px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.profile-card__roles li + li::before {
+  display: inline-block;
+  width: 1px;
+  height: 0.95em;
+  margin: 0 14px;
+  vertical-align: -0.12em;
+  content: '';
+  background: var(--border-glass-strong);
+}
+
+/* Details grid */
+.profile-card__details {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr) minmax(0, 0.7fr);
+  margin: 26px 0 0;
+  border: 1px solid var(--border-glass);
+}
+
+.profile-card__detail {
+  min-width: 0;
+  padding: 14px 16px;
+}
+
+.profile-card__detail + .profile-card__detail {
+  border-left: 1px solid var(--border-glass);
+}
+
+.profile-card__detail dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  color: var(--text-muted);
   font-size: var(--type-meta-size);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: var(--type-meta-tracking);
   text-transform: uppercase;
 }
 
-.background-profile__location i {
-  color: var(--on-bg-accent);
-  font-size: 14px;
+.profile-card__detail dt i {
+  font-size: 13px;
 }
 
-@media (max-width: 860px) {
-  .background-profile__card {
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: clamp(22px, 4vw, 36px);
-    min-height: 260px;
-    padding: 28px;
+.profile-card__detail dd {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.profile-card__detail dd small {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .profile-card__body {
+    grid-template-columns: 160px minmax(0, 1fr);
   }
 
-  .background-profile__portrait-frame {
-    width: 150px;
+  .profile-card__details {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  /* Education spans the full width on the second row. */
+  .profile-card__detail:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    border-top: 1px solid var(--border-glass);
+    border-left: 0;
+  }
+
+  .profile-card__detail:nth-child(3) {
+    grid-row: 1;
+    grid-column: 2;
   }
 }
 
-@media (max-width: 560px) {
-  .background-profile__card {
+@media (max-width: 600px) {
+  .profile-card__body {
     grid-template-columns: minmax(0, 1fr);
-    gap: 22px;
-    min-height: 0;
-    padding: 22px;
   }
 
-  .background-profile__portrait-frame {
-    width: min(132px, 45vw);
+  .profile-card__portrait {
+    width: min(170px, 52vw);
   }
 
-  .background-profile__content h1 {
-    font-size: clamp(28px, 8vw, 42px);
+  .profile-card__bar {
+    font-size: 10px;
+    letter-spacing: 0.14em;
   }
 
-  .background-profile__card::after {
-    right: -230px;
-    bottom: -240px;
+  /* Stack the roles; dividers would otherwise start a wrapped line. */
+  .profile-card__roles {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .profile-card__roles li + li::before {
+    display: none;
   }
 }

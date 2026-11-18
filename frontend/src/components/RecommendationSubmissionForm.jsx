@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecommendations } from '../context/RecommendationsContext';
 
 const RECOMMENDATIONS_ENDPOINT = '/api/recommendations';
@@ -7,13 +7,51 @@ const SUCCESS_MESSAGE = 'Thank you! Your recommendation has been published.';
 const validationRules = [
   { field: 'name', label: 'your name', maxLength: 100 },
   { field: 'organization', label: 'your organization', maxLength: 120 },
-  {
-    field: 'context',
-    label: 'your work or project context',
-    maxLength: 160,
-  },
   { field: 'message', label: 'your recommendation', maxLength: 2000 },
 ];
+
+// "Where did we work together?" options (multi-select). The selection is
+// sent as the existing `context` text field, e.g. "Hackathon, Team Projects".
+const CONTEXT_OPTIONS = [
+  'Organization',
+  'Collaborative Projects',
+  'Hackathon',
+  'Team Projects',
+  'Others',
+];
+const OTHER_OPTION = 'Others';
+const OTHER_MAX_LENGTH = 80;
+const CONTEXT_MAX_LENGTH = 160;
+
+// Selected options in display order; "Others" is replaced by the typed text.
+function buildContext(selected, otherText) {
+  return CONTEXT_OPTIONS.filter((option) => selected.includes(option))
+    .map((option) => (option === OTHER_OPTION ? otherText.trim() : option))
+    .filter(Boolean)
+    .join(', ');
+}
+
+function validateContext(selected, otherText) {
+  if (!selected.length) {
+    return {
+      field: 'context',
+      message: 'Please choose where we worked together.',
+    };
+  }
+  if (selected.includes(OTHER_OPTION) && !otherText.trim()) {
+    return {
+      field: 'contextOther',
+      message: 'Please describe where we worked together.',
+    };
+  }
+  if (buildContext(selected, otherText).length > CONTEXT_MAX_LENGTH) {
+    return {
+      field: 'contextOther',
+      message: 'Please shorten where we worked together.',
+    };
+  }
+  return null;
+}
 
 function validateFields(fields) {
   const missingField = validationRules.find(({ field }) => !fields[field]);
@@ -46,6 +84,35 @@ export default function RecommendationSubmissionForm() {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedContexts, setSelectedContexts] = useState([]);
+  const [otherContext, setOtherContext] = useState('');
+  const firstContextButtonRef = useRef(null);
+  const otherInputRef = useRef(null);
+  const focusOtherOnOpen = useRef(false);
+  const isOtherSelected = selectedContexts.includes(OTHER_OPTION);
+
+  // Move the cursor into the "Others" field as soon as it opens.
+  useEffect(() => {
+    if (isOtherSelected && focusOtherOnOpen.current) {
+      focusOtherOnOpen.current = false;
+      otherInputRef.current?.focus();
+    }
+  }, [isOtherSelected]);
+
+  const toggleContext = (option) => {
+    if (option === OTHER_OPTION && !selectedContexts.includes(option)) {
+      focusOtherOnOpen.current = true;
+    }
+    // A previous "please choose…" error no longer applies once they pick.
+    if (feedback.tone === 'error') {
+      setFeedback({ tone: '', message: '' });
+    }
+    setSelectedContexts((current) =>
+      current.includes(option)
+        ? current.filter((item) => item !== option)
+        : [...current, option]
+    );
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -59,18 +126,24 @@ export default function RecommendationSubmissionForm() {
     const fields = {
       name: String(formData.get('name') || '').trim(),
       organization: String(formData.get('organization') || '').trim(),
-      context: String(formData.get('context') || '').trim(),
+      context: buildContext(selectedContexts, otherContext),
       message: String(formData.get('message') || '').trim(),
     };
-    const validationError = validateFields(fields);
+    const validationError =
+      validateFields(fields) || validateContext(selectedContexts, otherContext);
 
     if (validationError) {
       setFeedback({
         tone: 'error',
         message: validationError.message,
       });
-      const field = form.elements.namedItem(validationError.field);
-      field?.focus?.();
+      if (validationError.field === 'context') {
+        firstContextButtonRef.current?.focus();
+      } else if (validationError.field === 'contextOther') {
+        otherInputRef.current?.focus();
+      } else {
+        form.elements.namedItem(validationError.field)?.focus?.();
+      }
       return;
     }
 
@@ -103,6 +176,8 @@ export default function RecommendationSubmissionForm() {
         }
         setFeedback({ tone: 'success', message: SUCCESS_MESSAGE });
         form.reset();
+        setSelectedContexts([]);
+        setOtherContext('');
         return;
       }
 
@@ -195,16 +270,51 @@ export default function RecommendationSubmissionForm() {
             required
           />
         </label>
-        <label className="recommendation-form__field recommendation-form__field--wide">
-          <span>Work / Project Context</span>
-          <input
-            name="context"
-            type="text"
-            maxLength="160"
-            placeholder="How we worked together"
-            required
-          />
-        </label>
+        <fieldset className="recommendation-form__field recommendation-form__field--wide recommendation-form__context">
+          <legend>Where did we work together?</legend>
+          <p className="recommendation-form__hint">Select all that apply.</p>
+          <div className="context-options">
+            {CONTEXT_OPTIONS.map((option, index) => {
+              const isSelected = selectedContexts.includes(option);
+              return (
+                <button
+                  key={option}
+                  ref={index === 0 ? firstContextButtonRef : undefined}
+                  type="button"
+                  className={`context-option${isSelected ? ' is-selected' : ''}`}
+                  aria-pressed={isSelected}
+                  onClick={() => toggleContext(option)}
+                >
+                  <i
+                    className={isSelected ? 'ri-check-line' : 'ri-add-line'}
+                    aria-hidden="true"
+                  ></i>
+                  {option}
+                </button>
+              );
+            })}
+          </div>
+          <div
+            className={`context-other${isOtherSelected ? ' is-open' : ''}`}
+            aria-hidden={!isOtherSelected}
+          >
+            <div className="context-other__inner">
+              <label className="recommendation-form__field">
+                <span>Tell us where</span>
+                <input
+                  ref={otherInputRef}
+                  name="contextOther"
+                  type="text"
+                  value={otherContext}
+                  onChange={(event) => setOtherContext(event.target.value)}
+                  maxLength={OTHER_MAX_LENGTH}
+                  placeholder="e.g. Internship, school club, freelance work"
+                  disabled={!isOtherSelected}
+                />
+              </label>
+            </div>
+          </div>
+        </fieldset>
         <label className="recommendation-form__field recommendation-form__field--wide">
           <span>Recommendation</span>
           <textarea

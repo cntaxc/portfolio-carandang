@@ -1,7 +1,6 @@
 import {
   about,
   achievementHighlights,
-  certificates,
   showcaseProjects,
 } from '../../data/portfolio';
 import RecommendationsCarousel from '../RecommendationsCarousel';
@@ -36,7 +35,8 @@ const competitionCount = achievementHighlights.filter(({ label, event }) =>
 const aboutStats = [
   { label: 'Projects', value: showcaseProjects.items.length },
   { label: 'Competitions', value: competitionCount },
-  { label: 'Certifications', value: certificates.items.length },
+  // Fixed value: update as your experience grows.
+  { label: 'Years of experience', value: '1.5', unit: 'YRS' },
 ];
 
 export default function AboutSection({ onViewRecommendations }) {
@@ -112,7 +112,12 @@ export default function AboutSection({ onViewRecommendations }) {
           {aboutStats.map((stat) => (
             <div className="about-section__stat" key={stat.label}>
               <dt>{stat.label}</dt>
-              <dd>{stat.value}</dd>
+              <dd>
+                {stat.value}
+                {stat.unit ? (
+                  <span className="about-section__stat-unit">{stat.unit}</span>
+                ) : null}
+              </dd>
             </div>
           ))}
         </dl>

@@ -1,65 +1,10 @@
 import { useEffect, useState } from 'react';
 import BackButton from '../BackButton';
+import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
+import useTypewriter from '../../hooks/useTypewriter';
 import { portfolioHub } from '../../data/portfolio';
 
 const SLIDE_INTERVAL_MS = 5000;
-const TYPE_DELAY_MS = 95;
-const DELETE_DELAY_MS = 45;
-const HOLD_TYPED_MS = 1800;
-const HOLD_EMPTY_MS = 450;
-
-function usePrefersReducedMotion() {
-  const query = '(prefers-reduced-motion: reduce)';
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-    () => typeof window.matchMedia === 'function' && window.matchMedia(query).matches
-  );
-
-  useEffect(() => {
-    if (typeof window.matchMedia !== 'function') {
-      return undefined;
-    }
-    const mediaQuery = window.matchMedia(query);
-    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  return prefersReducedMotion;
-}
-
-// Types the text out, holds, backspaces it, holds, and repeats.
-function useTypewriter(text, enabled) {
-  const [length, setLength] = useState(enabled ? 0 : text.length);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    if (!enabled) {
-      setLength(text.length);
-      return undefined;
-    }
-
-    let delay = isDeleting ? DELETE_DELAY_MS : TYPE_DELAY_MS;
-    if (!isDeleting && length === text.length) {
-      delay = HOLD_TYPED_MS;
-    } else if (isDeleting && length === 0) {
-      delay = HOLD_EMPTY_MS;
-    }
-
-    const timer = window.setTimeout(() => {
-      if (!isDeleting && length === text.length) {
-        setIsDeleting(true);
-      } else if (isDeleting && length === 0) {
-        setIsDeleting(false);
-      } else {
-        setLength((current) => current + (isDeleting ? -1 : 1));
-      }
-    }, delay);
-
-    return () => window.clearTimeout(timer);
-  }, [enabled, isDeleting, length, text]);
-
-  return text.slice(0, length);
-}
 
 function CategorySlideshow({ slides, enabled }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -113,7 +58,7 @@ function CategoryMedia({ category, animate }) {
 export default function PortfolioHubSection({ onBack, onSelectCategory }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const prompt = portfolioHub.prompt.toUpperCase();
-  const typedPrompt = useTypewriter(prompt, !prefersReducedMotion);
+  const typedPrompt = useTypewriter([prompt], { enabled: !prefersReducedMotion });
 
   return (
     <div className="portfolio-hub-page">
