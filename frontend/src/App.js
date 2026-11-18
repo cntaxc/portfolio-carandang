@@ -1,4 +1,5 @@
 import Dashboard from './components/Dashboard';
+import IntroSplash from './components/IntroSplash';
 import { RecommendationsProvider } from './context/RecommendationsContext';
 import './styles/theme.css';
 import './styles/layout.css';
@@ -10,6 +11,7 @@ import './App.css';
 function App() {
   return (
     <RecommendationsProvider>
+      <IntroSplash />
       <Dashboard />
     </RecommendationsProvider>
   );
