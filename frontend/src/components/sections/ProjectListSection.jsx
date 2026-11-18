@@ -2,9 +2,11 @@ import BackButton from '../BackButton';
 import ProjectLogo from '../ProjectLogo';
 import { showcaseProjects } from '../../data/portfolio';
 
+// Grouped by public availability: released projects are live or publicly
+// playable; unreleased ones (e.g. the MUTED thesis) aren't publicly available.
 const projectGroups = [
-  { title: 'Published', isPublished: true },
-  { title: 'Non-Published', isPublished: false },
+  { id: 'released', title: 'Released', isPublished: true },
+  { id: 'unreleased', title: 'Unreleased', isPublished: false },
 ];
 
 export default function ProjectListSection({ onBack }) {
@@ -31,16 +33,12 @@ export default function ProjectListSection({ onBack }) {
               return (
                 <section
                   className="project-list__group"
-                  key={group.title}
-                  aria-labelledby={`project-list-${group.title
-                    .toLowerCase()
-                    .replace('-', '')}`}
+                  key={group.id}
+                  aria-labelledby={`project-list-${group.id}`}
                 >
                   <h3
                     className="project-list__group-title"
-                    id={`project-list-${group.title
-                      .toLowerCase()
-                      .replace('-', '')}`}
+                    id={`project-list-${group.id}`}
                   >
                     {group.title}
                   </h3>

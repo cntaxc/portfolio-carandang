@@ -1,3 +1,8 @@
+// NOTE: frontend/src/lib/profanity-filter.js is an exact copy of this file,
+// used when the site runs without this backend (e.g. the static Vercel
+// deployment). Edit this file, then copy it over; a backend test fails if the
+// two ever differ.
+//
 // Profanity filter for user-submitted recommendations.
 //
 // For every field the text is normalized and checked in several readings:

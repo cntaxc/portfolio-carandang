@@ -8,7 +8,8 @@ try {
     exit 1
 }
 
-Set-Location $PSScriptRoot
+# Run from the repository root (this script lives in scripts/).
+Set-Location (Split-Path -Parent $PSScriptRoot)
 Write-Host 'Building and starting production environment...' -ForegroundColor Green
 docker compose -f docker-compose.prod.yml up -d --build
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

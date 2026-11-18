@@ -120,3 +120,23 @@ test('stays fast on long, adversarial input', () => {
   containsProfanity('a '.repeat(1000));
   assert.ok(Date.now() - started < 500);
 });
+
+test('frontend copy of the filter is identical to this one', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const backendCopy = await readFile(
+    new URL('../lib/profanity-filter.js', import.meta.url),
+    'utf8'
+  );
+  const frontendCopy = await readFile(
+    new URL('../../frontend/src/lib/profanity-filter.js', import.meta.url),
+    'utf8'
+  ).catch(() => null);
+  // The backend Docker image has no frontend folder; only check when present.
+  if (frontendCopy !== null) {
+    assert.equal(
+      frontendCopy,
+      backendCopy,
+      'Copy backend/lib/profanity-filter.js to frontend/src/lib/'
+    );
+  }
+});

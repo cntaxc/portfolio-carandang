@@ -7,6 +7,11 @@ import {
   useRef,
   useState,
 } from 'react';
+import {
+  isApiUnavailable,
+  loadLocalRecommendations,
+  mergeWithLocal,
+} from '../lib/localRecommendations';
 
 const RecommendationsContext = createContext(null);
 
@@ -51,19 +56,23 @@ export function RecommendationsProvider({ children }) {
         cache: 'no-store',
         signal: controller.signal,
       });
-      const result = await response.json().catch(() => null);
+      const result = isApiUnavailable(response)
+        ? null
+        : await response.json().catch(() => null);
 
       if (requestId !== requestIdRef.current) {
         return;
       }
 
       if (!response.ok || !Array.isArray(result?.recommendations)) {
-        throw new Error(
-          result?.error || 'Recommendations could not be loaded.'
-        );
+        // No working API (e.g. the static Vercel deployment): show the
+        // recommendations saved in this browser instead of an error.
+        setRecommendations(loadLocalRecommendations());
+        setError('');
+        return;
       }
 
-      setRecommendations(result.recommendations);
+      setRecommendations(mergeWithLocal(result.recommendations));
       setError('');
     } catch (requestError) {
       if (
@@ -73,10 +82,9 @@ export function RecommendationsProvider({ children }) {
         return;
       }
 
-      console.error('Recommendations could not be loaded:', requestError);
-      setError(
-        'We could not load recommendations right now. Please try again shortly.'
-      );
+      // Network failure: fall back to this browser's saved recommendations.
+      setRecommendations(loadLocalRecommendations());
+      setError('');
     } finally {
       if (requestId === requestIdRef.current) {
         setIsLoading(false);

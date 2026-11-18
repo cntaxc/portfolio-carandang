@@ -1,160 +1,156 @@
+<div align="center">
+
 # Christian Carandang — Portfolio
 
-A React single-page portfolio with a small Node.js backend for recommendations,
-run with Docker Compose.
+**Full-stack personal portfolio: React front end with interactive 3D model viewers, a Node.js recommendations API, and Docker-based dev/prod environments.**
 
-| Part | Folder | Stack | Dev URL |
-|------|--------|-------|---------|
-| Frontend | [`frontend/`](frontend) | React 18 (Create React App), Three.js | http://localhost:3000 |
-| Backend | [`backend/`](backend) | Node.js 20, Express | http://localhost:8000 |
+[![Live demo](https://img.shields.io/badge/live%20demo-portfolio--carandang.vercel.app-111111?style=for-the-badge&logo=vercel&logoColor=white)](https://portfolio-carandang.vercel.app)
 
-## Quick start
+[![CI](https://github.com/cntaxc/portfolio-carandang/actions/workflows/ci.yml/badge.svg)](https://github.com/cntaxc/portfolio-carandang/actions/workflows/ci.yml)
+[![Vercel deployment](https://img.shields.io/github/deployments/cntaxc/portfolio-carandang/Production?label=vercel&logo=vercel)](https://portfolio-carandang.vercel.app)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-r187-000000?logo=threedotjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 
-```powershell
-# Development (hot reload)
-.\start-dev.ps1                 # or: docker compose up -d --build
+</div>
 
-# Production (Nginx on :8080, backend internal)
-.\start-prod.ps1                # or: docker compose -f docker-compose.prod.yml up -d --build
+<p align="center">
+  <img src="docs/screenshots/home.jpg" alt="Home page with the animated outline-to-solid name title" width="100%">
+</p>
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/portfolio-hub.jpg" alt="Portfolio hub with three category cards"></td>
+    <td width="50%"><img src="docs/screenshots/3d-models.jpg" alt="3D models page with category filters and drag-to-rotate viewers"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Portfolio hub</sub></td>
+    <td align="center"><sub>Interactive 3D model showcase</sub></td>
+  </tr>
+</table>
+
+## Highlights
+
+- **Interactive 3D showcase**: 26 game assets rendered with Three.js. Drag to rotate (zoom disabled), category filters, a paginated 3×3 grid, and lazy loading so each model downloads only when its card scrolls into view. Cards are generated automatically from the `.glb` files in the models folder.
+- **Portfolio hub**: category cards with hover animations, a cross-fading project slideshow and a typewriter caption.
+- **Recommendations**: visitors submit recommendations that publish instantly, are screened by a profanity filter (English, Tagalog/Filipino and Spanish, including leetspeak and spacing tricks) and can be moderated from the command line.
+- **Contact form** that posts straight to Web3Forms from the browser.
+- **Design system**: a single "Cozy Black" theme with shared typography and colour tokens, responsive from phone to desktop, and reduced-motion support.
+- **Production setup**: multi-stage Docker images, Nginx with gzip and security headers, health checks, and CI on every push.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    Browser["Browser"]
+    subgraph Frontend["frontend/ · React 18 + Three.js"]
+        SPA["Single-page app"]
+        Models[("public/models/*.glb")]
+    end
+    subgraph Backend["backend/ · Node.js 20 + Express"]
+        API["/api/recommendations"]
+        Filter["Profanity filter"]
+        Store[("recommendations.json<br/>Docker volume")]
+    end
+    Web3Forms["Web3Forms<br/>(contact email)"]
+
+    Browser --> SPA
+    SPA --> Models
+    SPA -- "fetch /api" --> API
+    API --> Filter --> Store
+    SPA -- "contact form" --> Web3Forms
 ```
 
-The first development start runs `npm install` inside the frontend container,
-so allow a minute before http://localhost:3000 responds.
+| Part | Stack | Notes |
+|------|-------|-------|
+| [`frontend/`](frontend) | React 18 (Create React App), Three.js | Served by the dev server in development and by Nginx in production |
+| [`backend/`](backend) | Node.js 20, Express | Small JSON-file store, rate limiting, tested with `node:test` |
+| [`docker-compose.yml`](docker-compose.yml) | Docker Compose | Dev stack with hot reload |
+| [`docker-compose.prod.yml`](docker-compose.prod.yml) | Docker Compose | Production stack: Nginx on `:8080`, API internal only |
 
-Development and production use separate Compose project names, so they can run
-at the same time without affecting each other.
+## Getting started
+
+**Requirements:** Docker Desktop. Node.js 20 is optional, for running things outside Docker.
+
+```powershell
+git clone https://github.com/cntaxc/portfolio-carandang.git
+cd portfolio-carandang
+copy frontend\.env.example frontend\.env.local   # then add your Web3Forms key
+
+docker compose up -d --build                     # or: .\scripts\start-dev.ps1
+```
+
+| Service | URL |
+|---------|-----|
+| Frontend (hot reload) | http://localhost:3000 |
+| Backend API | http://localhost:8000/health |
+
+Production build locally:
+
+```powershell
+docker compose -f docker-compose.prod.yml up -d --build   # or: .\scripts\start-prod.ps1
+# http://localhost:8080
+```
+
+Development and production use separate Compose project names, so both can run at once.
+
+<details>
+<summary><b>Running without Docker</b></summary>
+
+```powershell
+npm --prefix backend install
+npm --prefix backend run dev        # API on :8000
+
+npm --prefix frontend install
+npm --prefix frontend start         # app on :3000, /api proxied to :8000
+```
+</details>
 
 ## Project structure
 
 ```
 .
-├── frontend/                 React app (own package.json, Dockerfile, nginx.conf)
-│   ├── public/               index.html, resume PDF, 3D models (models/*.glb)
-│   ├── src/
-│   │   ├── assets/images/    projects/ (backgrounds), logos/, profile/
-│   │   ├── components/       UI components and section components (sections/)
-│   │   ├── context/          RecommendationsContext (shared recommendations state)
-│   │   ├── data/portfolio.js All site content: nav, projects, hub, 3D models, ...
-│   │   ├── hooks/            useActiveSection, useScrollReveal
-│   │   ├── styles/           theme, layout, sections, portfolio, background-profile
-│   │   └── setupProxy.js     Dev server: forwards /api to the backend
-│   ├── Dockerfile            Production image: build, then serve with Nginx
-│   └── nginx.conf            Serves the SPA and proxies /api/ to the backend
-├── backend/                  Recommendation API (own package.json, Dockerfile)
-│   ├── lib/                  recommendation-store.js, profanity-filter.js
-│   ├── test/                 node:test suites
-│   └── server.js             Entry point
-├── docker-compose.yml        Development stack
-├── docker-compose.prod.yml   Production stack
-├── start-dev.ps1
-└── start-prod.ps1
+├── frontend/          React app: components, data, styles, 3D models (see frontend/README.md)
+├── backend/           Recommendations API, profanity filter, tests (see backend/README.md)
+├── docs/screenshots/  Images used in this README
+├── scripts/           start-dev.ps1 / start-prod.ps1 convenience launchers
+├── .github/workflows/ CI: backend tests + frontend production build
+├── docker-compose.yml
+└── docker-compose.prod.yml
 ```
 
-## Configuration
-
-### Frontend — `frontend/.env.local`
-
-Copy `frontend/.env.example` to `frontend/.env.local`:
-
-```env
-REACT_APP_WEB3FORMS_ACCESS_KEY=your-web3forms-access-key
-```
-
-The Contact form posts directly from the browser to
-[Web3Forms](https://web3forms.com/). Create the key for
-`carandangchristianra@gmail.com`. Create React App reads the key when the app
-starts or is built, so after changing it:
+## Testing
 
 ```powershell
-docker compose restart frontend                                   # development
-docker compose -f docker-compose.prod.yml up -d --build frontend  # production
+npm --prefix backend test           # 69 tests: store, moderation, profanity filter
+npm --prefix frontend run build     # production build (CI treats lint warnings as errors)
 ```
 
-### Backend
+Both run automatically on every push through [GitHub Actions](.github/workflows/ci.yml).
 
-The backend needs no secrets. Docker Compose sets `PORT`, `NODE_ENV` and
-`RECOMMENDATIONS_DATA_FILE`. See `backend/.env.example` for running it outside
-Docker.
+## Deployment
 
-## Backend API
+**Frontend: Vercel.** The project's *Root Directory* is set to `frontend`. Vercel runs `npm run build` and serves `build/`. Set `REACT_APP_WEB3FORMS_ACCESS_KEY` as a *Config* environment variable. It's embedded in the public bundle by design, since Web3Forms keys are public identifiers.
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/health` | Service status |
-| `GET` | `/api/recommendations` | Published recommendations, newest first |
-| `POST` | `/api/recommendations` | Validate, profanity-check and publish a recommendation |
+**Backend.** Vercel hosts static files only, so the recommendations API needs a host that runs Node or Docker with a persistent disk (for example Render, Railway or Fly.io). Use [`backend/Dockerfile`](backend/Dockerfile), mount a volume at `/app/data`, and route the site's `/api` requests to it.
 
-- Recommendations publish immediately; there is no review step.
-- Submissions containing profanity (English, Tagalog/Filipino, Spanish,
-  including leetspeak) are rejected with `422` and never stored.
-- Rate limit: 5 submissions per 15 minutes per IP.
-- Data is stored in the `recommendation-data-dev` / `recommendation-data-prod`
-  Docker volumes. `docker compose down -v` deletes it.
+**Without a backend** (as on the Vercel demo), the site falls back to the visitor's browser storage (`localStorage` key `portfolio_recommendations`). Submissions are screened by the same profanity filter in the browser and appear instantly, but they're visible only on that device and can't be moderated centrally.
 
-### Moderating recommendations
+## Moderating recommendations
 
-All recommendations live in one JSON file inside the backend container:
-`/app/data/recommendations.json` (Docker volume
-`docker-react-portfolio_recommendation-data-dev` in development,
-`docker-react-portfolio-prod_recommendation-data-prod` in production; when
-running the backend outside Docker: `backend/data/recommendations.json`).
+Recommendations are stored in `/app/data/recommendations.json` inside the backend container (Docker volume `docker-react-portfolio_recommendation-data-dev`).
 
 ```powershell
-# List everything (shows each id)
-docker compose exec backend npm run recommendations -- list
-
-# Delete one or more by id
-docker compose exec backend npm run recommendations -- delete <id>
-
-# Delete everything
-docker compose exec backend npm run recommendations -- clear --yes
-
-# Production: add -f docker-compose.prod.yml, e.g.
-docker compose -f docker-compose.prod.yml exec backend npm run recommendations -- list
+docker compose exec backend npm run recommendations -- list           # show entries and ids
+docker compose exec backend npm run recommendations -- delete <id>    # remove one
+docker compose exec backend npm run recommendations -- clear --yes    # remove all
 ```
 
-You can also edit the file by hand (for example in Docker Desktop:
-Containers, then `portfolio-backend-dev`, then Files, then `/app/data`). The
-running backend notices the change and serves the new data on its next
-request; open browser tabs update within a minute or on refresh. If an edit
-leaves invalid JSON, the backend keeps serving the last good data and logs an
-error until the file is fixed.
+The running API picks up the change immediately. Hand edits to the JSON file work too. See [backend/README.md](backend/README.md) for details.
 
-## Common commands
+## Contact
 
-```powershell
-# Logs
-docker compose logs -f frontend backend
-
-# Install a frontend dependency
-docker compose exec frontend npm install some-package
-
-# Backend tests (run on the host)
-npm --prefix backend install
-npm --prefix backend test
-
-# Frontend production build check (run on the host)
-npm --prefix frontend install
-npm --prefix frontend run build
-```
-
-## Content
-
-Most content lives in [`frontend/src/data/portfolio.js`](frontend/src/data/portfolio.js):
-
-- `showcaseProjects`: projects shown on the home page and in Developed Software.
-- `portfolioHub`: the three Portfolio hub cards. Set `image` to replace a
-  placeholder. Developed Software cycles through project background images.
-- `modelShowcase`: 3D models. Set `model` to a `.glb` in
-  `frontend/public/models/`, or `placeholder` for a stand-in shape.
-
-## Troubleshooting
-
-- **Port 3000 / 8000 / 8080 in use**: change the host port in the Compose file.
-- **Hot reload not working on Windows**: `CHOKIDAR_USEPOLLING` and
-  `WATCHPACK_POLLING` are already set. Restart the `frontend` service.
-- **Contact form fails with a missing-key error in the console**: add
-  `REACT_APP_WEB3FORMS_ACCESS_KEY` to `frontend/.env.local` and restart the
-  `frontend` service.
-- **Recommendations missing after recreating containers**: don't use
-  `down -v`, which deletes the data volume.
+**Christian Raphael A. Carandang**, Laguna, Philippines
+[GitHub](https://github.com/cntaxc) · [LinkedIn](https://www.linkedin.com/in/christian-carandang-b30015334/) · [Live portfolio](https://portfolio-carandang.vercel.app)
