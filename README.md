@@ -135,7 +135,7 @@ Both run automatically on every push through [GitHub Actions](.github/workflows/
 
 **Frontend: Vercel.** The project's *Root Directory* is set to `frontend`. Vercel runs `npm run build` and serves `build/`. Set `REACT_APP_WEB3FORMS_ACCESS_KEY` as a *Config* environment variable. It's embedded in the public bundle by design, since Web3Forms keys are public identifiers.
 
-**Recommendations API on Vercel: serverless function + Supabase.** On Vercel, `/api/recommendations` is served by [`frontend/api/recommendations.mjs`](frontend/api/recommendations.mjs), which stores data in a Supabase (Postgres) table. It applies the same validation, profanity filter and rate limit as the Express backend.
+**Recommendations API on Vercel: serverless function + Supabase.** On Vercel, `/api/recommendations` is served by [`frontend/api/recommendations.js`](frontend/api/recommendations.js), which stores data in a Supabase (Postgres) table. It applies the same validation, profanity filter and rate limit as the Express backend.
 
 1. Create a free project at [supabase.com](https://supabase.com), then run [`docs/supabase-setup.sql`](docs/supabase-setup.sql) in its SQL Editor. This creates the table and locks it down with Row Level Security.
 2. In Vercel, under Settings → Environment Variables, add these as **Secret** for Production:

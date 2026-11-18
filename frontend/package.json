@@ -15,7 +15,7 @@
     "prebuild": "npm run models",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:api": "node --test api/_lib/recommendations-handler.test.mjs"
+    "test:api": "node --test api/_lib/recommendations-handler.test.js"
   },
   "eslintConfig": {
     "extends": [

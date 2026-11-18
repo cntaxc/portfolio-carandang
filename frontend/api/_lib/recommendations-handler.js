@@ -19,7 +19,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import {
   findProfaneFields,
   PROFANITY_REJECTION_MESSAGE,
-} from './profanity-filter.mjs';
+} from './profanity-filter.js';
 
 const TABLE = 'recommendations';
 const PUBLIC_COLUMNS = 'id,author,organization,context,message,published_at';

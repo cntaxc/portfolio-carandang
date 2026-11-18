@@ -1,4 +1,4 @@
-// NOTE: frontend/api/_lib/profanity-filter.mjs is an exact copy of this file,
+// NOTE: frontend/api/_lib/profanity-filter.js is an exact copy of this file,
 // used by the Vercel serverless API (which can't import from backend/). Edit
 // this file, then copy it over; a backend test fails if the two ever differ.
 //

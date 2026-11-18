@@ -128,7 +128,7 @@ test('frontend copy of the filter is identical to this one', async () => {
     'utf8'
   );
   const frontendCopy = await readFile(
-    new URL('../../frontend/api/_lib/profanity-filter.mjs', import.meta.url),
+    new URL('../../frontend/api/_lib/profanity-filter.js', import.meta.url),
     'utf8'
   ).catch(() => null);
   // The backend Docker image has no frontend folder; only check when present.
@@ -136,7 +136,7 @@ test('frontend copy of the filter is identical to this one', async () => {
     assert.equal(
       frontendCopy,
       backendCopy,
-      'Copy backend/lib/profanity-filter.js to frontend/api/_lib/profanity-filter.mjs'
+      'Copy backend/lib/profanity-filter.js to frontend/api/_lib/profanity-filter.js'
     );
   }
 });

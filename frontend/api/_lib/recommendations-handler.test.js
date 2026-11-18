@@ -3,7 +3,7 @@
 // the Supabase REST API, so no database or network is needed.
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createRecommendationsHandler } from './recommendations-handler.mjs';
+import { createRecommendationsHandler } from './recommendations-handler.js';
 
 const ENV = {
   SUPABASE_URL: 'https://example.supabase.co',
