@@ -12,11 +12,6 @@ const RecommendationsContext = createContext(null);
 
 export const EMPTY_RECOMMENDATIONS_MESSAGE =
   "There's no recommendations yet. Be the first to share your feedback!";
-// "Lead Developer at Studio X". Older entries have no role: organization only.
-export function formatAffiliation({ role, organization } = {}) {
-  return [role, organization].filter(Boolean).join(' at ');
-}
-
 const REFRESH_INTERVAL_MS = 60000;
 
 export function RecommendationsProvider({ children }) {

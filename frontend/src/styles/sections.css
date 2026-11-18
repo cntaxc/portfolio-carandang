@@ -3927,7 +3927,31 @@
   gap: 3px;
 }
 
+/* Name on the left, role / position on the right edge of the same line. */
+.recommendation-card__name,
+.recommendation-card__meta {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.recommendation-card__position {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .recommendation-card__author strong {
+  flex: 0 1 auto;
+  min-width: 0;
   overflow: hidden;
   color: var(--text);
   font-size: 11px;
@@ -3949,8 +3973,6 @@
 
 .recommendation-card__date {
   flex: 0 0 auto;
-  align-self: flex-end;
-  padding-bottom: 2px;
   color: var(--text-muted);
   font-size: 8px;
   font-weight: 700;

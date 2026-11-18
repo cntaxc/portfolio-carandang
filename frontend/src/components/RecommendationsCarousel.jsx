@@ -1,7 +1,6 @@
 import {
   EMPTY_RECOMMENDATIONS_MESSAGE,
   useRecommendations,
-  formatAffiliation,
 } from '../context/RecommendationsContext';
 
 function getInitials(name) {
@@ -53,9 +52,16 @@ function RecommendationCards({
             {getInitials(recommendation.author)}
           </span>
           <span className="recommendation-card__author">
-            <strong>{recommendation.author}</strong>
+            <span className="recommendation-card__name">
+              <strong>{recommendation.author}</strong>
+              {recommendation.role ? (
+                <span className="recommendation-card__position">
+                  {recommendation.role}
+                </span>
+              ) : null}
+            </span>
             <span className="recommendation-card__role">
-              {formatAffiliation(recommendation)}
+              {recommendation.organization}
             </span>
           </span>
         </footer>

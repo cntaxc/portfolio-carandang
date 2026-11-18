@@ -1,7 +1,6 @@
 import {
   EMPTY_RECOMMENDATIONS_MESSAGE,
   useRecommendations,
-  formatAffiliation,
 } from '../context/RecommendationsContext';
 
 function getInitials(name) {
@@ -69,22 +68,31 @@ export default function RecommendationsGrid() {
                     {getInitials(recommendation.author)}
                   </span>
                   <span className="recommendation-card__author">
-                    <strong>{recommendation.author}</strong>
-                    <span className="recommendation-card__role">
-                      {formatAffiliation(recommendation)}
+                    <span className="recommendation-card__name">
+                      <strong>{recommendation.author}</strong>
+                      {recommendation.role ? (
+                        <span className="recommendation-card__position">
+                          {recommendation.role}
+                        </span>
+                      ) : null}
                     </span>
-                    <span className="recommendation-card__context">
-                      {recommendation.context}
+                    <span className="recommendation-card__role">
+                      {recommendation.organization}
+                    </span>
+                    <span className="recommendation-card__meta">
+                      <span className="recommendation-card__context">
+                        {recommendation.context}
+                      </span>
+                      {publishedDate ? (
+                        <time
+                          className="recommendation-card__date"
+                          dateTime={recommendation.publishedAt}
+                        >
+                          {publishedDate}
+                        </time>
+                      ) : null}
                     </span>
                   </span>
-                  {publishedDate ? (
-                    <time
-                      className="recommendation-card__date"
-                      dateTime={recommendation.publishedAt}
-                    >
-                      {publishedDate}
-                    </time>
-                  ) : null}
                 </footer>
               </blockquote>
             );
