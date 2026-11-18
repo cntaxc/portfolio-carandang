@@ -1,10 +1,40 @@
 import { useEffect, useState } from 'react';
-import BackButton from '../BackButton';
 import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
 import useTypewriter from '../../hooks/useTypewriter';
 import { portfolioHub } from '../../data/portfolio';
 
 const SLIDE_INTERVAL_MS = 5000;
+const TILT_X_DEG = 8; // max left/right tilt
+const TILT_Y_DEG = 6; // max up/down tilt
+
+// Pointer-driven tilt, spotlight and artwork parallax. Writes CSS custom
+// properties on the card (one update per animation frame); mouse only.
+function updateCardPointer(event) {
+  if (event.pointerType && event.pointerType !== 'mouse') {
+    return;
+  }
+  const card = event.currentTarget;
+  const rect = card.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width - 0.5; // -0.5..0.5
+  const y = (event.clientY - rect.top) / rect.height - 0.5;
+  window.cancelAnimationFrame(card.__tiltFrame);
+  card.__tiltFrame = window.requestAnimationFrame(() => {
+    card.style.setProperty('--px', x.toFixed(3));
+    card.style.setProperty('--py', y.toFixed(3));
+    card.style.setProperty('--ry', `${(x * TILT_X_DEG).toFixed(2)}deg`);
+    card.style.setProperty('--rx', `${(-y * TILT_Y_DEG).toFixed(2)}deg`);
+    card.style.setProperty('--mx', `${((x + 0.5) * 100).toFixed(1)}%`);
+    card.style.setProperty('--my', `${((y + 0.5) * 100).toFixed(1)}%`);
+  });
+}
+
+function resetCardPointer(event) {
+  const card = event.currentTarget;
+  window.cancelAnimationFrame(card.__tiltFrame);
+  ['--px', '--py', '--rx', '--ry', '--mx', '--my'].forEach((name) =>
+    card.style.removeProperty(name)
+  );
+}
 
 function CategorySlideshow({ slides, enabled }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -55,7 +85,7 @@ function CategoryMedia({ category, animate }) {
   );
 }
 
-export default function PortfolioHubSection({ onBack, onSelectCategory }) {
+export default function PortfolioHubSection({ onSelectCategory }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const prompt = portfolioHub.prompt.toUpperCase();
   const typedPrompt = useTypewriter([prompt], { enabled: !prefersReducedMotion });
@@ -73,10 +103,6 @@ export default function PortfolioHubSection({ onBack, onSelectCategory }) {
         aria-labelledby="portfolio-hub-title"
       >
         <div className="portfolio-hub__content">
-          <div className="page-topbar">
-            <BackButton onClick={onBack} />
-          </div>
-
           <h2 id="portfolio-hub-title" className="sr-only">
             {portfolioHub.title}
           </h2>
@@ -92,6 +118,8 @@ export default function PortfolioHubSection({ onBack, onSelectCategory }) {
                     event.preventDefault();
                     onSelectCategory(category.id);
                   }}
+                  onPointerMove={prefersReducedMotion ? undefined : updateCardPointer}
+                  onPointerLeave={resetCardPointer}
                 >
                   <span className="portfolio-category__media" aria-hidden="true">
                     <CategoryMedia

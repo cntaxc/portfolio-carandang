@@ -12,39 +12,32 @@
   isolation: isolate;
 }
 
-/* Faint hexagon behind the cards plus a dotted texture. */
+/* Background: a fine hairline grid fading out from the centre, plus a soft
+   central glow. */
 .portfolio-hub-page::before,
 .portfolio-hub-page::after {
   position: absolute;
+  inset: 0;
   z-index: -1;
   content: '';
   pointer-events: none;
 }
 
 .portfolio-hub-page::before {
-  top: 50%;
-  left: 50%;
-  width: min(1100px, 92vw);
-  aspect-ratio: 1.3;
-  background: linear-gradient(
-    160deg,
-    rgba(245, 245, 240, 0.045),
-    rgba(245, 245, 240, 0.012) 60%
-  );
-  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
-  transform: translate(-50%, -48%);
+  background-image:
+    linear-gradient(rgba(245, 245, 240, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 245, 240, 0.035) 1px, transparent 1px);
+  background-position: center center;
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 62% at 50% 52%, #000 25%, transparent 78%);
 }
 
 .portfolio-hub-page::after {
-  inset: 0;
-  background-image: radial-gradient(
-    circle,
-    rgba(245, 245, 240, 0.14) 0.7px,
-    transparent 0.9px
+  background: radial-gradient(
+    ellipse 46% 38% at 50% 52%,
+    rgba(245, 245, 240, 0.05),
+    transparent 70%
   );
-  background-size: 15px 15px;
-  opacity: 0.2;
-  mask-image: radial-gradient(ellipse at 50% 45%, #000, transparent 75%);
 }
 
 .portfolio-hub {
@@ -61,17 +54,12 @@
 }
 
 .portfolio-hub {
-  /* Width of the three-card row; the Back button row uses the same width so
-     it lines up with the first card's left edge. */
-  --hub-card-width: clamp(230px, 25vw, 340px);
-  --hub-card-gap: clamp(18px, 2.4vw, 36px);
+  /* Card size: width from the viewport width, height from the viewport
+     height so the cards and caption always fit on screen. */
+  --hub-card-width: clamp(230px, 24vw, 330px);
+  --hub-card-height: clamp(400px, calc(100vh - 360px), 540px);
+  --hub-card-gap: clamp(18px, 2.2vw, 32px);
   --hub-row-width: calc(var(--hub-card-width) * 3 + var(--hub-card-gap) * 2);
-}
-
-.portfolio-hub__content > .page-topbar {
-  width: var(--hub-row-width);
-  max-width: 100%;
-  margin: 0 auto clamp(20px, 4vh, 40px);
 }
 
 /* Vertical outlined wordmark in the left page margin. Absolutely positioned
@@ -102,7 +90,7 @@
   gap: var(--hub-card-gap);
   width: 100%;
   margin: 0 auto;
-  padding: 28px 0;
+  padding: clamp(24px, 4vh, 40px) 0;
   list-style: none;
 }
 
@@ -123,22 +111,75 @@
   --tone-glow: rgba(245, 245, 240, 0.14);
   --tone-tint: rgba(245, 245, 240, 0.07);
 
+  /* Pointer-driven values (set from JS while hovering; 0 at rest). */
+  --px: 0;
+  --py: 0;
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 30%;
+  --lift: 0px;
+  --zoom: 1;
+  --media-zoom: 1;
+
   position: relative;
   display: block;
   overflow: hidden;
-  aspect-ratio: 0.74;
+  height: var(--hub-card-height);
   color: #fff;
   text-decoration: none;
-  background-color: #111;
-  border: 1px solid var(--border);
-  border-radius: 2px;
+  background: linear-gradient(160deg, #141414, #1f1f1f);
+  border-radius: 4px;
+  box-shadow: 0 24px 48px -34px rgba(0, 0, 0, 0.9);
   isolation: isolate;
+  transform: perspective(1000px) translateY(var(--lift)) scale(var(--zoom))
+    rotateX(var(--rx)) rotateY(var(--ry));
   transition:
-    transform 0.45s cubic-bezier(0.2, 0.72, 0.24, 1),
+    transform 0.3s cubic-bezier(0.2, 0.72, 0.24, 1),
     box-shadow 0.45s cubic-bezier(0.2, 0.72, 0.24, 1),
-    border-color 0.3s ease,
     opacity 0.3s ease,
     filter 0.3s ease;
+}
+
+/* 1px gradient hairline border: brightest at the top-left corner. */
+.portfolio-category::before {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 1px;
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(
+    150deg,
+    rgba(245, 245, 240, 0.5),
+    rgba(245, 245, 240, 0.1) 32%,
+    rgba(245, 245, 240, 0.05) 64%,
+    rgba(245, 245, 240, 0.24)
+  );
+  border-radius: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+/* Spotlight that follows the pointer. */
+.portfolio-category::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: '';
+  pointer-events: none;
+  background: radial-gradient(
+    380px circle at var(--mx) var(--my),
+    rgba(245, 245, 240, 0.16),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
 .portfolio-category__media {
@@ -146,6 +187,8 @@
   inset: 0;
   z-index: -1;
   display: block;
+  transform: scale(var(--media-zoom))
+    translate(calc(var(--px) * -16px), calc(var(--py) * -16px));
   transition: transform 0.6s cubic-bezier(0.2, 0.72, 0.24, 1);
 }
 
@@ -191,9 +234,10 @@
   left: 0;
   display: flex;
   flex-direction: column;
+  z-index: 1;
   min-height: 27%;
   justify-content: flex-end;
-  padding: clamp(18px, 2vw, 26px);
+  padding: clamp(20px, 2.2vw, 28px);
   color: var(--text);
   background: linear-gradient(160deg, var(--tone-from), var(--tone-to));
   border-top: 1px solid var(--tone-line);
@@ -227,8 +271,9 @@
   font-size: clamp(22px, 2.3vw, 32px);
   font-weight: 700;
   line-height: 1.08;
-  letter-spacing: -0.02em;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+  letter-spacing: -0.025em;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
 }
 
 .portfolio-category__details {
@@ -262,23 +307,29 @@
 /* Hover / focus: the card grows and glows, the panel stretches upward. */
 .portfolio-category:hover,
 .portfolio-category:focus-visible {
+  --lift: -10px;
+  --zoom: 1.04;
+  --media-zoom: 1.08;
+
   z-index: 2;
-  border-color: rgba(245, 245, 240, 0.28);
   box-shadow:
-    0 0 0 1px rgba(245, 245, 240, 0.06),
-    0 0 46px -4px var(--tone-glow),
-    0 30px 60px -30px rgba(0, 0, 0, 0.9);
-  transform: translateY(-10px) scale(1.06);
+    0 0 0 1px rgba(245, 245, 240, 0.08),
+    0 0 56px -6px var(--tone-glow),
+    0 34px 64px -30px rgba(0, 0, 0, 0.95);
+}
+
+.portfolio-category:hover::before,
+.portfolio-category:focus-visible::before {
+  opacity: 1;
+}
+
+.portfolio-category:hover::after {
+  opacity: 1;
 }
 
 .portfolio-category:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
-}
-
-.portfolio-category:hover .portfolio-category__media,
-.portfolio-category:focus-visible .portfolio-category__media {
-  transform: scale(1.06);
 }
 
 .portfolio-category:hover .portfolio-category__panel,
@@ -308,7 +359,7 @@
 .portfolio-hub__prompt {
   display: flex;
   justify-content: center;
-  margin: clamp(28px, 5vh, 52px) 0 0;
+  margin: clamp(16px, 3vh, 32px) 0 0;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 13px;
@@ -433,9 +484,6 @@
 }
 
 @media (max-width: 900px) {
-  .portfolio-hub__content > .page-topbar {
-    width: 460px;
-  }
   .portfolio-hub__cards {
     flex-direction: column;
     align-items: stretch;
@@ -450,6 +498,7 @@
   }
 
   .portfolio-category {
+    height: auto;
     aspect-ratio: 1.35;
   }
 
@@ -459,7 +508,8 @@
 
   .portfolio-category:hover,
   .portfolio-category:focus-visible {
-    transform: translateY(-4px) scale(1.02);
+    --lift: -4px;
+    --zoom: 1.02;
   }
 
   .portfolio-hub__prompt {
@@ -693,10 +743,8 @@
     transition: none;
   }
 
-  .portfolio-category:hover,
-  .portfolio-category:focus-visible,
-  .portfolio-category:hover .portfolio-category__media,
-  .portfolio-category:focus-visible .portfolio-category__media {
+  .portfolio-category,
+  .portfolio-category__media {
     transform: none;
   }
 

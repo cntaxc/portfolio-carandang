@@ -290,7 +290,6 @@ export default function Dashboard() {
         >
           {activeView === 'portfolio' ? (
             <PortfolioHubSection
-              onBack={() => handleSubpageBack(subpageFallbacks.portfolio)}
               onSelectCategory={navigateToSection}
             />
           ) : activeView === 'projectlist' ? (
