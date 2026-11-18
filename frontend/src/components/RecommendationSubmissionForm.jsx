@@ -1,13 +1,5 @@
 import { useState } from 'react';
 import { useRecommendations } from '../context/RecommendationsContext';
-import {
-  isApiUnavailable,
-  saveLocalRecommendation,
-} from '../lib/localRecommendations';
-import {
-  findProfaneFields,
-  PROFANITY_REJECTION_MESSAGE,
-} from '../lib/profanity-filter';
 
 const RECOMMENDATIONS_ENDPOINT = '/api/recommendations';
 const REQUEST_TIMEOUT_MS = 15000;
@@ -85,19 +77,6 @@ export default function RecommendationSubmissionForm() {
     setIsSubmitting(true);
     setFeedback({ tone: '', message: '' });
 
-    // Used when there is no working recommendations API (e.g. the static
-    // Vercel deployment): screen the text in the browser with the same
-    // profanity filter as the backend, then save it in localStorage.
-    const publishLocally = () => {
-      if (findProfaneFields(fields).length) {
-        setFeedback({ tone: 'error', message: PROFANITY_REJECTION_MESSAGE });
-        return;
-      }
-      publishRecommendation(saveLocalRecommendation(fields));
-      setFeedback({ tone: 'success', message: SUCCESS_MESSAGE });
-      form.reset();
-    };
-
     const controller = new AbortController();
     const timeoutId = window.setTimeout(
       () => controller.abort(),
@@ -114,11 +93,6 @@ export default function RecommendationSubmissionForm() {
         body: JSON.stringify(fields),
         signal: controller.signal,
       });
-      if (isApiUnavailable(response)) {
-        publishLocally();
-        return;
-      }
-
       const result = await response.json().catch(() => null);
 
       if (response.ok) {
@@ -152,16 +126,24 @@ export default function RecommendationSubmissionForm() {
         return;
       }
 
-      // Any other unexpected answer: keep the submission rather than lose it.
-      console.warn('Recommendation API returned an unexpected response:', {
+      console.error('Recommendation submission failed:', {
         status: response.status,
         result,
       });
-      publishLocally();
+      setFeedback({
+        tone: 'error',
+        message:
+          'We could not send your recommendation right now. Please try again.',
+      });
     } catch (error) {
-      // Network failure or timeout: save in this browser instead.
-      console.warn('Recommendation API unreachable; saving locally.', error);
-      publishLocally();
+      console.error('Recommendation submission failed:', error);
+      setFeedback({
+        tone: 'error',
+        message:
+          error?.name === 'AbortError'
+            ? 'The recommendation service took too long to respond. Please try again.'
+            : 'We could not reach the recommendation service. Please check your connection and try again.',
+      });
     } finally {
       window.clearTimeout(timeoutId);
       setIsSubmitting(false);

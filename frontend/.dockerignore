@@ -11,3 +11,5 @@ yarn-error.log*
 *.md
 .DS_Store
 Thumbs.db
+# Vercel serverless functions; not part of the Nginx image.
+api

@@ -1,7 +1,6 @@
-// NOTE: frontend/src/lib/profanity-filter.js is an exact copy of this file,
-// used when the site runs without this backend (e.g. the static Vercel
-// deployment). Edit this file, then copy it over; a backend test fails if the
-// two ever differ.
+// NOTE: frontend/api/_lib/profanity-filter.mjs is an exact copy of this file,
+// used by the Vercel serverless API (which can't import from backend/). Edit
+// this file, then copy it over; a backend test fails if the two ever differ.
 //
 // Profanity filter for user-submitted recommendations.
 //

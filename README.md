@@ -124,7 +124,8 @@ npm --prefix frontend start         # app on :3000, /api proxied to :8000
 ## Testing
 
 ```powershell
-npm --prefix backend test           # 69 tests: store, moderation, profanity filter
+npm --prefix backend test           # store, moderation, profanity filter
+npm --prefix frontend run test:api  # Vercel recommendations function (fake Supabase)
 npm --prefix frontend run build     # production build (CI treats lint warnings as errors)
 ```
 
@@ -134,13 +135,21 @@ Both run automatically on every push through [GitHub Actions](.github/workflows/
 
 **Frontend: Vercel.** The project's *Root Directory* is set to `frontend`. Vercel runs `npm run build` and serves `build/`. Set `REACT_APP_WEB3FORMS_ACCESS_KEY` as a *Config* environment variable. It's embedded in the public bundle by design, since Web3Forms keys are public identifiers.
 
-**Backend.** Vercel hosts static files only, so the recommendations API needs a host that runs Node or Docker with a persistent disk (for example Render, Railway or Fly.io). Use [`backend/Dockerfile`](backend/Dockerfile), mount a volume at `/app/data`, and route the site's `/api` requests to it.
+**Recommendations API on Vercel: serverless function + Supabase.** On Vercel, `/api/recommendations` is served by [`frontend/api/recommendations.mjs`](frontend/api/recommendations.mjs), which stores data in a Supabase (Postgres) table. It applies the same validation, profanity filter and rate limit as the Express backend.
 
-**Without a backend** (as on the Vercel demo), the site falls back to the visitor's browser storage (`localStorage` key `portfolio_recommendations`). Submissions are screened by the same profanity filter in the browser and appear instantly, but they're visible only on that device and can't be moderated centrally.
+1. Create a free project at [supabase.com](https://supabase.com), then run [`docs/supabase-setup.sql`](docs/supabase-setup.sql) in its SQL Editor. This creates the table and locks it down with Row Level Security.
+2. In Vercel, under Settings → Environment Variables, add these as **Secret** for Production:
+   - `SUPABASE_URL`: Supabase → Project Settings → API → Project URL
+   - `SUPABASE_SECRET_KEY`: Supabase → Project Settings → API Keys → a **secret** key (`sb_secret_…`, or the legacy `service_role` key)
+3. Redeploy.
+
+Only the server function holds the secret key; browsers only ever call `/api/recommendations`. Locally, Docker Compose keeps using the Express backend in `backend/`.
 
 ## Moderating recommendations
 
-Recommendations are stored in `/app/data/recommendations.json` inside the backend container (Docker volume `docker-react-portfolio_recommendation-data-dev`).
+**Live site (Supabase):** open Supabase → Table Editor → `recommendations`, select the row and delete it. The site shows the change on the next refresh.
+
+**Local Docker:** recommendations are stored in `/app/data/recommendations.json` inside the backend container (Docker volume `docker-react-portfolio_recommendation-data-dev`).
 
 ```powershell
 docker compose exec backend npm run recommendations -- list           # show entries and ids
