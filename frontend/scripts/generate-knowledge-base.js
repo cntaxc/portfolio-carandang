@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Builds the AI assistant's knowledge base from the site's own data, so the
+// Builds the assistant's knowledge base from the site's own data, so the
 // assistant can never disagree with what the portfolio shows.
 //
 //   src/data/portfolio.js (+ src/data/models.generated.json)
-//     -> api/_lib/knowledge-base.json
+//     -> src/data/knowledge-base.generated.json  (browser assistant)
+//     -> api/_lib/knowledge-base.json             (optional Claude /api/chat)
 //
 // Runs automatically before `npm start` and `npm run build` (package.json).
 // Images are not needed, so image imports are replaced with null.
@@ -16,7 +17,12 @@ const { pathToFileURL } = require('url');
 const ROOT = path.resolve(__dirname, '..');
 const DATA_FILE = path.join(ROOT, 'src', 'data', 'portfolio.js');
 const MODELS_FILE = path.join(ROOT, 'src', 'data', 'models.generated.json');
-const OUTPUT = path.join(ROOT, 'api', '_lib', 'knowledge-base.json');
+// Same JSON in two places: the browser assistant (src/) and the optional
+// Claude-powered /api/chat function (api/_lib/).
+const OUTPUTS = [
+  path.join(ROOT, 'src', 'data', 'knowledge-base.generated.json'),
+  path.join(ROOT, 'api', '_lib', 'knowledge-base.json'),
+];
 const SITE_URL = process.env.PORTFOLIO_SITE_URL || 'https://portfolio-carandang.vercel.app';
 
 async function loadPortfolioData() {
@@ -149,15 +155,17 @@ function buildKnowledgeBase(data) {
 (async () => {
   const knowledgeBase = buildKnowledgeBase(await loadPortfolioData());
   const next = `${JSON.stringify(knowledgeBase, null, 2)}\n`;
-  const previous = fs.existsSync(OUTPUT) ? fs.readFileSync(OUTPUT, 'utf8') : '';
-  if (next !== previous) {
-    fs.writeFileSync(OUTPUT, next);
+  for (const output of OUTPUTS) {
+    const previous = fs.existsSync(output) ? fs.readFileSync(output, 'utf8') : '';
+    if (next !== previous) {
+      fs.writeFileSync(output, next);
+    }
   }
   console.log(
     `[knowledge] ${knowledgeBase.projects.length} projects, ` +
       `${knowledgeBase.experience.length} experiences, ` +
       `${knowledgeBase.skills.reduce((n, c) => n + c.items.length, 0)} skills, ` +
-      `${knowledgeBase.models3d.total} 3D models -> api/_lib/knowledge-base.json`
+      `${knowledgeBase.models3d.total} 3D models -> src/data/knowledge-base.generated.json`
   );
 })().catch((error) => {
   console.error('[knowledge] failed:', error.message);

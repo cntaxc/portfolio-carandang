@@ -39,6 +39,10 @@ jobs:
       - run: npm ci
       - name: Serverless API tests
         run: npm run test:api
+      - name: Portfolio assistant tests
+        run: npm run test:assistant
+        env:
+          CI: true
       # CI=true makes Create React App treat lint warnings as errors.
       - run: npm run build
         env:

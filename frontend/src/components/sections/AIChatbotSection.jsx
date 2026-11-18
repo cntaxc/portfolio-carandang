@@ -1,18 +1,13 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
+import {
+  answerQuestion,
+  ASSISTANT_SUGGESTIONS,
+} from '../../assistant/portfolioAssistant';
+import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
 
-const CHAT_ENDPOINT = '/api/chat';
-const REQUEST_TIMEOUT_MS = 30000;
 const MAX_QUESTION_LENGTH = 500;
-const MAX_HISTORY = 10; // turns sent to the server (it keeps the same limit)
-const FALLBACK_ERROR =
-  'AI is currently unavailable. Please try again later, or contact Christian directly.';
-
-const suggestions = [
-  'Who is Christian?',
-  'What did he study?',
-  'What are his strongest skills?',
-  'How can I contact him?',
-];
+const THINKING_MS = 450; // short pause so the reply doesn't feel abrupt
+const WORD_INTERVAL_MS = 18; // answer is revealed word by word
 
 // Turns URLs and email addresses in an answer into links.
 const LINK_PATTERN = /(https?:\/\/[^\s)]+|[\w.+-]+@[\w-]+\.[\w.-]+)/g;
@@ -43,15 +38,22 @@ function MessageText({ text }) {
 export default function AIChatbotSection() {
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState([]);
-  const [isSending, setIsSending] = useState(false);
+  const [isAnswering, setIsAnswering] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const inputRef = useRef(null);
   const logRef = useRef(null);
-  const controllerRef = useRef(null);
+  const timersRef = useRef([]);
+  const contextRef = useRef({});
 
-  // Abort an in-flight answer if the section unmounts.
-  useEffect(() => () => controllerRef.current?.abort(), []);
+  const clearTimers = () => {
+    timersRef.current.forEach((id) => window.clearTimeout(id));
+    timersRef.current = [];
+  };
 
-  // Keep the newest message in view while answers stream in.
+  // Stop any reply in progress if the section unmounts.
+  useEffect(() => clearTimers, []);
+
+  // Keep the newest message in view while answers appear.
   useEffect(() => {
     const log = logRef.current;
     if (log) {
@@ -59,95 +61,65 @@ export default function AIChatbotSection() {
     }
   }, [messages]);
 
-  const updateLastMessage = (patch) =>
+  const setLastMessage = (patch) =>
     setMessages((current) => {
       const next = current.slice();
       next[next.length - 1] = { ...next[next.length - 1], ...patch };
       return next;
     });
 
-  const ask = async (rawQuestion) => {
+  const ask = (rawQuestion) => {
     const text = rawQuestion.trim().slice(0, MAX_QUESTION_LENGTH);
-    if (!text || isSending) {
+    if (!text || isAnswering) {
       return;
     }
 
-    const history = messages
-      .filter((message) => !message.error && message.content)
-      .map(({ role, content }) => ({ role, content }));
-    const outgoing = [...history, { role: 'user', content: text }].slice(-MAX_HISTORY);
+    const answer = answerQuestion(text, contextRef.current);
+    contextRef.current = answer.context;
 
     setQuestion('');
-    setIsSending(true);
+    setIsAnswering(true);
     setMessages((current) => [
       ...current,
       { role: 'user', content: text },
       { role: 'assistant', content: '', pending: true },
     ]);
 
-    const controller = new AbortController();
-    controllerRef.current = controller;
-    const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    const finish = () => {
+      setLastMessage({ content: answer.text, pending: false });
+      setIsAnswering(false);
+    };
 
-    try {
-      const response = await fetch(CHAT_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: outgoing }),
-        signal: controller.signal,
-      });
-
-      const contentType = response.headers.get('content-type') || '';
-      if (!response.ok || !contentType.includes('text/plain') || !response.body) {
-        const result = contentType.includes('application/json')
-          ? await response.json().catch(() => null)
-          : null;
-        updateLastMessage({ content: result?.error || FALLBACK_ERROR, pending: false, error: true });
-        return;
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let answer = '';
-      for (;;) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        answer += decoder.decode(value, { stream: true });
-        updateLastMessage({ content: answer, pending: false });
-      }
-      answer += decoder.decode();
-      updateLastMessage({
-        content: answer || FALLBACK_ERROR,
-        pending: false,
-        error: !answer,
-      });
-    } catch (error) {
-      if (error?.name === 'AbortError' && controllerRef.current !== controller) {
-        return; // conversation was cleared
-      }
-      updateLastMessage({
-        content:
-          error?.name === 'AbortError'
-            ? 'The assistant took too long to respond. Please try again.'
-            : FALLBACK_ERROR,
-        pending: false,
-        error: true,
-      });
-    } finally {
-      window.clearTimeout(timeoutId);
-      if (controllerRef.current === controller) {
-        controllerRef.current = null;
-        setIsSending(false);
-      }
+    if (prefersReducedMotion) {
+      finish();
+      return;
     }
+
+    // Reveal the answer word by word, keeping line breaks.
+    const words = answer.text.split(/(\s+)/);
+    const schedule = (callback, delay) => {
+      timersRef.current.push(window.setTimeout(callback, delay));
+    };
+    schedule(() => {
+      let shown = 0;
+      const step = () => {
+        shown = Math.min(words.length, shown + 2);
+        if (shown >= words.length) {
+          finish();
+          return;
+        }
+        setLastMessage({ content: words.slice(0, shown).join(''), pending: false });
+        schedule(step, WORD_INTERVAL_MS);
+      };
+      step();
+    }, THINKING_MS);
   };
 
   const clearConversation = () => {
-    const controller = controllerRef.current;
-    controllerRef.current = null;
-    controller?.abort();
+    clearTimers();
+    contextRef.current = {};
     setMessages([]);
-    setIsSending(false);
+    setIsAnswering(false);
     inputRef.current?.focus();
   };
 
@@ -160,7 +132,7 @@ export default function AIChatbotSection() {
         </span>
         <h2>Ask me anything.</h2>
         <p className="ai-chatbot__intro">
-          I&apos;m an AI assistant that answers questions about Christian&apos;s
+          I&apos;m an assistant that answers questions about Christian&apos;s
           work, skills, and background, based on this portfolio.
         </p>
 
@@ -169,12 +141,12 @@ export default function AIChatbotSection() {
           role="group"
           aria-label="Quick questions"
         >
-          {suggestions.map((suggestion) => (
+          {ASSISTANT_SUGGESTIONS.map((suggestion) => (
             <button
               type="button"
               key={suggestion}
               onClick={() => ask(suggestion)}
-              disabled={isSending}
+              disabled={isAnswering}
             >
               <span aria-hidden="true">—</span>
               {suggestion}
@@ -194,9 +166,7 @@ export default function AIChatbotSection() {
               {messages.map((message, index) => (
                 <li
                   key={index}
-                  className={`ai-chatbot__message ai-chatbot__message--${message.role}${
-                    message.error ? ' is-error' : ''
-                  }`}
+                  className={`ai-chatbot__message ai-chatbot__message--${message.role}`}
                 >
                   <span className="sr-only">
                     {message.role === 'user' ? 'You:' : 'Assistant:'}
@@ -247,17 +217,14 @@ export default function AIChatbotSection() {
           <button
             type="submit"
             aria-label="Submit question"
-            disabled={!question.trim() || isSending}
+            disabled={!question.trim() || isAnswering}
           >
-            <i
-              className={isSending ? 'ri-loader-4-line ai-chatbot__spinner' : 'ri-arrow-up-line'}
-              aria-hidden="true"
-            ></i>
+            <i className="ri-arrow-up-line" aria-hidden="true"></i>
           </button>
         </form>
         <p className="ai-chatbot__note">
-          Answers are generated by AI from Christian&apos;s portfolio and may not
-          be perfect. For anything important, contact him directly.
+          Answers come from the information in Christian&apos;s portfolio. For
+          anything else, contact him directly.
         </p>
       </div>
     </section>

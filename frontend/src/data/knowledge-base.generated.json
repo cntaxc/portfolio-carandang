@@ -1,0 +1,505 @@
+{
+  "identity": {
+    "name": "Christian Raphael A. Carandang",
+    "headline": "Intern Level Designer and 3D Modeler",
+    "roles": [
+      "Front-End Developer",
+      "Game Developer",
+      "UI/UX Designer"
+    ],
+    "location": "Laguna, Philippines",
+    "yearsOfExperience": "1.5",
+    "about": [
+      "Hello! I'm Christian Raphael A. Carandang, a passionate Computer Science student who enjoys exploring the creative and technical sides of technology. I'm particularly interested in 3D modeling, animation, C# programming, and visual design, where I get to combine creativity with problem-solving to bring ideas to life.",
+      "I enjoy working on hands-on projects that allow me to develop my skills, experiment with new technologies, and turn concepts into meaningful digital experiences. I'm always eager to learn, take on new challenges, and collaborate with others who share the same passion for creating innovative and engaging projects."
+    ]
+  },
+  "focusAreas": [
+    {
+      "title": "3D Modeler",
+      "description": "Create and prepare 3D assets, environments, and animations."
+    },
+    {
+      "title": "Game Design",
+      "description": "Shape engaging gameplay through thoughtful mechanics and level flow."
+    },
+    {
+      "title": "Game Tester",
+      "description": "Test gameplay, identify issues, and help refine the player experience."
+    },
+    {
+      "title": "UI/UX Design",
+      "description": "Design clear, intuitive interfaces for interactive experiences."
+    }
+  ],
+  "education": [
+    {
+      "level": "Undergraduate",
+      "program": "Bachelor of Science in Computer Science",
+      "institutions": [
+        "University of Cabuyao"
+      ],
+      "years": "2023 – 2027",
+      "note": "University of Cabuyao (Pamantasan ng Cabuyao) is one of the leading local colleges and universities in the Philippines"
+    },
+    {
+      "level": "Senior High School",
+      "program": "Science, Technology, Engineering, and Mathematics (STEM)",
+      "institutions": [
+        "Pamantasan ng Cabuyao"
+      ],
+      "years": "2021 – 2023",
+      "note": "Pamantasan ng Cabuyao (PnC) is one of the leading local colleges and universities in the Philippines"
+    },
+    {
+      "level": "Junior High School",
+      "program": "Junior High School",
+      "institutions": [
+        "Liceo De Cabuyao",
+        "Liceo De Calamba"
+      ],
+      "years": "2016 – 2021",
+      "note": "Liceo aims for holistic excellence of every learner. Excellence towards sanctity."
+    }
+  ],
+  "experience": [
+    {
+      "position": "Procurement and Vendor Negotiator",
+      "organization": "DEVCON Laguna",
+      "year": "2026",
+      "type": "Organization",
+      "summary": "Negotiating and establishing mutually beneficial supplier agreements.",
+      "details": "I'm responsible for negotiating and establishing mutually beneficial agreements between buyers and suppliers when acquiring goods or services. My role goes beyond simple price negotiations, covering pricing structures, delivery schedules, quality standards, payment terms, and service level agreements (SLAs) to ensure that both parties reach a fair and effective agreement."
+    },
+    {
+      "position": "Student Volunteer",
+      "organization": "DEVCON Laguna",
+      "year": "2026",
+      "type": "Organization",
+      "summary": "Assisted with student navigation and workshop lab routing.",
+      "details": "Guided students to their designated seating areas and directed attendees to the computer laboratories for their workshops."
+    },
+    {
+      "position": "Logistics Director",
+      "organization": "Junior Blockchain Education Consortium of the Philippines - Laguna",
+      "year": "2025",
+      "type": "Organization",
+      "summary": "Coordinated event procurement, inventory, and transportation.",
+      "details": "I coordinated suppliers, managed inventory, and handled transportation to procure food, strengthening my organization and coordination skills."
+    },
+    {
+      "position": "Logistics Officer",
+      "organization": "AWS Cloud Club - University of Cabuyao",
+      "year": "2024 - 2025",
+      "type": "Organization",
+      "summary": "Supported supplier, inventory, and booth operations.",
+      "details": "I handled suppliers, managed inventory, and oversaw booth operations, improving my organization and coordination skills."
+    },
+    {
+      "position": "Volunteer",
+      "organization": "Junior Blockchain Education Consortium of the Philippines - Dangals",
+      "year": "2024",
+      "type": "Organization",
+      "summary": "Helped run an event booth in a fast-paced environment.",
+      "details": "Volunteered as a booth assistant during event, improving communication, teamwork, and efficiency in fast-paced environments."
+    },
+    {
+      "position": "Data Encoder",
+      "organization": "CITECH: Cabuyao Institute of Technology",
+      "year": "2023",
+      "type": "Work Immersion",
+      "summary": "Managed student registration and grade records.",
+      "details": "Accurately encoded and managed student registrations and grades, ensuring data integrity and efficiency."
+    }
+  ],
+  "skills": [
+    {
+      "category": "FRONTEND",
+      "items": [
+        {
+          "name": "HTML/CSS",
+          "level": "Proficient",
+          "context": "Semantic, responsive interfaces"
+        },
+        {
+          "name": "JavaScript",
+          "level": "Intermediate",
+          "context": "Interactive frontend behavior"
+        },
+        {
+          "name": "React",
+          "level": "Intermediate",
+          "context": "Component-driven interfaces"
+        },
+        {
+          "name": "Next.js",
+          "level": "Familiar",
+          "context": "Full-stack React applications"
+        },
+        {
+          "name": "Tailwind CSS",
+          "level": "Familiar",
+          "context": "Utility-first UI development"
+        },
+        {
+          "name": "USS",
+          "level": "Intermediate",
+          "context": "Unity Style Sheets for game interfaces"
+        },
+        {
+          "name": "UI Toolkit",
+          "level": "Intermediate",
+          "context": "Unity interface construction"
+        },
+        {
+          "name": "Lua Script",
+          "level": "Familiar",
+          "context": "Gameplay scripting and systems"
+        },
+        {
+          "name": "C#",
+          "level": "Intermediate",
+          "context": "Unity gameplay and tooling"
+        }
+      ]
+    },
+    {
+      "category": "BACKEND",
+      "items": [
+        {
+          "name": "Java",
+          "level": "Intermediate",
+          "context": "Backend and academic development"
+        },
+        {
+          "name": "PHP",
+          "level": "Familiar",
+          "context": "Backend web development"
+        },
+        {
+          "name": "Python",
+          "level": "Familiar",
+          "context": "Scripting, AI experiments and tooling"
+        },
+        {
+          "name": "Node.js",
+          "level": "Familiar",
+          "context": "APIs and server-side JavaScript"
+        },
+        {
+          "name": "Laravel",
+          "level": "Familiar",
+          "context": "PHP web applications"
+        },
+        {
+          "name": "PostgreSQL",
+          "level": "Familiar",
+          "context": "Relational data modeling"
+        },
+        {
+          "name": "MySQL",
+          "level": "Familiar",
+          "context": "Relational databases"
+        },
+        {
+          "name": "Lua Script",
+          "level": "Familiar",
+          "context": "Gameplay scripting and systems"
+        },
+        {
+          "name": "C#",
+          "level": "Intermediate",
+          "context": "Unity gameplay and tooling"
+        }
+      ]
+    },
+    {
+      "category": "GAME DEVELOPMENT",
+      "items": [
+        {
+          "name": "Unity",
+          "level": "Proficient",
+          "context": "Game development and prototyping"
+        },
+        {
+          "name": "GameMaker",
+          "level": "Familiar",
+          "context": "2D game development"
+        },
+        {
+          "name": "Godot",
+          "level": "Familiar",
+          "context": "Game prototypes and experiments"
+        },
+        {
+          "name": "Photon",
+          "level": "Intermediate",
+          "context": "Multiplayer networking"
+        },
+        {
+          "name": "GDScript",
+          "level": "Familiar",
+          "context": "Godot gameplay scripting"
+        },
+        {
+          "name": "GML (GameMaker Language)",
+          "level": "Familiar",
+          "context": "GameMaker gameplay scripting"
+        },
+        {
+          "name": "3D Game",
+          "level": "Intermediate",
+          "context": "3D game design and development"
+        },
+        {
+          "name": "2D Game",
+          "level": "Intermediate",
+          "context": "2D game design and development"
+        },
+        {
+          "name": "ONNX Runtime",
+          "level": "Familiar",
+          "context": "On-device AI inference"
+        }
+      ]
+    },
+    {
+      "category": "3D & CREATIVE TOOLS",
+      "items": [
+        {
+          "name": "Blender",
+          "level": "Proficient",
+          "context": "3D modeling and asset preparation"
+        },
+        {
+          "name": "Blockbench",
+          "level": "Familiar",
+          "context": "Low-poly 3D modeling and texturing"
+        },
+        {
+          "name": "Paint.NET",
+          "level": "Intermediate",
+          "context": "Texture and image editing"
+        },
+        {
+          "name": "Shoebox",
+          "level": "Intermediate",
+          "context": "Sprite sheet preparation"
+        },
+        {
+          "name": "Audacity",
+          "level": "Intermediate",
+          "context": "Audio editing"
+        },
+        {
+          "name": "Canva",
+          "level": "Proficient",
+          "context": "Quick visual assets"
+        },
+        {
+          "name": "Figma",
+          "level": "Proficient",
+          "context": "UI/UX design and prototyping"
+        }
+      ]
+    },
+    {
+      "category": "DEVELOPMENT TOOLS",
+      "items": [
+        {
+          "name": "Antigravity IDE",
+          "level": "Intermediate",
+          "context": "Development workflow"
+        },
+        {
+          "name": "Eclipse",
+          "level": "Intermediate",
+          "context": "Java development"
+        },
+        {
+          "name": "Git",
+          "level": "Intermediate",
+          "context": "Version control"
+        },
+        {
+          "name": "GitHub",
+          "level": "Proficient",
+          "context": "Collaboration and repositories"
+        },
+        {
+          "name": "VS Code",
+          "level": "Intermediate",
+          "context": "Primary code editor"
+        },
+        {
+          "name": "Docker",
+          "level": "Intermediate",
+          "context": "Containerized deployment"
+        },
+        {
+          "name": "Vercel",
+          "level": "Intermediate",
+          "context": "Frontend deployment"
+        }
+      ]
+    }
+  ],
+  "skillLevelsMeaning": "Proficient > Intermediate > Familiar",
+  "projects": [
+    {
+      "name": "OUTRUN",
+      "status": "Released",
+      "category": "SCHOOL PROJECT",
+      "role": "UI Designer & 3D Artist",
+      "platforms": [
+        "PC",
+        "Mobile"
+      ],
+      "tools": [
+        "Unity",
+        "Blender",
+        "VSC"
+      ],
+      "description": "a 2.5D isometric chase game set in a dense city. Ride through traffic, manage battery and durability, and stay ahead of a police pursuit that grows stronger the longer you survive.",
+      "url": "https://ninesixfour.itch.io/outrun"
+    },
+    {
+      "name": "MUTED",
+      "status": "Unreleased",
+      "category": "SCHOOL PROJECT",
+      "role": "Junior Programmer & 3D Artist",
+      "platforms": [
+        "PC"
+      ],
+      "tools": [
+        "Unity",
+        "Blender",
+        "Python",
+        "ONNX Runtime",
+        "VSC"
+      ],
+      "description": "MUTED is a 3D interactive PC game that allows players to complete six spacecraft repair missions using real-time hand gestures through a webcam. Powered by computer vision and AI-based gesture recognition, the game translates physical hand movements into in-game actions, creating a touchless and immersive gameplay experience. It also integrates CNN and CNN+GRU models to evaluate gesture recognition accuracy, stability, and responsiveness during live gameplay."
+    },
+    {
+      "name": "TRIGGR",
+      "status": "Unreleased",
+      "category": "SCHOOL PROJECT",
+      "role": "Game UI Designer",
+      "platforms": [
+        "PC"
+      ],
+      "tools": [
+        "Unity",
+        "VSC"
+      ],
+      "description": "A multiplayer first person shooting game. This game is made for entertainment and school project purposes only."
+    },
+    {
+      "name": "LUNAS",
+      "status": "Released",
+      "category": "HACKATHON",
+      "role": "Front-End Developer",
+      "platforms": [
+        "PC"
+      ],
+      "tools": [
+        "React.js",
+        "Next.js",
+        "Tailwind CSS",
+        "PostgreSQL",
+        "Prisma ORM",
+        "VSC"
+      ],
+      "description": "Lunas is a secure, web-based emergency medical information platform that gives licensed medical professionals instant access to a patient's critical health data via a QR code — even when the patient is unconscious or unable to speak.",
+      "url": "https://lunas.software/"
+    },
+    {
+      "name": "Alalay Barangay",
+      "status": "Released",
+      "category": "SCHOOL PROJECT",
+      "role": "UI/UX Designer",
+      "platforms": [
+        "PC"
+      ],
+      "tools": [
+        "Figma",
+        "React.js",
+        "VSC"
+      ],
+      "description": "A unique feature of this system is that it has a text-to-speech assistant that would read the labels of the required fields that users need to enter.",
+      "url": "https://angelitoflordeliza.github.io/alalay-barangay-ui/"
+    }
+  ],
+  "achievements": [
+    {
+      "result": "RANK 8 OVERALL",
+      "category": "01 HACKATHON",
+      "event": "SIKAPTala 2026: The National CS & IT Competition!",
+      "project": "LUNAS",
+      "url": "https://lunas.software/"
+    }
+  ],
+  "models3d": {
+    "total": 26,
+    "byCategory": [
+      {
+        "category": "Character",
+        "count": 6,
+        "models": [
+          "Delivery Rider",
+          "Mang Dodong",
+          "Marites",
+          "Police",
+          "Racer",
+          "Totoy"
+        ]
+      },
+      {
+        "category": "Props",
+        "count": 5,
+        "models": [
+          "Basyo",
+          "Garbage",
+          "Gasul",
+          "Vintage Monitor",
+          "Vintage PC"
+        ]
+      },
+      {
+        "category": "Environment",
+        "count": 4,
+        "models": [
+          "Low Poly Trees",
+          "No Parking",
+          "Poste",
+          "Sorbetero"
+        ]
+      },
+      {
+        "category": "Vehicle",
+        "count": 11,
+        "models": [
+          "Purple Car",
+          "GoCart",
+          "Gray Car",
+          "Jeep",
+          "Police Patrol",
+          "Police Sedan",
+          "Sedan",
+          "Spaceship",
+          "Tricycle",
+          "Truck",
+          "Wheelchair"
+        ]
+      }
+    ],
+    "note": "Interactive 3D models can be viewed and rotated on the 3D Models page."
+  },
+  "contact": {
+    "email": "carandangchristianra@gmail.com",
+    "github": "https://github.com/cntaxc",
+    "linkedin": "https://www.linkedin.com/in/christian-carandang-b30015334/",
+    "resume": "https://portfolio-carandang.vercel.app/Christian-Raphael-Carandang-Resume.pdf",
+    "website": "https://portfolio-carandang.vercel.app"
+  }
+}

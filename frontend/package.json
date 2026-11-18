@@ -16,6 +16,7 @@
     "prebuild": "npm run models && npm run knowledge",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:assistant": "npm run knowledge && react-scripts test --watchAll=false src/assistant",
     "test:api": "node --test api/_lib/recommendations-handler.test.js api/_lib/chat-handler.test.js",
     "knowledge": "node scripts/generate-knowledge-base.js"
   },

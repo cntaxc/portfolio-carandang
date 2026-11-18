@@ -36,7 +36,7 @@
 - **Interactive 3D showcase**: 26 game assets rendered with Three.js. Drag to rotate (zoom disabled), category filters, a paginated 3×3 grid, and lazy loading so each model downloads only when its card scrolls into view. Cards are generated automatically from the `.glb` files in the models folder.
 - **Portfolio hub**: category cards with hover animations, a cross-fading project slideshow and a typewriter caption.
 - **Recommendations**: visitors submit recommendations that publish instantly, are screened by a profanity filter (English, Tagalog/Filipino and Spanish, including leetspeak and spacing tricks) and can be moderated from the command line.
-- **AI assistant**: visitors can ask questions about Christian's work. Answers stream from Claude through a server function and are grounded in a knowledge base generated from the portfolio data, so they stay current with the site.
+- **Portfolio assistant**: visitors can ask questions about Christian's work. It runs entirely in the browser (no AI service, no cost) and answers from a knowledge base generated from the portfolio data, so it stays current with the site.
 - **Contact form** that posts straight to Web3Forms from the browser.
 - **Design system**: a single "Cozy Black" theme with shared typography and colour tokens, responsive from phone to desktop, and reduced-motion support.
 - **Production setup**: multi-stage Docker images, Nginx with gzip and security headers, health checks, and CI on every push.
@@ -127,6 +127,7 @@ npm --prefix frontend start         # app on :3000, /api proxied to :8000
 ```powershell
 npm --prefix backend test           # store, moderation, profanity filter
 npm --prefix frontend run test:api  # Vercel functions: recommendations + AI chat (fakes, no API calls)
+npm --prefix frontend run test:assistant  # in-browser portfolio assistant
 npm --prefix frontend run build     # production build (CI treats lint warnings as errors)
 ```
 
@@ -146,19 +147,12 @@ Both run automatically on every push through [GitHub Actions](.github/workflows/
 
 Only the server function holds the secret key; browsers only ever call `/api/recommendations`. Locally, Docker Compose keeps using the Express backend in `backend/`.
 
-**AI assistant on Vercel: `/api/chat`.** Served by [`frontend/api/chat.js`](frontend/api/chat.js) (logic in [`frontend/api/_lib/chat-handler.js`](frontend/api/_lib/chat-handler.js)). It calls Claude (`claude-opus-5-5`, low effort, streaming) with a cached system prompt that contains the knowledge base.
+**AI assistant: runs in the browser, free.** [`frontend/src/assistant/portfolioAssistant.js`](frontend/src/assistant/portfolioAssistant.js) answers visitors' questions with no AI model, API key or server. It matches each question to a topic (education, skills, projects, experience, achievements, 3D models, contact, ...) or to a specific project, skill, tool, organization or 3D model, then builds the answer from the knowledge base. It also handles follow-ups about the last project ("what tools did it use?"), and anything outside the portfolio gets a polite "I can only answer about Christian's portfolio" reply with his email.
 
-- **Knowledge base:** [`frontend/scripts/generate-knowledge-base.js`](frontend/scripts/generate-knowledge-base.js) builds `frontend/api/_lib/knowledge-base.json` from `src/data/portfolio.js` on every `npm start` / `npm run build`. Edit the portfolio data and the assistant knows about it on the next deploy.
-- **Guardrails:** answers only from the knowledge base, declines off-topic requests, ignores instructions in visitor messages, has no tools, caps input (500 characters, last 10 turns) and output (1024 tokens), and rate-limits each visitor to 20 questions per 15 minutes (salted IP hash in the Supabase `chat_requests` table; no message content is stored).
+- **Knowledge base:** [`frontend/scripts/generate-knowledge-base.js`](frontend/scripts/generate-knowledge-base.js) builds `frontend/src/data/knowledge-base.generated.json` from `src/data/portfolio.js` on every `npm start` / `npm run build`. Edit the portfolio data and the assistant's answers update with it.
+- **Adding a question it doesn't understand:** add the words visitors use to the matching topic in `TOPICS`, then add a case to [`portfolioAssistant.test.js`](frontend/src/assistant/portfolioAssistant.test.js).
 
-Setup:
-
-1. Create an API key at [console.anthropic.com](https://console.anthropic.com) and set a monthly **spend limit** there.
-2. In Vercel, add `ANTHROPIC_API_KEY` as a **Secret** for Production. Never prefix it with `REACT_APP_`, which would put it in the public bundle. Optionally add `IP_HASH_SALT` (any random string).
-3. Re-run [`docs/supabase-setup.sql`](docs/supabase-setup.sql) to create the `chat_requests` table.
-4. Redeploy.
-
-Locally, `npm start` mounts the same handler at `/api/chat`; add `ANTHROPIC_API_KEY` to `frontend/.env.local` to use it. Without a key, the assistant shows an "unavailable" message. The production Docker/Nginx stack doesn't serve `/api/chat`.
+**Optional upgrade: Claude-powered `/api/chat`.** A Claude-backed version of the same assistant is kept in [`frontend/api/chat.js`](frontend/api/chat.js) (logic and guardrails in [`frontend/api/_lib/chat-handler.js`](frontend/api/_lib/chat-handler.js)), but the site doesn't call it. To switch later, point the chat section at `/api/chat` and add `ANTHROPIC_API_KEY` as a Vercel **Secret** (paid, pay-as-you-go API).
 
 ## Moderating recommendations
 
