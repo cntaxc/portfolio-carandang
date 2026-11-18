@@ -15,11 +15,13 @@
 //
 // Mirrors the Express backend in backend/server.js (same limits and messages).
 
-import { createHash, randomUUID } from 'node:crypto';
-import {
+'use strict';
+
+const { createHash, randomUUID } = require('node:crypto');
+const {
   findProfaneFields,
   PROFANITY_REJECTION_MESSAGE,
-} from './profanity-filter.js';
+} = require('./profanity-filter.js');
 
 const TABLE = 'recommendations';
 const PUBLIC_COLUMNS = 'id,author,organization,context,message,published_at';
@@ -97,7 +99,7 @@ function sendJson(res, status, payload) {
  * Creates the request handler. `env` and `fetchImpl` are injectable so the
  * handler can be tested without a real database.
  */
-export function createRecommendationsHandler({
+function createRecommendationsHandler({
   env = process.env,
   fetchImpl = globalThis.fetch,
   now = () => Date.now(),
@@ -226,3 +228,5 @@ export function createRecommendationsHandler({
     }
   };
 }
+
+module.exports = { createRecommendationsHandler };

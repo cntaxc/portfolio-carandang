@@ -121,22 +121,18 @@ test('stays fast on long, adversarial input', () => {
   assert.ok(Date.now() - started < 500);
 });
 
-test('frontend copy of the filter is identical to this one', async () => {
+test('Vercel API copy of the filter is up to date', async () => {
   const { readFile } = await import('node:fs/promises');
-  const backendCopy = await readFile(
-    new URL('../lib/profanity-filter.js', import.meta.url),
-    'utf8'
+  const { SOURCE, TARGET, toCommonJs } = await import(
+    '../scripts/sync-profanity-filter.js'
   );
-  const frontendCopy = await readFile(
-    new URL('../../frontend/api/_lib/profanity-filter.js', import.meta.url),
-    'utf8'
-  ).catch(() => null);
+  const copy = await readFile(TARGET, 'utf8').catch(() => null);
   // The backend Docker image has no frontend folder; only check when present.
-  if (frontendCopy !== null) {
+  if (copy !== null) {
     assert.equal(
-      frontendCopy,
-      backendCopy,
-      'Copy backend/lib/profanity-filter.js to frontend/api/_lib/profanity-filter.js'
+      copy,
+      toCommonJs(await readFile(SOURCE, 'utf8')),
+      'Run `npm --prefix backend run sync:filter`'
     );
   }
 });

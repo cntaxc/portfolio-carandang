@@ -1,6 +1,6 @@
-// NOTE: frontend/api/_lib/profanity-filter.js is an exact copy of this file,
-// used by the Vercel serverless API (which can't import from backend/). Edit
-// this file, then copy it over; a backend test fails if the two ever differ.
+// NOTE: frontend/api/_lib/profanity-filter.js is a generated CommonJS copy of
+// this file for the Vercel serverless API. After editing, run
+// `npm run sync:filter`; a backend test fails if the copy is out of date.
 //
 // Profanity filter for user-submitted recommendations.
 //

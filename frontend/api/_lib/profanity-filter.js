@@ -1,6 +1,10 @@
-// NOTE: frontend/api/_lib/profanity-filter.js is an exact copy of this file,
-// used by the Vercel serverless API (which can't import from backend/). Edit
-// this file, then copy it over; a backend test fails if the two ever differ.
+// GENERATED from backend/lib/profanity-filter.js.
+// Do not edit: run `npm --prefix backend run sync:filter` instead.
+'use strict';
+
+// NOTE: frontend/api/_lib/profanity-filter.js is a generated CommonJS copy of
+// this file for the Vercel serverless API. After editing, run
+// `npm run sync:filter`; a backend test fails if the copy is out of date.
 //
 // Profanity filter for user-submitted recommendations.
 //
@@ -24,7 +28,7 @@
 // text, which avoids false positives such as "Scunthorpe", "assassin",
 // "class", "magna cum laude", "BS Computer Science" or "batang inaasahan".
 
-export const PROFANITY_REJECTION_MESSAGE =
+const PROFANITY_REJECTION_MESSAGE =
   'Your submission contains inappropriate language and cannot be published.';
 
 // Whole tokens (after normalization).
@@ -234,7 +238,7 @@ function readingIsBlocked(reading) {
  * Returns true when the text contains profanity (English, Tagalog/Filipino
  * or Spanish), including leetspeak, masking and spacing evasions.
  */
-export function containsProfanity(text) {
+function containsProfanity(text) {
   if (typeof text !== 'string' || !text.trim()) {
     return false;
   }
@@ -246,8 +250,10 @@ export function containsProfanity(text) {
  * Checks several named fields. Returns the names of the fields that contain
  * profanity; an empty array means the submission is clean.
  */
-export function findProfaneFields(fields) {
+function findProfaneFields(fields) {
   return Object.entries(fields)
     .filter(([, value]) => containsProfanity(value))
     .map(([name]) => name);
 }
+
+module.exports = { PROFANITY_REJECTION_MESSAGE, containsProfanity, findProfaneFields };

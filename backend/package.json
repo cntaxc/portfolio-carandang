@@ -12,7 +12,8 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test": "node --test",
-    "recommendations": "node scripts/manage-recommendations.js"
+    "recommendations": "node scripts/manage-recommendations.js",
+    "sync:filter": "node scripts/sync-profanity-filter.js"
   },
   "dependencies": {
     "express": "^4.21.2",

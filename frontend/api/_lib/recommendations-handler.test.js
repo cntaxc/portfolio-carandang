@@ -1,9 +1,11 @@
 // Run with: node --test api/
 // Exercises the Vercel recommendations function against an in-memory fake of
 // the Supabase REST API, so no database or network is needed.
-import assert from 'node:assert/strict';
-import test from 'node:test';
-import { createRecommendationsHandler } from './recommendations-handler.js';
+'use strict';
+
+const assert = require('node:assert/strict');
+const test = require('node:test');
+const { createRecommendationsHandler } = require('./recommendations-handler.js');
 
 const ENV = {
   SUPABASE_URL: 'https://example.supabase.co',
