@@ -6,7 +6,8 @@ const REQUEST_TIMEOUT_MS = 15000;
 const SUCCESS_MESSAGE = 'Thank you! Your recommendation has been published.';
 const validationRules = [
   { field: 'name', label: 'your name', maxLength: 100 },
-  { field: 'organization', label: 'your organization', maxLength: 120 },
+  { field: 'role', label: 'your role or position', maxLength: 100 },
+  { field: 'organization', label: 'your organization or company', maxLength: 120 },
   { field: 'message', label: 'your recommendation', maxLength: 2000 },
 ];
 
@@ -125,6 +126,7 @@ export default function RecommendationSubmissionForm() {
     const formData = new FormData(form);
     const fields = {
       name: String(formData.get('name') || '').trim(),
+      role: String(formData.get('role') || '').trim(),
       organization: String(formData.get('organization') || '').trim(),
       context: buildContext(selectedContexts, otherContext),
       message: String(formData.get('message') || '').trim(),
@@ -261,7 +263,18 @@ export default function RecommendationSubmissionForm() {
           />
         </label>
         <label className="recommendation-form__field">
-          <span>Organization</span>
+          <span>Your Role / Position</span>
+          <input
+            name="role"
+            type="text"
+            autoComplete="organization-title"
+            maxLength="100"
+            placeholder="e.g. Lead Developer"
+            required
+          />
+        </label>
+        <label className="recommendation-form__field">
+          <span>Organization / Company</span>
           <input
             name="organization"
             type="text"

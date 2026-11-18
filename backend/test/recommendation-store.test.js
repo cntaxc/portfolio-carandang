@@ -22,6 +22,7 @@ function createRecord(overrides = {}) {
   return {
     id: 'recommendation-1',
     author: 'Test Author',
+    role: 'Lead Developer',
     organization: 'Test Organization',
     context: 'Test context',
     message: 'A recommendation for testing.',
@@ -141,4 +142,14 @@ test('removes one recommendation or clears all of them', async (t) => {
   assert.equal((await store.remove('a')).id, 'a');
   assert.equal(await store.clear(), 1);
   assert.deepEqual(await store.listPublished(), []);
+});
+
+test('keeps entries published before the role field existed', async (t) => {
+  const { store } = await createTemporaryStore(t);
+  const { role, ...legacy } = createRecord({ id: 'legacy-1' });
+  assert.ok(role);
+  await store.create(legacy);
+  const [saved] = await store.listPublished();
+  assert.equal(saved.id, 'legacy-1');
+  assert.equal(saved.role, '');
 });

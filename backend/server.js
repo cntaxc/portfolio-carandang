@@ -25,6 +25,7 @@ const recommendationDataFile =
 
 const FIELD_LIMITS = {
   name: 100,
+  role: 100,
   organization: 120,
   context: 160,
   message: 2000,
@@ -42,6 +43,7 @@ function readRecommendationFields(body) {
 
   return {
     name: normalizeSingleLine(source.name),
+    role: normalizeSingleLine(source.role),
     organization: normalizeSingleLine(source.organization),
     context: normalizeSingleLine(source.context),
     message: typeof source.message === 'string' ? source.message.trim() : '',
@@ -129,7 +131,7 @@ app.post('/api/recommendations', recommendationLimiter, async (req, res) => {
   if (!fieldsAreValid(fields)) {
     res.status(400).json({
       error:
-        'Please provide a name, organization, work or project context, and recommendation within the allowed lengths.',
+        'Please provide a name, role, organization or company, work or project context, and recommendation within the allowed lengths.',
     });
     return;
   }
@@ -150,6 +152,7 @@ app.post('/api/recommendations', recommendationLimiter, async (req, res) => {
     const published = await recommendationStore.create({
       id: randomUUID(),
       author: fields.name,
+      role: fields.role,
       organization: fields.organization,
       context: fields.context,
       message: fields.message,

@@ -18,6 +18,36 @@ export const profile = {
   temperature: 28,
 };
 
+// Professional summary shared by the About and Overview sections and the AI
+// assistant's knowledge base (see scripts/generate-knowledge-base.js).
+export const professionalSummary = {
+  headline: 'Intern Level Designer and 3D Modeler',
+  roles: ['Front-End Developer', 'Game Developer', 'UI/UX Designer'],
+  location: 'Laguna, Philippines',
+  // Fixed value shown in the About stats: update as experience grows.
+  yearsOfExperience: '1.5',
+  focusAreas: [
+    {
+      title: '3D Modeler',
+      description: 'Create and prepare 3D assets, environments, and animations.',
+    },
+    {
+      title: 'Game Design',
+      description:
+        'Shape engaging gameplay through thoughtful mechanics and level flow.',
+    },
+    {
+      title: 'Game Tester',
+      description:
+        'Test gameplay, identify issues, and help refine the player experience.',
+    },
+    {
+      title: 'UI/UX Design',
+      description: 'Design clear, intuitive interfaces for interactive experiences.',
+    },
+  ],
+};
+
 export const navPrimary = [
   { id: 'home', label: 'Home', icon: 'ri-home-4-line' },
   { id: 'about', label: 'About', icon: 'ri-user-3-line' },

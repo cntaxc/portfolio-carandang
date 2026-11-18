@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -10,12 +11,13 @@
   },
   "scripts": {
     "models": "node scripts/generate-model-manifest.js",
-    "prestart": "npm run models",
+    "prestart": "npm run models && npm run knowledge",
     "start": "react-scripts start",
-    "prebuild": "npm run models",
+    "prebuild": "npm run models && npm run knowledge",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:api": "node --test api/_lib/recommendations-handler.test.js"
+    "test:api": "node --test api/_lib/recommendations-handler.test.js api/_lib/chat-handler.test.js",
+    "knowledge": "node scripts/generate-knowledge-base.js"
   },
   "eslintConfig": {
     "extends": [

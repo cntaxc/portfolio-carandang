@@ -43,7 +43,7 @@ async function list() {
   for (const item of recommendations) {
     console.log(`id:      ${item.id}`);
     console.log(`date:    ${item.publishedAt}`);
-    console.log(`author:  ${item.author} (${item.organization})`);
+    console.log(`author:  ${item.author} (${[item.role, item.organization].filter(Boolean).join(' at ')})`);
     console.log(`context: ${item.context}`);
     console.log(`message: ${truncate(item.message.replace(/\s+/g, ' '), 160)}\n`);
   }

@@ -1,32 +1,12 @@
 import {
   about,
   achievementHighlights,
+  professionalSummary,
   showcaseProjects,
 } from '../../data/portfolio';
 import RecommendationsCarousel from '../RecommendationsCarousel';
 
-const focusAreas = [
-  {
-    title: '3D Modeler',
-    description:
-      'Create and prepare 3D assets, environments, and animations.',
-  },
-  {
-    title: 'Game Design',
-    description:
-      'Shape engaging gameplay through thoughtful mechanics and level flow.',
-  },
-  {
-    title: 'Game Tester',
-    description:
-      'Test gameplay, identify issues, and help refine the player experience.',
-  },
-  {
-    title: 'UI/UX Design',
-    description:
-      'Design clear, intuitive interfaces for interactive experiences.',
-  },
-];
+const { focusAreas } = professionalSummary;
 
 const competitionCount = achievementHighlights.filter(({ label, event }) =>
   /hackathon|competition|game jam/i.test(`${label} ${event}`)
@@ -35,8 +15,11 @@ const competitionCount = achievementHighlights.filter(({ label, event }) =>
 const aboutStats = [
   { label: 'Projects', value: showcaseProjects.items.length },
   { label: 'Competitions', value: competitionCount },
-  // Fixed value: update as your experience grows.
-  { label: 'Years of experience', value: '1.5', unit: 'YRS' },
+  {
+    label: 'Years of experience',
+    value: professionalSummary.yearsOfExperience,
+    unit: 'YRS',
+  },
 ];
 
 export default function AboutSection({ onViewRecommendations }) {

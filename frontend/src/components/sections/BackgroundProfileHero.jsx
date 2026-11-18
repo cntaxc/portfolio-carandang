@@ -1,7 +1,11 @@
 import formalPortrait from '../../assets/images/profile/formal-portrait.png';
-import { education, profile } from '../../data/portfolio';
+import {
+  education,
+  professionalSummary,
+  profile,
+} from '../../data/portfolio';
 
-const ROLES = ['Front-End Developer', 'Game Developer', 'UI/UX Designer'];
+const ROLES = professionalSummary.roles;
 
 // Split "Christian Raphael A. Carandang" into the given names and surname so
 // the surname sits on its own line.
@@ -20,7 +24,7 @@ const details = [
   {
     label: 'Location',
     icon: 'ri-map-pin-line',
-    value: 'Laguna, Philippines',
+    value: professionalSummary.location,
   },
   {
     label: 'Education',

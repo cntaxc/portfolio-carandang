@@ -11,6 +11,8 @@ const RECORD_FIELDS = [
   'message',
   'publishedAt',
 ];
+// Added later: entries published before it existed have no value.
+const OPTIONAL_FIELDS = ['role'];
 
 // Returns a clean copy of a stored recommendation, or null when the record is
 // malformed (any required field missing or empty). Malformed records are
@@ -28,6 +30,10 @@ function normalizeRecord(record) {
       return null;
     }
     normalized[field] = value;
+  }
+  for (const field of OPTIONAL_FIELDS) {
+    normalized[field] =
+      typeof record[field] === 'string' ? record[field].trim() : '';
   }
   return normalized;
 }

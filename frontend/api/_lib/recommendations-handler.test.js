@@ -77,6 +77,7 @@ async function call(handler, { method = 'GET', body, ip = '203.0.113.7' } = {}) 
 
 const validBody = {
   name: 'Ana Reyes',
+  role: 'Lead Developer',
   organization: 'Kamote Studios',
   context: 'Game jam teammate',
   message: 'Reliable and creative developer.',
@@ -89,6 +90,8 @@ test('publishes a valid recommendation and lists it', async () => {
   const created = await call(handler, { method: 'POST', body: validBody });
   assert.equal(created.statusCode, 201);
   assert.equal(created.body.recommendation.author, 'Ana Reyes');
+  assert.equal(created.body.recommendation.role, 'Lead Developer');
+  assert.equal(db.rows[0].role, 'Lead Developer');
   assert.ok(created.body.recommendation.publishedAt);
 
   const listed = await call(handler);
@@ -117,6 +120,19 @@ test('rejects profanity with 422 and stores nothing', async () => {
   });
   assert.equal(res.statusCode, 422);
   assert.equal(res.body.rejected, true);
+  assert.equal(db.rows.length, 0);
+});
+
+test('requires a role of up to 100 characters', async () => {
+  const db = createFakeSupabase();
+  const handler = createRecommendationsHandler({ env: ENV, fetchImpl: db.fetchImpl });
+  const { role, ...withoutRole } = validBody;
+  assert.ok(role);
+  assert.equal((await call(handler, { method: 'POST', body: withoutRole })).statusCode, 400);
+  assert.equal(
+    (await call(handler, { method: 'POST', body: { ...validBody, role: 'x'.repeat(101) } })).statusCode,
+    400
+  );
   assert.equal(db.rows.length, 0);
 });
 

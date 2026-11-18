@@ -36,6 +36,7 @@
 - **Interactive 3D showcase**: 26 game assets rendered with Three.js. Drag to rotate (zoom disabled), category filters, a paginated 3×3 grid, and lazy loading so each model downloads only when its card scrolls into view. Cards are generated automatically from the `.glb` files in the models folder.
 - **Portfolio hub**: category cards with hover animations, a cross-fading project slideshow and a typewriter caption.
 - **Recommendations**: visitors submit recommendations that publish instantly, are screened by a profanity filter (English, Tagalog/Filipino and Spanish, including leetspeak and spacing tricks) and can be moderated from the command line.
+- **AI assistant**: visitors can ask questions about Christian's work. Answers stream from Claude through a server function and are grounded in a knowledge base generated from the portfolio data, so they stay current with the site.
 - **Contact form** that posts straight to Web3Forms from the browser.
 - **Design system**: a single "Cozy Black" theme with shared typography and colour tokens, responsive from phone to desktop, and reduced-motion support.
 - **Production setup**: multi-stage Docker images, Nginx with gzip and security headers, health checks, and CI on every push.
@@ -125,7 +126,7 @@ npm --prefix frontend start         # app on :3000, /api proxied to :8000
 
 ```powershell
 npm --prefix backend test           # store, moderation, profanity filter
-npm --prefix frontend run test:api  # Vercel recommendations function (fake Supabase)
+npm --prefix frontend run test:api  # Vercel functions: recommendations + AI chat (fakes, no API calls)
 npm --prefix frontend run build     # production build (CI treats lint warnings as errors)
 ```
 
@@ -144,6 +145,20 @@ Both run automatically on every push through [GitHub Actions](.github/workflows/
 3. Redeploy.
 
 Only the server function holds the secret key; browsers only ever call `/api/recommendations`. Locally, Docker Compose keeps using the Express backend in `backend/`.
+
+**AI assistant on Vercel: `/api/chat`.** Served by [`frontend/api/chat.js`](frontend/api/chat.js) (logic in [`frontend/api/_lib/chat-handler.js`](frontend/api/_lib/chat-handler.js)). It calls Claude (`claude-opus-5-5`, low effort, streaming) with a cached system prompt that contains the knowledge base.
+
+- **Knowledge base:** [`frontend/scripts/generate-knowledge-base.js`](frontend/scripts/generate-knowledge-base.js) builds `frontend/api/_lib/knowledge-base.json` from `src/data/portfolio.js` on every `npm start` / `npm run build`. Edit the portfolio data and the assistant knows about it on the next deploy.
+- **Guardrails:** answers only from the knowledge base, declines off-topic requests, ignores instructions in visitor messages, has no tools, caps input (500 characters, last 10 turns) and output (1024 tokens), and rate-limits each visitor to 20 questions per 15 minutes (salted IP hash in the Supabase `chat_requests` table; no message content is stored).
+
+Setup:
+
+1. Create an API key at [console.anthropic.com](https://console.anthropic.com) and set a monthly **spend limit** there.
+2. In Vercel, add `ANTHROPIC_API_KEY` as a **Secret** for Production. Never prefix it with `REACT_APP_`, which would put it in the public bundle. Optionally add `IP_HASH_SALT` (any random string).
+3. Re-run [`docs/supabase-setup.sql`](docs/supabase-setup.sql) to create the `chat_requests` table.
+4. Redeploy.
+
+Locally, `npm start` mounts the same handler at `/api/chat`; add `ANTHROPIC_API_KEY` to `frontend/.env.local` to use it. Without a key, the assistant shows an "unavailable" message. The production Docker/Nginx stack doesn't serve `/api/chat`.
 
 ## Moderating recommendations
 

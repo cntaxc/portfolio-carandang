@@ -24,12 +24,13 @@ const {
 } = require('./profanity-filter.js');
 
 const TABLE = 'recommendations';
-const PUBLIC_COLUMNS = 'id,author,organization,context,message,published_at';
+const PUBLIC_COLUMNS = 'id,author,role,organization,context,message,published_at';
 const MAX_RESULTS = 200;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 const FIELD_LIMITS = {
   name: 100,
+  role: 100,
   organization: 120,
   context: 160,
   message: 2000,
@@ -46,6 +47,7 @@ function readFields(body) {
     body && typeof body === 'object' && !Array.isArray(body) ? body : {};
   return {
     name: normalizeSingleLine(source.name),
+    role: normalizeSingleLine(source.role),
     organization: normalizeSingleLine(source.organization),
     context: normalizeSingleLine(source.context),
     message: typeof source.message === 'string' ? source.message.trim() : '',
@@ -81,6 +83,7 @@ function toPublicRecord(row) {
   return {
     id: row.id,
     author: row.author,
+    role: row.role || '',
     organization: row.organization,
     context: row.context,
     message: row.message,
@@ -182,7 +185,7 @@ function createRecommendationsHandler({
       if (!fieldsAreValid(fields)) {
         sendJson(res, 400, {
           error:
-            'Please provide a name, organization, work or project context, and recommendation within the allowed lengths.',
+            'Please provide a name, role, organization or company, work or project context, and recommendation within the allowed lengths.',
         });
         return;
       }
@@ -212,6 +215,7 @@ function createRecommendationsHandler({
         body: {
           id: randomUUID(),
           author: fields.name,
+          role: fields.role,
           organization: fields.organization,
           context: fields.context,
           message: fields.message,
