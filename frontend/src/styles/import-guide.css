@@ -1,0 +1,333 @@
+/* "How to import?" button on the free assets page and its guide card. */
+
+.assets-howto {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 0 14px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: var(--type-button-size);
+  font-weight: 600;
+  letter-spacing: var(--type-button-tracking);
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.assets-howto i {
+  font-size: 15px;
+}
+
+.assets-howto:hover,
+.assets-howto:focus-visible {
+  color: var(--text);
+  background: rgba(245, 245, 240, 0.04);
+  border-color: var(--border-glass-strong);
+}
+
+/* Backdrop: dims and blurs the page; above the grid, nav and floating menu. */
+.import-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(12, 12, 12, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: import-guide-fade 0.2s ease-out both;
+}
+
+.import-guide__card {
+  display: flex;
+  width: min(640px, 100%);
+  max-height: min(720px, calc(100dvh - 32px));
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--text);
+  background: var(--surface-card);
+  border: 1px solid var(--border-glass-strong);
+  border-radius: 4px;
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.95);
+  animation: import-guide-rise 0.25s cubic-bezier(0.2, 0.72, 0.24, 1) both;
+}
+
+.import-guide__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.import-guide__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  color: var(--text-muted);
+  font-size: var(--type-meta-size);
+  font-weight: 600;
+  letter-spacing: var(--type-meta-tracking);
+  text-transform: uppercase;
+}
+
+.import-guide__header h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: var(--type-heading-weight, 700);
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.import-guide__close {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: 20px;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.import-guide__close:hover,
+.import-guide__close:focus-visible {
+  color: var(--text);
+  border-color: var(--border-glass-strong);
+}
+
+/* Tabs */
+.import-guide__tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 12px 20px 0;
+  border-bottom: 1px solid var(--border-glass);
+  scrollbar-width: none;
+}
+
+.import-guide__tab {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: -1px;
+  padding: 10px 12px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: var(--type-button-size);
+  font-weight: 600;
+  letter-spacing: var(--type-button-tracking);
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.import-guide__tab i {
+  font-size: 15px;
+}
+
+.import-guide__tab:hover {
+  color: var(--text);
+}
+
+.import-guide__tab.is-active {
+  color: var(--text);
+  background: #121212;
+  border-color: var(--border-glass);
+}
+
+/* Steps */
+.import-guide__panel {
+  overflow-y: auto;
+  padding: 20px;
+  background: #121212;
+  animation: import-guide-fade 0.2s ease-out both;
+}
+
+.import-guide__steps {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.import-guide__steps li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.import-guide__step-number {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: var(--text);
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
+  font-size: 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+}
+
+.import-guide__steps p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.import-guide__steps strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.import-guide kbd,
+.import-guide code {
+  padding: 1px 6px;
+  color: var(--text);
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
+  font-size: 12px;
+  white-space: nowrap;
+  background: rgba(245, 245, 240, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+/* Three.js code sample */
+.import-guide__code {
+  position: relative;
+  margin-top: 14px;
+  background: #0c0c0c;
+  border: 1px solid var(--border-glass);
+  border-radius: 2px;
+}
+
+.import-guide__code pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.import-guide__code code {
+  padding: 0;
+  white-space: pre;
+  background: none;
+  border: 0;
+}
+
+.import-guide__copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #161616;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.import-guide__copy:hover,
+.import-guide__copy:focus-visible {
+  color: var(--text);
+}
+
+.import-guide__footnote {
+  margin: 0;
+  padding: 14px 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  border-top: 1px solid var(--border-glass);
+}
+
+@keyframes import-guide-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes import-guide-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Phones: the guide becomes a bottom sheet. */
+@media (max-width: 560px) {
+  .import-guide {
+    align-items: end;
+    padding: 0;
+  }
+
+  .import-guide__card {
+    width: 100%;
+    max-height: 88dvh;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .import-guide__header,
+  .import-guide__panel {
+    padding: 16px;
+  }
+
+  .import-guide__tabs {
+    padding: 10px 16px 0;
+  }
+
+  .import-guide kbd,
+  .import-guide code {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .import-guide,
+  .import-guide__card,
+  .import-guide__panel {
+    animation: none;
+  }
+}

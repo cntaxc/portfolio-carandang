@@ -37,6 +37,7 @@
 - **Portfolio hub**: category cards with hover animations, a cross-fading project slideshow and a typewriter caption.
 - **Recommendations**: visitors submit recommendations that publish instantly, are screened by a profanity filter (English, Tagalog/Filipino and Spanish, including leetspeak and spacing tricks) and can be moderated from the command line.
 - **Portfolio assistant**: visitors can ask questions about Christian's work. It runs entirely in the browser (no AI service, no cost) and answers from a knowledge base generated from the portfolio data, so it stays current with the site.
+- **GRAPPLE mini-game**: an arcade card under Education on the Overview page opens a full-screen pixel-art climbing game (canvas, no libraries). Hold to magnet onto pegs, release to fling upward, outclimb the rising glitch; the best height is saved in the browser.
 - **Contact form** that posts straight to Web3Forms from the browser.
 - **Design system**: a single "Cozy Black" theme with shared typography and colour tokens, responsive from phone to desktop, and reduced-motion support.
 - **Production setup**: multi-stage Docker images, Nginx with gzip and security headers, health checks, and CI on every push.
@@ -127,7 +128,7 @@ npm --prefix frontend start         # app on :3000, /api proxied to :8000
 ```powershell
 npm --prefix backend test           # store, moderation, profanity filter
 npm --prefix frontend run test:api  # Vercel functions: recommendations + AI chat (fakes, no API calls)
-npm --prefix frontend run test:assistant  # in-browser portfolio assistant
+npm --prefix frontend run test:unit  # portfolio assistant + GRAPPLE game engine
 npm --prefix frontend run build     # production build (CI treats lint warnings as errors)
 ```
 
@@ -153,6 +154,8 @@ Only the server function holds the secret key; browsers only ever call `/api/rec
 - **Adding a question it doesn't understand:** add the words visitors use to the matching topic in `TOPICS`, then add a case to [`portfolioAssistant.test.js`](frontend/src/assistant/portfolioAssistant.test.js).
 
 **Optional upgrade: Claude-powered `/api/chat`.** A Claude-backed version of the same assistant is kept in [`frontend/api/chat.js`](frontend/api/chat.js) (logic and guardrails in [`frontend/api/_lib/chat-handler.js`](frontend/api/_lib/chat-handler.js)), but the site doesn't call it. To switch later, point the chat section at `/api/chat` and add `ANTHROPIC_API_KEY` as a Vercel **Secret** (paid, pay-as-you-go API).
+
+**Free asset likes on Vercel: `/api/likes`.** Served by [`frontend/api/likes.js`](frontend/api/likes.js) (logic in [`frontend/api/_lib/likes-handler.js`](frontend/api/_lib/likes-handler.js)). It uses the same `SUPABASE_URL` / `SUPABASE_SECRET_KEY` as recommendations and stores one row per asset per anonymous visitor in the `asset_likes` table (visitor ids and IPs only as salted hashes). Run the latest [`docs/supabase-setup.sql`](docs/supabase-setup.sql) to create it. Locally, `npm start` serves `/api/likes` from memory. The free assets themselves are listed in `FREE_ASSET_ENTRIES` in [`frontend/src/data/portfolio.js`](frontend/src/data/portfolio.js).
 
 ## Moderating recommendations
 

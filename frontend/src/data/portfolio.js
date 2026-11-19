@@ -10,6 +10,7 @@ import lunasPfp from '../assets/images/logos/lunas.png';
 import alalayBarangayPfp from '../assets/images/logos/alalay-barangay.jpg';
 import triggrPfp from '../assets/images/logos/triggr.png';
 import generatedModels from './models.generated.json';
+import generatedDownloads from './downloads.generated.json';
 
 export const profile = {
   name: 'Christian Raphael A. Carandang',
@@ -75,14 +76,16 @@ export const homeSectionIds = [
 
 export const projectListSectionIds = ['projectlist'];
 
-export const portfolioSectionIds = ['portfolio'];
+export const portfolioSectionIds = ['portfolio', 'arcade'];
 
 export const modelSectionIds = ['models'];
 
 // Views under the "Portfolio" nav item (shown as active while one is open).
 // Overview (#background) is also reachable from the hub but has its own nav
 // item, so it isn't listed here.
-export const portfolioViews = ['portfolio', 'projectlist', 'models'];
+export const assetSectionIds = ['assets'];
+
+export const portfolioViews = ['portfolio', 'projectlist', 'models', 'assets'];
 
 export const backgroundSectionIds = [
   'techstack-preview',
@@ -506,7 +509,7 @@ export const portfolioHub = {
     },
     {
       id: 'models',
-      title: '3D Models',
+      title: '3D Model Projects',
       description:
         'Interactive 3D model showcase. Drag any model to rotate it and inspect it from every angle.',
       icon: 'ri-box-3-line',
@@ -514,11 +517,11 @@ export const portfolioHub = {
       tone: 'models',
     },
     {
-      id: 'background',
-      title: 'Overview',
+      id: 'assets',
+      title: 'Download Free Assets',
       description:
-        'Background, tech stack, experience, achievements and education. Everything else about me.',
-      icon: 'ri-user-3-line',
+        'Free 3D models from my projects. Preview them in 3D, then download them for your own games and scenes.',
+      icon: 'ri-download-2-line',
       image: null,
       tone: 'overview',
     },
@@ -569,13 +572,57 @@ const categoryDefaults = {
   },
 };
 
+// Free downloadable assets ("Download Free Assets by Christian").
+// Each entry has two files in public/models:
+//   file     - the .glb shown in the 3D preview (kept out of the 3D Model
+//              Projects gallery)
+//   download - the native Blender .blend file visitors download
+// `id` is the key the Like button stores in public.asset_likes (lowercase
+// letters, digits and dashes). Keep it stable once published, or that asset's
+// like count starts again from zero.
+const FREE_ASSET_ENTRIES = [
+  {
+    id: 'dummy-no-rigs',
+    file: 'Dummy (No Rigs).glb',
+    download: 'Lowpoly_Dummy (Without Rig).blend',
+    title: 'Dummy (No Rigs)',
+    category: 'Character',
+    // The .glb holds a whole scene; the preview shows just this dummy.
+    focus: ['Dummy (w/out rig)'],
+    description:
+      'A low-poly base dummy character as a static mesh, saved as a native Blender file. Use it as a stand-in, a scale reference, or a starting point for your own rig.',
+    includes: [
+      'Native Blender .blend file (Blender 3.0 or newer)',
+      'Static low-poly character mesh, no armature',
+      'Export to FBX or glTF for Unity, Godot and three.js',
+    ],
+  },
+  {
+    id: 'dummy-with-rigs',
+    file: 'Dummy (With Rigs).glb',
+    download: 'Lowpoly_Dummy (With Rig).blend',
+    title: 'Dummy (With Rigs)',
+    category: 'Character',
+    focus: ['Dummy (w/rig)'],
+    description:
+      'The same low-poly dummy with a 65-bone humanoid armature (metarig), saved as a native Blender file and ready for you to pose and animate.',
+    includes: [
+      'Native Blender .blend file (Blender 3.0 or newer)',
+      'Low-poly character mesh plus a 65-bone humanoid armature',
+      'Export to FBX or glTF for Unity, Godot and three.js',
+    ],
+  },
+];
+
+const FREE_ASSET_FILES = new Set(FREE_ASSET_ENTRIES.map((entry) => entry.file));
+
 export const modelShowcase = {
   eyebrow: 'Portfolio / 3D Models',
   title: '3D MODELS',
   subtitle: 'My 3D Assets used in projects and self projects.',
   categories: MODEL_CATEGORIES,
   pageSize: 9,
-  items: generatedModels.map((model) => {
+  items: generatedModels.filter((model) => !FREE_ASSET_FILES.has(model.file)).map((model) => {
     const override = modelOverrides[model.file] || {};
     const category = MODEL_CATEGORIES.includes(override.category || model.category)
       ? override.category || model.category
@@ -588,6 +635,48 @@ export const modelShowcase = {
       model: `models/${model.file}`,
       description:
         merged.description || `${category === 'Props' ? 'Prop' : category} model.`,
+    };
+  }),
+};
+
+// ---------------------------------------------------------------------------
+// Free downloadable assets: the list itself is FREE_ASSET_ENTRIES, above the
+// 3D model showcase.
+
+function formatFileSize(bytes) {
+  if (!bytes) return '';
+  return bytes >= 1024 * 1024
+    ? `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+    : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+}
+
+export const freeAssets = {
+  eyebrow: 'Portfolio / Free Assets',
+  title: 'Download Free Assets by Christian',
+  subtitle:
+    'Free 3D models from my projects as native Blender (.blend) files. Preview them here, then download and use them in your own scenes.',
+  items: FREE_ASSET_ENTRIES.map((entry) => {
+    if (!generatedModels.some((item) => item.file === entry.file)) {
+      throw new Error(`Free asset preview "${entry.file}" was not found in public/models.`);
+    }
+    if (!(entry.download in generatedDownloads)) {
+      throw new Error(`Free asset download "${entry.download}" was not found in public/models.`);
+    }
+    // Spaces and brackets in file names are escaped for the URL; the
+    // downloaded file keeps its original name.
+    const previewPath = `models/${encodeURIComponent(entry.file)}`;
+    return {
+      id: entry.id,
+      title: entry.title,
+      category: entry.category,
+      model: previewPath,
+      focus: entry.focus,
+      download: `${process.env.PUBLIC_URL || ''}/models/${encodeURIComponent(entry.download)}`,
+      downloadName: entry.download,
+      format: 'BLEND',
+      size: formatFileSize(generatedDownloads[entry.download]),
+      description: entry.description,
+      includes: entry.includes,
     };
   }),
 };

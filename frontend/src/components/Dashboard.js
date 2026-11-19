@@ -9,6 +9,7 @@ import ContactSection from './sections/ContactSection';
 import ProjectListSection from './sections/ProjectListSection';
 import PortfolioHubSection from './sections/PortfolioHubSection';
 import ModelsSection from './sections/ModelsSection';
+import FreeAssetsSection from './sections/FreeAssetsSection';
 import AIChatbotSection from './sections/AIChatbotSection';
 import AchievementsRecommendationsSection from './sections/AchievementsRecommendationsSection';
 import BackgroundProfileHero from './sections/BackgroundProfileHero';
@@ -16,12 +17,15 @@ import TechstackPreviewSection from './sections/TechstackPreviewSection';
 import TechstackSection from './sections/TechstackSection';
 import ExperienceSection from './sections/ExperienceSection';
 import EducationSection from './sections/EducationSection';
+import ArcadeSection from './sections/ArcadeSection';
+import GrappleGame from './grapple/GrappleGame';
 import RecommendationSubmissionForm from './RecommendationSubmissionForm';
 import RecommendationsGrid from './RecommendationsGrid';
 import SiteFooter from './SiteFooter';
 import useActiveSection from '../hooks/useActiveSection';
 import useScrollReveal from '../hooks/useScrollReveal';
 import {
+  assetSectionIds,
   backgroundSectionIds,
   homeSectionIds,
   modelSectionIds,
@@ -35,6 +39,7 @@ const subpageViews = new Set([
   'portfolio',
   'projectlist',
   'models',
+  'assets',
   'background',
   'techstack',
   'recommendation',
@@ -45,6 +50,7 @@ const subpageFallbacks = {
   portfolio: 'home',
   projectlist: 'portfolio',
   models: 'portfolio',
+  assets: 'portfolio',
   background: 'portfolio',
   techstack: 'background',
   recommendation: 'home',
@@ -54,6 +60,7 @@ const subpageFallbacks = {
 const viewTopSections = new Set([
   'portfolio',
   'models',
+  'assets',
   'background',
   'moreinfos',
   'recommendation',
@@ -68,7 +75,7 @@ function getScrollBehavior() {
 }
 
 function getViewForSection(sectionId) {
-  if (sectionId === 'portfolio') {
+  if (portfolioSectionIds.includes(sectionId)) {
     return 'portfolio';
   }
   if (sectionId === 'projectlist') {
@@ -76,6 +83,9 @@ function getViewForSection(sectionId) {
   }
   if (sectionId === 'models') {
     return 'models';
+  }
+  if (assetSectionIds.includes(sectionId)) {
+    return 'assets';
   }
   if (recommendationSectionIds.includes(sectionId)) {
     return 'recommendation';
@@ -99,6 +109,14 @@ function getViewFromHash() {
 
 export default function Dashboard() {
   const [activeView, setActiveView] = useState(getViewFromHash);
+  // GRAPPLE: mounted on first launch, then kept so leaving pauses the run.
+  const [isGameOpen, setIsGameOpen] = useState(false);
+  const [hasOpenedGame, setHasOpenedGame] = useState(false);
+  const openGame = () => {
+    setHasOpenedGame(true);
+    // Open on the next frame so the view fades in even on first launch.
+    window.requestAnimationFrame(() => setIsGameOpen(true));
+  };
   const pendingSection = useRef(null);
   const lastHandledHash = useRef(null);
   const activeSection = useActiveSection(
@@ -108,6 +126,8 @@ export default function Dashboard() {
         ? portfolioSectionIds
         : activeView === 'models'
           ? modelSectionIds
+          : activeView === 'assets'
+            ? assetSectionIds
           : activeView === 'projectlist'
         ? projectListSectionIds
         : activeView === 'recommendation'
@@ -289,9 +309,14 @@ export default function Dashboard() {
           className="page-view"
         >
           {activeView === 'portfolio' ? (
-            <PortfolioHubSection
-              onSelectCategory={navigateToSection}
-            />
+            <>
+              <PortfolioHubSection
+                onSelectCategory={navigateToSection}
+              />
+              <div className="portfolio-arcade">
+                <ArcadeSection onPlay={openGame} />
+              </div>
+            </>
           ) : activeView === 'projectlist' ? (
             <ProjectListSection
               onBack={() => handleSubpageBack(subpageFallbacks.projectlist)}
@@ -299,6 +324,10 @@ export default function Dashboard() {
           ) : activeView === 'models' ? (
             <ModelsSection
               onBack={() => handleSubpageBack(subpageFallbacks.models)}
+            />
+          ) : activeView === 'assets' ? (
+            <FreeAssetsSection
+              onBack={() => handleSubpageBack(subpageFallbacks.assets)}
             />
           ) : activeView === 'background' ? (
             <div className="lower-sections more-page">
@@ -371,6 +400,9 @@ export default function Dashboard() {
         onOpenChat={() => navigateToSection('aichatbot')}
         onOpenContact={() => navigateToSection('contact')}
       />
+      {hasOpenedGame ? (
+        <GrappleGame isOpen={isGameOpen} onExit={() => setIsGameOpen(false)} />
+      ) : null}
     </div>
   );
 }

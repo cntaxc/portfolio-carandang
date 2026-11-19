@@ -37,6 +37,12 @@ async function loadPortfolioData() {
     /^import (\w+) from ['"]\.\/models\.generated\.json['"];?$/m,
     `const $1 = ${models.trim()};`
   );
+  const downloadsFile = path.join(ROOT, 'src', 'data', 'downloads.generated.json');
+  const downloads = fs.existsSync(downloadsFile) ? fs.readFileSync(downloadsFile, 'utf8') : '{}';
+  source = source.replace(
+    /^import (\w+) from ['"]\.\/downloads\.generated\.json['"];?$/m,
+    `const $1 = ${downloads.trim()};`
+  );
   const leftover = source.match(/^import .*$/m);
   if (leftover) {
     throw new Error(`Unsupported import in portfolio.js: ${leftover[0]}`);

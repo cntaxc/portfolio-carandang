@@ -419,16 +419,16 @@ const answers = {
         (group) => `- ${group.category} (${group.count}): ${joinList(group.models)}`
       ),
       '',
-      'You can view and rotate each one under Portfolio → 3D Models.',
+      'You can view and rotate each one under Portfolio → 3D Model Projects.',
     ].join('\n');
   },
 
   modelCategory(group) {
-    return `${firstName}'s ${group.category.toLowerCase()} models (${group.count}): ${joinList(group.models)}. You can rotate each one under Portfolio → 3D Models.`;
+    return `${firstName}'s ${group.category.toLowerCase()} models (${group.count}): ${joinList(group.models)}. You can rotate each one under Portfolio → 3D Model Projects.`;
   },
 
   model(model) {
-    return `Yes, ${model.name} is one of ${firstName}'s 3D models (${model.category}). You can view and rotate it under Portfolio → 3D Models.`;
+    return `Yes, ${model.name} is one of ${firstName}'s 3D models (${model.category}). You can view and rotate it under Portfolio → 3D Model Projects.`;
   },
 
   contact() {

@@ -107,6 +107,18 @@ export default function PortfolioHubSection({ onSelectCategory }) {
             {portfolioHub.title}
           </h2>
 
+          <p className="portfolio-hub__prompt">
+            <span className="sr-only">{prompt}</span>
+            <span className="portfolio-hub__typer" aria-hidden="true">
+              {/* Invisible full text reserves the width so the line stays put. */}
+              <span className="portfolio-hub__ghost">{prompt}</span>
+              <span className="portfolio-hub__typed">
+                {typedPrompt}
+                <span className="portfolio-hub__caret">|</span>
+              </span>
+            </span>
+          </p>
+
           <ul className="portfolio-hub__cards">
             {portfolioHub.categories.map((category) => (
               <li className="portfolio-hub__item" key={category.id}>
@@ -149,17 +161,6 @@ export default function PortfolioHubSection({ onSelectCategory }) {
             ))}
           </ul>
 
-          <p className="portfolio-hub__prompt">
-            <span className="sr-only">{prompt}</span>
-            <span className="portfolio-hub__typer" aria-hidden="true">
-              {/* Invisible full text reserves the width so the line stays put. */}
-              <span className="portfolio-hub__ghost">{prompt}</span>
-              <span className="portfolio-hub__typed">
-                {typedPrompt}
-                <span className="portfolio-hub__caret">|</span>
-              </span>
-            </span>
-          </p>
         </div>
       </section>
     </div>

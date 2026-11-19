@@ -3,156 +3,196 @@
     "id": "basyo-props",
     "file": "Basyo_Props.glb",
     "title": "Basyo",
-    "category": "Props"
+    "category": "Props",
+    "size": 121376
   },
   {
     "id": "bluecar-vehicle",
     "file": "BlueCar_Vehicle.glb",
     "title": "Blue Car",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 243428
+  },
+  {
+    "id": "dummy-no-rigs",
+    "file": "Dummy (No Rigs).glb",
+    "title": "Dummy (No Rigs)",
+    "category": null,
+    "size": 493684
+  },
+  {
+    "id": "dummy-with-rigs",
+    "file": "Dummy (With Rigs).glb",
+    "title": "Dummy (With Rigs)",
+    "category": null,
+    "size": 493684
   },
   {
     "id": "garbage-props",
     "file": "Garbage_Props.glb",
     "title": "Garbage",
-    "category": "Props"
+    "category": "Props",
+    "size": 141424
   },
   {
     "id": "gasul-props",
     "file": "Gasul_Props.glb",
     "title": "Gasul",
-    "category": "Props"
+    "category": "Props",
+    "size": 121400
   },
   {
     "id": "gocart-vehicle",
     "file": "GoCart_Vehicle.glb",
     "title": "Go Cart",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 903260
   },
   {
     "id": "graycar-vehicle",
     "file": "GrayCar_Vehicle.glb",
     "title": "Gray Car",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 398932
   },
   {
     "id": "jeep-vehicles",
     "file": "Jeep_Vehicles.glb",
     "title": "Jeep",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 5577268
   },
   {
     "id": "kamote-character",
     "file": "Kamote_Character.glb",
     "title": "Kamote",
-    "category": "Character"
+    "category": "Character",
+    "size": 611976
   },
   {
     "id": "lowpolytrees-enviroment",
     "file": "LowPolyTrees_Enviroment.glb",
     "title": "Low Poly Trees",
-    "category": "Environment"
+    "category": "Environment",
+    "size": 190160
   },
   {
     "id": "mangdodong-character",
     "file": "MangDodong_Character.glb",
     "title": "Mang Dodong",
-    "category": "Character"
+    "category": "Character",
+    "size": 426636
   },
   {
     "id": "marites-character",
     "file": "Marites_Character.glb",
     "title": "Marites",
-    "category": "Character"
+    "category": "Character",
+    "size": 462468
   },
   {
     "id": "noparking-environment",
     "file": "NoParking_Environment.glb",
     "title": "No Parking",
-    "category": "Environment"
+    "category": "Environment",
+    "size": 658064
   },
   {
     "id": "police-character",
     "file": "Police_Character.glb",
     "title": "Police",
-    "category": "Character"
+    "category": "Character",
+    "size": 510436
   },
   {
     "id": "police-patrol-vehicles",
     "file": "Police_Patrol_Vehicles.glb",
     "title": "Police Patrol",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 5577324
   },
   {
     "id": "police-sedan-vehicles",
     "file": "Police_Sedan_Vehicles.glb",
     "title": "Police Sedan",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 5577348
   },
   {
     "id": "poste-environment",
     "file": "Poste_Environment.glb",
     "title": "Poste",
-    "category": "Environment"
+    "category": "Environment",
+    "size": 658040
   },
   {
     "id": "racer-character",
     "file": "Racer_Character.glb",
     "title": "Racer",
-    "category": "Character"
+    "category": "Character",
+    "size": 545276
   },
   {
     "id": "sedan-vehicles",
     "file": "Sedan_Vehicles.glb",
     "title": "Sedan",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 5577420
   },
   {
     "id": "sorbetero-environment",
     "file": "Sorbetero_Environment.glb",
     "title": "Sorbetero",
-    "category": "Environment"
+    "category": "Environment",
+    "size": 658044
   },
   {
     "id": "spaceship-vehicle",
     "file": "spaceship_vehicle.glb",
     "title": "Spaceship",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 40104
   },
   {
     "id": "totoy-character",
     "file": "Totoy_Character.glb",
     "title": "Totoy",
-    "category": "Character"
+    "category": "Character",
+    "size": 577020
   },
   {
     "id": "tricycle-vehicle",
     "file": "Tricycle_Vehicle.glb",
     "title": "Tricycle",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 3572504
   },
   {
     "id": "truck-vehicles",
     "file": "Truck_Vehicles.glb",
     "title": "Truck",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 5577380
   },
   {
     "id": "vintagemonitor-props",
     "file": "VintageMonitor_Props.glb",
     "title": "Vintage Monitor",
-    "category": "Props"
+    "category": "Props",
+    "size": 22744
   },
   {
     "id": "vintagepc-props",
     "file": "VintagePC_Props.glb",
     "title": "Vintage PC",
-    "category": "Props"
+    "category": "Props",
+    "size": 19040
   },
   {
     "id": "wheelchair-vehicles",
     "file": "WheelChair_Vehicles.glb",
     "title": "Wheel Chair",
-    "category": "Vehicle"
+    "category": "Vehicle",
+    "size": 5577552
   }
 ]

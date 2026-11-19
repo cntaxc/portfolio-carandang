@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Scans public/models for .glb files and writes src/data/models.generated.json.
+// Scans public/models for .glb files and writes src/data/models.generated.json,
+// plus the sizes of any .blend files to src/data/downloads.generated.json.
 // Runs automatically before `npm start` and `npm run build` (see package.json),
 // so dropping a new model into public/models and restarting is enough.
 //
@@ -47,6 +48,7 @@ function describe(fileName) {
     file: fileName,
     title: toDisplayName(baseName),
     category: match ? match.category : null,
+    size: fs.statSync(path.join(MODELS_DIR, fileName)).size, // bytes, for download labels
   };
 }
 
@@ -64,6 +66,26 @@ const previous = fs.existsSync(OUTPUT) ? fs.readFileSync(OUTPUT, 'utf8') : '';
 // Only write when something changed, so the dev server doesn't reload needlessly.
 if (next !== previous) {
   fs.writeFileSync(OUTPUT, next);
+}
+
+// Download-only source files (.blend) next to the models: name -> size in
+// bytes, for the free assets' file size labels.
+const DOWNLOADS_OUTPUT = path.join(ROOT, 'src', 'data', 'downloads.generated.json');
+const downloads = fs.existsSync(MODELS_DIR)
+  ? Object.fromEntries(
+      fs
+        .readdirSync(MODELS_DIR)
+        .filter((name) => /\.blend$/i.test(name))
+        .sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }))
+        .map((name) => [name, fs.statSync(path.join(MODELS_DIR, name)).size])
+    )
+  : {};
+const nextDownloads = `${JSON.stringify(downloads, null, 2)}\n`;
+const previousDownloads = fs.existsSync(DOWNLOADS_OUTPUT)
+  ? fs.readFileSync(DOWNLOADS_OUTPUT, 'utf8')
+  : '';
+if (nextDownloads !== previousDownloads) {
+  fs.writeFileSync(DOWNLOADS_OUTPUT, nextDownloads);
 }
 
 const uncategorized = manifest.filter((model) => !model.category);

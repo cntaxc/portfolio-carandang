@@ -16,8 +16,8 @@
     "prebuild": "npm run models && npm run knowledge",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:assistant": "npm run knowledge && react-scripts test --watchAll=false src/assistant",
-    "test:api": "node --test api/_lib/recommendations-handler.test.js api/_lib/chat-handler.test.js",
+    "test:unit": "npm run knowledge && react-scripts test --watchAll=false src/assistant src/components/grapple",
+    "test:api": "node --test api/_lib/recommendations-handler.test.js api/_lib/chat-handler.test.js api/_lib/likes-handler.test.js",
     "knowledge": "node scripts/generate-knowledge-base.js"
   },
   "eslintConfig": {

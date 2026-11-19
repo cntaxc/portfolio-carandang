@@ -48,3 +48,29 @@ create index if not exists chat_requests_ip_hash_idx
 
 alter table public.chat_requests enable row level security;
 revoke all on table public.chat_requests from anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- Likes on the free downloadable assets (used by /api/likes).
+-- One row per (asset, visitor). Visitor ids and IPs are stored only as
+-- salted SHA-256 hashes. Safe to re-run.
+create table if not exists public.asset_likes (
+  asset_id      text not null check (char_length(asset_id) between 1 and 64),
+  visitor_hash  text not null,
+  ip_hash       text not null,
+  created_at    timestamptz not null default now(),
+  primary key (asset_id, visitor_hash)
+);
+
+create index if not exists asset_likes_visitor_idx
+  on public.asset_likes (visitor_hash);
+
+alter table public.asset_likes enable row level security;
+revoke all on table public.asset_likes from anon, authenticated;
+
+-- Like totals per asset.
+create or replace view public.asset_like_counts as
+  select asset_id, count(*)::int as likes
+  from public.asset_likes
+  group by asset_id;
+
+revoke all on public.asset_like_counts from anon, authenticated;

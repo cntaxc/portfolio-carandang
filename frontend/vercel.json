@@ -6,6 +6,9 @@
     },
     "api/chat.js": {
       "maxDuration": 30
+    },
+    "api/likes.js": {
+      "maxDuration": 10
     }
   }
 }
