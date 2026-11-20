@@ -9,6 +9,9 @@ import outrunPfp from '../assets/images/logos/outrun.png';
 import lunasPfp from '../assets/images/logos/lunas.png';
 import alalayBarangayPfp from '../assets/images/logos/alalay-barangay.jpg';
 import triggrPfp from '../assets/images/logos/triggr.png';
+import schoolPhoto from '../assets/images/logos/schoolimg.jpg';
+import universityLogo from '../assets/images/logos/University-of-Cabuyao-logo.jpg';
+import departmentLogoImage from '../assets/images/logos/College-of-Computing-Logo.jpg';
 import generatedModels from './models.generated.json';
 import generatedDownloads from './downloads.generated.json';
 
@@ -23,7 +26,15 @@ export const profile = {
 // assistant's knowledge base (see scripts/generate-knowledge-base.js).
 export const professionalSummary = {
   headline: 'Intern Level Designer and 3D Modeler',
-  roles: ['Front-End Developer', 'Game Developer', 'UI/UX Designer'],
+  roles: ['Intern Level Designer', '3D Modeler', 'Game Designer', 'Game Tester'],
+  // Overview header bio: `before`, then one web role at a time (bold,
+  // cycling in this order), then `after`.
+  bio: {
+    before:
+      'Aside from being a game development enthusiast, I can also contribute on the web side through',
+    rotating: ['UI/UX Design', 'Quality Assurance', 'Front-End Dev', 'IT Support'],
+    after: 'to build responsive, user-friendly, and reliable digital experiences.',
+  },
   location: 'Laguna, Philippines',
   // Fixed value shown in the About stats: update as experience grows.
   yearsOfExperience: '1.5',
@@ -88,10 +99,11 @@ export const assetSectionIds = ['assets'];
 export const portfolioViews = ['portfolio', 'projectlist', 'models', 'assets'];
 
 export const backgroundSectionIds = [
-  'techstack-preview',
-  'certificates',
-  'experiences',
   'educations',
+  'certificates',
+  'skills',
+  'techstack-preview',
+  'experiences',
 ];
 
 export const techstackSectionIds = ['techstack'];
@@ -373,6 +385,71 @@ export const techstackPreview = {
   skills: techstackPreviewSkills,
 };
 
+// Skills on the Overview page (above the Techstack): craft and technical
+// skills only, no job titles or tools. Each group lists its skills per level;
+// a level with no skills is hidden in that card until you add some.
+// Levels, highest first. `tone` picks the white indicator style in skills.css.
+// A level with no skills in a card is simply left out of that card.
+export const skillLevels = {
+  veryGood: { label: 'Very Good', tone: 'bright' },
+  good: { label: 'Good', tone: 'solid' },
+  learning: { label: 'Learning', tone: 'hollow' },
+};
+
+export const skills = {
+  title: 'Skills',
+  subtitle: 'The craft behind my work, grouped by how confident I am in each skill.',
+  groups: [
+    {
+      title: '3D Art',
+      icon: 'ri-shapes-line',
+      context: 'Modeling, unwrapping and rigging assets for real-time games.',
+      levels: {
+        veryGood: [],
+        good: ['Low-Poly', '3D Low-Poly Environment', 'Low-Poly Props', 'UV Unwrapping'],
+        learning: [
+          'High-Poly',
+          '3D Soft Surfaces',
+          '3D High-Poly Vehicle',
+          'Rigging',
+          'Animation',
+          'PS1 Texture',
+        ],
+      },
+    },
+    {
+      title: 'Game Design',
+      icon: 'ri-map-2-line',
+      context: 'Shaping how a game plays, flows and feels.',
+      levels: {
+        veryGood: [],
+        good: ['Player Flow', 'Game Balancing'],
+        learning: ['Pacing', 'Narrative Design'],
+      },
+    },
+    {
+      title: 'Game Testing & QA',
+      icon: 'ri-bug-line',
+      context: 'Finding, reporting and verifying issues before players do.',
+      levels: {
+        veryGood: [],
+        good: ['Playtesting', 'Feedback', 'Bug Reporting'],
+        learning: ['Documentation', 'Test Case', 'Regression Testing'],
+      },
+    },
+    {
+      title: 'Web & UI',
+      icon: 'ri-layout-4-line',
+      context: 'Designing and building interfaces for the web.',
+      levels: {
+        veryGood: [],
+        good: ['UI/UX Design', 'Wireframing', 'Prototyping'],
+        learning: ['Responsive Layout', 'Front-End Development'],
+      },
+    },
+  ],
+};
+
 export const experiences = {
   title: 'Experiences',
   items: [
@@ -458,33 +535,67 @@ export const achievementHighlights = [
   },
 ];
 
+// Education on the Overview page: one featured college card plus a short
+// list of other schools (name and years only).
+//
+// Images: imported from src/assets/images/logos (see the imports at the top).
+// A path in public/ also works, e.g. photo: '/images/education/campus.jpg'.
+// Set a value to null to show a neutral placeholder instead (it also shows if
+// an image fails to load).
+const EDUCATION_FEATURED = {
+  level: 'Undergraduate',
+  school: 'University of Cabuyao',
+  schoolLocalName: 'Pamantasan ng Cabuyao',
+  program: 'Bachelor of Science in Computer Science',
+  department: 'College of Computing Studies', // hidden while empty
+  description:
+    'Pursuing a Bachelor of Science in Computer Science at the University of Cabuyao (Pamantasan ng Cabuyao), one of the leading local colleges and universities in the Philippines.',
+  years: '2023 – 2027',
+  location: 'Cabuyao City, Laguna',
+  photo: schoolPhoto, // campus or building photo, landscape
+  schoolLogo: universityLogo, // square image; shown as a circle (round seals)
+  departmentLogo: departmentLogoImage, // square image; shown as a circle
+  // Map card beside the education cards (a keyless Google Maps embed).
+  map: {
+    query: 'University of Cabuyao, Cabuyao City, Laguna, Philippines',
+    label: 'Cabuyao City, Laguna, Philippines',
+    zoom: 15,
+  },
+};
+
+const EDUCATION_OTHERS = [
+  {
+    level: 'Senior High School · STEM',
+    school: 'Pamantasan ng Cabuyao',
+    years: '2021 – 2023',
+  },
+  {
+    level: 'Junior High School',
+    school: 'Liceo De Cabuyao / Liceo De Calamba',
+    years: '2016 – 2021',
+  },
+];
+
 export const education = {
   title: 'Education',
+  othersTitle: 'Other schools',
+  featured: EDUCATION_FEATURED,
+  others: EDUCATION_OTHERS,
+  // Flat list (newest first) for the profile hero and the portfolio assistant.
   items: [
     {
-      date: '2023 – 2027',
-      level: 'Undergraduate',
-      school: 'Bachelor of Science in Computer Science',
-      institutions: ['University of Cabuyao'],
-      description:
-        'University of Cabuyao (Pamantasan ng Cabuyao) is one of the leading local colleges and universities in the Philippines',
+      date: EDUCATION_FEATURED.years,
+      level: EDUCATION_FEATURED.level,
+      school: EDUCATION_FEATURED.program,
+      institutions: [EDUCATION_FEATURED.school],
+      description: EDUCATION_FEATURED.description,
     },
-    {
-      date: '2021 – 2023',
-      level: 'Senior High School',
-      school: 'Science, Technology, Engineering, and Mathematics (STEM)',
-      institutions: ['Pamantasan ng Cabuyao'],
-      description:
-        'Pamantasan ng Cabuyao (PnC) is one of the leading local colleges and universities in the Philippines',
-    },
-    {
-      date: '2016 – 2021',
-      level: 'Junior High School',
-      school: 'Junior High School',
-      institutions: ['Liceo De Cabuyao', 'Liceo De Calamba'],
-      description:
-        'Liceo aims for holistic excellence of every learner. Excellence towards sanctity.',
-    },
+    ...EDUCATION_OTHERS.map((item) => ({
+      date: item.years,
+      level: item.level,
+      school: item.level,
+      institutions: item.school.split(' / '),
+    })),
   ],
 };
 

@@ -1707,98 +1707,211 @@
 }
 
 /* ==========================================================================
-   Education: formal academic record (one panel, a row per school)
+   Education: featured college card + "Other schools" column
    ========================================================================== */
-.edu-record {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.edu-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: clamp(16px, 2vw, 24px);
+  align-items: stretch;
+}
+
+/* ---- Featured college ---------------------------------------------------- */
+.edu-featured {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+  overflow: hidden;
   background: var(--surface-card);
   border: 1px solid var(--border-glass-strong);
   border-radius: 2px;
   box-shadow: var(--shadow-md);
 }
 
-.edu-record__row {
+.edu-featured__media {
+  position: relative;
+  min-height: 100%;
+  background: #101010;
+  border-right: 1px solid var(--border-glass);
+}
+
+.edu-featured__photo,
+.edu-featured__photo-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.edu-featured__photo {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Shown until a campus photo is set: a quiet blueprint grid with an icon. */
+.edu-featured__photo-placeholder {
   display: grid;
-  grid-template-columns: 56px minmax(150px, 0.9fr) minmax(0, 3fr);
-  gap: clamp(16px, 2.6vw, 36px);
-  align-items: start;
-  padding: clamp(22px, 2.6vw, 30px) clamp(20px, 2.8vw, 36px);
-  transition: background-color 0.2s ease;
+  place-items: center;
+  color: rgba(245, 245, 240, 0.22);
+  font-size: 40px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(245, 245, 240, 0.05), transparent 65%),
+    linear-gradient(rgba(245, 245, 240, 0.04) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(90deg, rgba(245, 245, 240, 0.04) 1px, transparent 1px) 0 0 / 28px 28px,
+    #101010;
 }
 
-.edu-record__row + .edu-record__row {
-  border-top: 1px solid var(--border-glass);
+.edu-featured__body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(22px, 2.6vw, 32px);
 }
 
-.edu-record__row:hover {
-  background-color: rgba(245, 245, 240, 0.02);
-}
-
-.edu-record__index {
-  color: rgba(245, 245, 240, 0.32);
-  font-family: var(--font-heading);
-  font-size: 22px;
-  font-weight: var(--type-heading-weight);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.edu-record__period {
+.edu-featured__header {
   display: grid;
+  gap: 16px;
+}
+
+.edu-featured__logos {
+  display: flex;
   gap: 10px;
-  justify-items: start;
-  padding-top: 3px;
 }
 
-.edu-record__years {
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: var(--type-meta-tracking);
-  white-space: nowrap;
+/* Round slots: both logos are circular seals on a white square, so the
+   circle clips the white corners and leaves just the seal. */
+.edu-featured__logo {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  background: #121212;
+  border: 1px solid var(--border-glass-strong);
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
-.edu-record__status {
-  display: inline-flex;
+.edu-featured__logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Drops the thin white rim of the JPG at the circle's edge. */
+  transform: scale(1.04);
+}
+
+.edu-featured__logo-fallback {
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: var(--type-heading-weight);
+  letter-spacing: 0.04em;
+}
+
+.edu-featured__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 7px;
-  padding: 4px 9px;
+  gap: 8px 12px;
+  margin-bottom: 8px;
   color: var(--text-muted);
   font-size: var(--type-meta-size);
   font-weight: 600;
   letter-spacing: var(--type-meta-tracking);
   text-transform: uppercase;
+}
+
+.edu-featured__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 8px;
   border: 1px solid var(--border-glass);
   border-radius: 2px;
 }
 
-.edu-record__status-dot {
+.edu-featured__status-dot {
   width: 6px;
   height: 6px;
   background: rgba(245, 245, 240, 0.4);
   border-radius: 50%;
 }
 
-.edu-record__status.is-current {
+.edu-featured__status.is-current {
   color: var(--text);
   border-color: var(--border-glass-strong);
 }
 
-.edu-record__status.is-current .edu-record__status-dot {
+.edu-featured__status.is-current .edu-featured__status-dot {
   background: var(--text);
   box-shadow: 0 0 0 3px rgba(245, 245, 240, 0.12);
 }
 
-.edu-record__main {
-  min-width: 0;
+.edu-featured__school {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-card-tracking);
+  line-height: 1.15;
 }
 
-.edu-record__level {
-  display: block;
-  margin-bottom: 6px;
+.edu-featured__local-name {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.edu-featured__program {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-glass);
+}
+
+.edu-featured__program-name {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--type-item-size);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.edu-featured__department {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.edu-featured__desc {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.edu-featured__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: auto 0 0;
+  background: var(--border-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 2px;
+}
+
+.edu-featured__facts > div {
+  padding: 12px 14px;
+  background: #121212;
+}
+
+.edu-featured__facts dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
   color: var(--text-muted);
   font-size: var(--type-meta-size);
   font-weight: 600;
@@ -1806,71 +1919,280 @@
   text-transform: uppercase;
 }
 
-.edu-record__title {
-  margin: 0;
-  color: var(--text);
-  font-family: var(--font-heading);
-  font-size: var(--type-card-size);
-  font-weight: var(--type-heading-weight);
-  letter-spacing: var(--type-card-tracking);
-  line-height: var(--type-card-leading);
+.edu-featured__facts dt i {
+  font-size: 13px;
 }
 
-.edu-record__institutions {
+.edu-featured__facts dd {
+  margin: 0;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ---- Other schools ------------------------------------------------------- */
+/* Right column: Other schools on top, the map filling the rest. */
+.edu-side {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-  margin: 10px 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.edu-others {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border: 1px solid var(--border-glass-strong);
+  border-radius: 2px;
+  box-shadow: var(--shadow-md);
+}
+
+.edu-others__title {
+  margin: 0;
+  padding: 18px 22px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow-size);
+  font-weight: 600;
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.edu-others__list {
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.edu-record__institutions li {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 600;
+.edu-others__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  align-items: baseline;
+  padding: 18px 22px;
 }
 
-.edu-record__institutions i {
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.edu-record__desc {
-  max-width: 68ch;
-  margin: 12px 0 0;
-  padding-top: 12px;
-  color: var(--text-muted);
-  font-size: 14px;
-  line-height: 1.7;
+.edu-others__item + .edu-others__item {
   border-top: 1px solid var(--border-glass);
 }
 
-@media (max-width: 760px) {
-  .edu-record__row {
-    grid-template-columns: 36px minmax(0, 1fr);
-    row-gap: 14px;
+.edu-others__level {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: var(--type-meta-size);
+  font-weight: 600;
+  letter-spacing: var(--type-meta-tracking);
+  text-transform: uppercase;
+}
+
+.edu-others__school {
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-item-tracking);
+  line-height: 1.3;
+}
+
+.edu-others__years {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: var(--type-meta-tracking);
+  white-space: nowrap;
+}
+
+/* ---- Location map ---------------------------------------------------------- */
+.edu-map {
+  position: relative;
+  min-height: 220px;
+  flex: 1 1 auto;
+  margin: 0;
+  overflow: hidden;
+  background: #0c0c0c;
+  border: 1px solid var(--border-glass-strong);
+  border-radius: 2px;
+  box-shadow: var(--shadow-md);
+  isolation: isolate;
+}
+
+/* Google's light map, turned into a muted dark one. */
+.edu-map__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Top bar over the map: location tag on the left, "Open in Google Maps" on
+   the right (wraps under the tag on narrow cards). Kept off the bottom edge,
+   where Google's own controls and attribution sit. */
+.edu-map__bar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  left: 12px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.edu-map__tag {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 11px 0 10px;
+  color: var(--text);
+  font-size: var(--type-meta-size);
+  font-weight: 600;
+  letter-spacing: var(--type-meta-tracking);
+  text-transform: uppercase;
+  background: rgba(12, 12, 12, 0.86);
+  border: 1px solid var(--border-glass-strong);
+  border-radius: 2px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.edu-map__pin {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  background: var(--text);
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(245, 245, 240, 0.55);
+}
+
+.edu-map__pin::after {
+  position: absolute;
+  inset: -5px;
+  content: '';
+  border: 1px solid rgba(245, 245, 240, 0.5);
+  border-radius: 50%;
+  animation: edu-map-pulse 2.2s ease-out infinite;
+}
+
+/* Quiet by default, solid on hover/focus. */
+.edu-map__open {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px;
+  color: var(--text-muted);
+  font-size: var(--type-meta-size);
+  font-weight: 700;
+  letter-spacing: var(--type-meta-tracking);
+  text-decoration: none;
+  text-transform: uppercase;
+  pointer-events: auto;
+  background: rgba(12, 12, 12, 0.86);
+  border: 1px solid var(--border-glass-strong);
+  border-radius: 2px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.edu-map__open i {
+  font-size: 13px;
+}
+
+.edu-map:hover .edu-map__open {
+  color: var(--text);
+}
+
+.edu-map__open:hover,
+.edu-map__open:focus-visible {
+  color: #0c0c0c;
+  background: var(--text);
+  border-color: var(--text);
+}
+
+@keyframes edu-map-pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edu-map__pin::after {
+    animation: none;
+    opacity: 0.4;
   }
 
-  .edu-record__index {
-    font-size: 18px;
+  .edu-map__open {
+    transition: none;
+  }
+}
+
+/* Tablet: the right column moves under the featured card, with Other
+   schools and the map side by side. */
+@media (max-width: 1100px) {
+  .edu-layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  /* Years + status sit on one line above the details. */
-  .edu-record__period {
-    grid-column: 2;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    padding-top: 0;
+  .edu-side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
   }
 
-  .edu-record__main {
-    grid-column: 2;
+  .edu-map {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 720px) {
+  .edu-side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .edu-map {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Phones: the photo sits on top of the featured card. */
+@media (max-width: 720px) {
+  .edu-featured {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .edu-featured__media {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-glass);
+  }
+}
+
+@media (max-width: 420px) {
+  .edu-featured__facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .edu-others__item {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

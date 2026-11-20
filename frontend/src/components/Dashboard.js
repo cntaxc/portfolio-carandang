@@ -17,6 +17,7 @@ import TechstackPreviewSection from './sections/TechstackPreviewSection';
 import TechstackSection from './sections/TechstackSection';
 import ExperienceSection from './sections/ExperienceSection';
 import EducationSection from './sections/EducationSection';
+import SkillsSection from './sections/SkillsSection';
 import ArcadeSection from './sections/ArcadeSection';
 import GrappleGame from './grapple/GrappleGame';
 import RecommendationSubmissionForm from './RecommendationSubmissionForm';
@@ -339,13 +340,16 @@ export default function Dashboard() {
                     }
                   />
                 </div>
-                <BackgroundProfileHero />
+                <BackgroundProfileHero
+                  onViewSkills={() => navigateToSection('skills')}
+                />
+                <EducationSection />
+                <AchievementsRecommendationsSection />
+                <SkillsSection />
                 <TechstackPreviewSection
                   onViewAll={() => navigateToSection('techstack')}
                 />
                 <ExperienceSection />
-                <AchievementsRecommendationsSection />
-                <EducationSection />
               </div>
             </div>
           ) : activeView === 'techstack' ? (
