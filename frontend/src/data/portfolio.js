@@ -114,13 +114,18 @@ export const recommendationSectionIds = [
   'published-recommendations',
 ];
 
+// Resume PDF in public/, used by the hero's "My Resume" button and the CV
+// shortcut. The file name has spaces and a comma, so the URL is encoded.
+const RESUME_FILE = 'CARANDANG, CHRISTIAN RAPHAEL CV.pdf';
+const RESUME_URL = `${process.env.PUBLIC_URL || ''}/${encodeURIComponent(RESUME_FILE)}`;
+
 export const about = {
   title: 'About Me',
   heading: "Hi! I'm Christian",
   eyebrow: 'About Me',
   icon: 'ri-information-line',
   cvLabel: 'MY RESUME',
-  cvUrl: '/Christian-Raphael-Carandang-Resume.pdf',
+  cvUrl: RESUME_URL,
   mailUrl: 'mailto:carandangchristianra@gmail.com',
   paragraphs: [
     "Hello! I'm Christian Raphael A. Carandang, a passionate Computer Science student who enjoys exploring the creative and technical sides of technology. I'm particularly interested in 3D modeling, animation, C# programming, and visual design, where I get to combine creativity with problem-solving to bring ideas to life.",
@@ -131,7 +136,7 @@ export const about = {
 export const floatingActions = {
   actions: [
     { id: 'contact', label: 'Contact', icon: 'ri-mail-line', url: 'mailto:carandangchristianra@gmail.com' },
-    { id: 'cv', label: 'CV', icon: 'ri-download-2-line', url: '/Christian-Raphael-Carandang-Resume.pdf' },
+    { id: 'cv', label: 'CV', icon: 'ri-download-2-line', url: RESUME_URL },
     { id: 'github', label: 'GitHub', icon: 'ri-github-line', url: 'https://github.com/cntaxc' },
     { id: 'linkedin', label: 'LinkedIn', icon: 'ri-linkedin-line', url: 'https://www.linkedin.com/in/christian-carandang-b30015334/' },
   ],
