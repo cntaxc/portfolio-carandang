@@ -1,61 +1,65 @@
 import { useEffect, useState } from 'react';
 
+// A section is "current" once its top has scrolled above this line (a
+// fraction of the viewport height). Matches the section index on the left.
+const ACTIVE_LINE = 0.4;
+
+/**
+ * Scroll-spy: returns the id of the section in view.
+ *
+ * `sectionIds` must be in page order. The current section is the last one
+ * whose top has passed ACTIVE_LINE (so a tall wrapper or a long section can't
+ * stay "stuck" once the next section starts), and the last one when the page
+ * is scrolled to the very bottom. Recomputed on scroll, resize and whenever
+ * the page's height changes (images loading, sections expanding).
+ */
 export default function useActiveSection(sectionIds) {
   const [activeSection, setActiveSection] = useState(sectionIds[0]);
 
   useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') {
-      return undefined;
-    }
+    let frame = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (window.scrollY < 120) {
-          setActiveSection(sectionIds[0]);
-          return;
-        }
-
-        const visibleSections = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        if (visibleSections.length > 0) {
-          setActiveSection(visibleSections[0].target.id);
-        }
-      },
-      {
-        rootMargin: '-35% 0px -55% 0px',
-        threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
-      }
-    );
-
-    sectionIds.forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) {
-        observer.observe(element);
-      }
-    });
-
-    const handleScroll = () => {
-      if (window.scrollY < 120) {
+    const update = () => {
+      frame = 0;
+      const sections = sectionIds
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
+      if (!sections.length) {
         setActiveSection(sectionIds[0]);
         return;
       }
 
-      const reachedBottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 2;
-
-      if (reachedBottom) {
-        setActiveSection(sectionIds[sectionIds.length - 1]);
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom && window.scrollY > 0) {
+        setActiveSection(sections[sections.length - 1].id);
+        return;
       }
+
+      const line = window.innerHeight * ACTIVE_LINE;
+      let current = sections[0].id;
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= line) current = section.id;
+      });
+      setActiveSection(current);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    const resizeObserver =
+      typeof ResizeObserver === 'function' ? new ResizeObserver(schedule) : null;
+    resizeObserver?.observe(document.body);
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      resizeObserver?.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, [sectionIds]);
 

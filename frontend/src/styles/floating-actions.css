@@ -13,11 +13,16 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
+  /* The container (including the hidden panel's space) must not catch
+     clicks or taps meant for the page; only the toggle and the open panel
+     are interactive. */
+  pointer-events: none;
 }
 
 /* ---- Toggle ------------------------------------------------------------- */
 
 .quick-menu__toggle {
+  pointer-events: auto;
   display: grid;
   width: 50px;
   height: 50px;
@@ -168,7 +173,7 @@
 
 .quick-menu__group-title {
   margin: 4px 12px 6px;
-  color: rgba(245, 245, 240, 0.5);
+  color: rgba(244, 236, 216, 0.5);
   font-family: var(--font-body);
   font-size: 10px;
   font-weight: 700;
@@ -280,11 +285,47 @@
 }
 
 .quick-menu__trailing {
-  color: rgba(245, 245, 240, 0.4);
+  color: rgba(244, 236, 216, 0.4);
   font-size: 16px;
   transition:
     color 0.16s ease,
     transform 0.2s ease;
+}
+
+/* Sound effects On/Off switch (Settings group). */
+.quick-menu__switch {
+  position: relative;
+  width: 34px;
+  height: 18px;
+  background: transparent;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 9px;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.quick-menu__switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: var(--ink-72, #aeaeae);
+  border-radius: 50%;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.quick-menu__switch.is-on {
+  background: var(--ink-100, #eeeeee);
+  border-color: var(--ink-100, #eeeeee);
+}
+
+.quick-menu__switch.is-on .quick-menu__switch-knob {
+  background: #0c0c0c;
+  transform: translateX(16px);
 }
 
 .quick-menu__item:hover .quick-menu__trailing,
@@ -317,6 +358,8 @@
   .quick-menu__item,
   .quick-menu__icon,
   .quick-menu__trailing,
+  .quick-menu__switch,
+  .quick-menu__switch-knob,
   .quick-menu__bars span {
     transition: none;
   }

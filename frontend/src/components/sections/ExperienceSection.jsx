@@ -1,4 +1,5 @@
 import SectionHeading from '../SectionHeading';
+import SectionEyebrow from '../SectionEyebrow';
 import { experiences } from '../../data/portfolio';
 
 export default function ExperienceSection() {
@@ -8,7 +9,10 @@ export default function ExperienceSection() {
       className="section section-panel section-panel--experiences"
       data-reveal
     >
-      <SectionHeading title={experiences.title} />
+      <SectionHeading
+        title={experiences.title}
+        eyebrow={<SectionEyebrow sectionId="experiences" />}
+      />
       <div className="experience-timeline">
         {experiences.items.map((item, index) => (
           <article

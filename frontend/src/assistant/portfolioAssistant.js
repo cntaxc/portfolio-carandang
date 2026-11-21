@@ -150,8 +150,6 @@ const SKILL_ALIASES = {
   'Tailwind CSS': ['tailwind', 'tailwind css'],
   'Lua Script': ['lua', 'lua script'],
   'C#': ['c#', 'c sharp', 'csharp'],
-  'Node.js': ['node', 'node.js', 'nodejs'],
-  PostgreSQL: ['postgresql', 'postgres'],
   'GML (GameMaker Language)': ['gml', 'gamemaker language'],
   'ONNX Runtime': ['onnx', 'onnx runtime'],
   'Paint.NET': ['paint.net', 'paintnet'],
@@ -240,7 +238,6 @@ const organizationEntries = [...new Set(kb.experience.map((item) => item.organiz
 
 const SKILL_CATEGORY_TERMS = {
   FRONTEND: ['frontend', 'front-end', 'front end', 'ui development', 'web development'],
-  BACKEND: ['backend', 'back-end', 'back end', 'server', 'database*'],
   'GAME DEVELOPMENT': ['game dev', 'game development', 'game engine*', 'gamedev'],
   '3D & CREATIVE TOOLS': ['creative tool*', 'design tool*', 'creative software', 'art tool*'],
   'DEVELOPMENT TOOLS': ['dev tool*', 'development tool*', 'devops', 'version control', 'ide', 'ides'],

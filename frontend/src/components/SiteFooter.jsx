@@ -110,7 +110,7 @@ export default function SiteFooter({ onNavigate }) {
             </FooterLink>
             {internalLink('projectlist', 'Developed Software')}
             {internalLink('models', '3D Models')}
-            {internalLink('background', 'Overview')}
+            {internalLink('techstack', 'Techstack')}
           </nav>
 
           <nav className="site-footer__column" aria-label="Social networks">

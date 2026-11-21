@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import TopNavigation from './TopNavigation';
 import FloatingActions from './FloatingActions';
 import BackButton from './BackButton';
-import IntroHero from './sections/IntroHero';
-import AboutSection from './sections/AboutSection';
+import HomeHero from './sections/HomeHero';
+import JourneySection from './sections/JourneySection';
 import ProjectsSection from './sections/ProjectsSection';
 import ContactSection from './sections/ContactSection';
 import ProjectListSection from './sections/ProjectListSection';
@@ -12,60 +12,71 @@ import ModelsSection from './sections/ModelsSection';
 import FreeAssetsSection from './sections/FreeAssetsSection';
 import AIChatbotSection from './sections/AIChatbotSection';
 import AchievementsRecommendationsSection from './sections/AchievementsRecommendationsSection';
-import BackgroundProfileHero from './sections/BackgroundProfileHero';
 import TechstackPreviewSection from './sections/TechstackPreviewSection';
 import TechstackSection from './sections/TechstackSection';
 import ExperienceSection from './sections/ExperienceSection';
 import EducationSection from './sections/EducationSection';
-import SkillsSection from './sections/SkillsSection';
-import ArcadeSection from './sections/ArcadeSection';
 import GrappleGame from './grapple/GrappleGame';
 import RecommendationSubmissionForm from './RecommendationSubmissionForm';
 import RecommendationsGrid from './RecommendationsGrid';
+import RecommendationsCarousel from './RecommendationsCarousel';
 import SiteFooter from './SiteFooter';
 import BackToTop from './BackToTop';
+import SectionIndex from './SectionIndex';
+import TerminalClock from './TerminalClock';
 import useActiveSection from '../hooks/useActiveSection';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import useScrollReveal from '../hooks/useScrollReveal';
+import '../styles/journey-polish.css';
+import '../styles/typography.css';
 import {
+  aiSectionIds,
   assetSectionIds,
-  backgroundSectionIds,
+  contactSectionIds,
   homeSectionIds,
+  journeyIndex,
+  journeySectionIds,
   modelSectionIds,
   portfolioSectionIds,
   projectListSectionIds,
   recommendationSectionIds,
+  sectionAliases,
   techstackSectionIds,
 } from '../data/portfolio';
 
 const subpageViews = new Set([
+  'journey',
+  'contact',
+  'aichatbot',
   'portfolio',
   'projectlist',
   'models',
   'assets',
-  'background',
   'techstack',
   'recommendation',
 ]);
 // Where a subpage's Back button goes when there is no history entry to
 // return to (e.g. the page was opened directly from a link).
 const subpageFallbacks = {
+  journey: 'home',
+  contact: 'home',
+  aichatbot: 'home',
   portfolio: 'home',
   projectlist: 'portfolio',
   models: 'portfolio',
   assets: 'portfolio',
-  background: 'portfolio',
-  techstack: 'background',
+  techstack: 'techstack-preview',
   recommendation: 'home',
 };
 // Sections that are the top of their own view: navigating to them scrolls to
 // the top of the page instead of to the element.
 const viewTopSections = new Set([
+  'journey',
+  'contact',
+  'aichatbot',
   'portfolio',
   'models',
   'assets',
-  'background',
-  'moreinfos',
   'recommendation',
 ]);
 
@@ -74,10 +85,25 @@ function getScrollBehavior() {
     typeof window.matchMedia === 'function' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  return prefersReducedMotion ? 'auto' : 'smooth';
+  return prefersReducedMotion ? 'instant' : 'smooth';
 }
 
-function getViewForSection(sectionId) {
+// Old section ids (from removed pages) map to where that content lives now.
+function resolveSection(sectionId) {
+  return sectionAliases[sectionId] || sectionId;
+}
+
+function getViewForSection(rawSectionId) {
+  const sectionId = resolveSection(rawSectionId);
+  if (journeySectionIds.includes(sectionId)) {
+    return 'journey';
+  }
+  if (contactSectionIds.includes(sectionId)) {
+    return 'contact';
+  }
+  if (aiSectionIds.includes(sectionId)) {
+    return 'aichatbot';
+  }
   if (portfolioSectionIds.includes(sectionId)) {
     return 'portfolio';
   }
@@ -96,13 +122,6 @@ function getViewForSection(sectionId) {
   if (techstackSectionIds.includes(sectionId)) {
     return 'techstack';
   }
-  if (
-    sectionId === 'background' ||
-    sectionId === 'moreinfos' ||
-    backgroundSectionIds.includes(sectionId)
-  ) {
-    return 'background';
-  }
   return 'home';
 }
 
@@ -117,6 +136,9 @@ export default function Dashboard() {
   const [hasOpenedGame, setHasOpenedGame] = useState(false);
   // Browser tab title follows the current page (or the game while it's open).
   useDocumentTitle(isGameOpen ? 'game' : activeView);
+  const navigateRef = useRef(null);
+  const startJourney = useCallback(() => navigateRef.current?.('journey'), []);
+  const goHome = useCallback(() => navigateRef.current?.('home'), []);
   const openGame = () => {
     setHasOpenedGame(true);
     // Open on the next frame so the view fades in even on first launch.
@@ -125,9 +147,7 @@ export default function Dashboard() {
   const pendingSection = useRef(null);
   const lastHandledHash = useRef(null);
   const activeSection = useActiveSection(
-    activeView === 'background'
-      ? backgroundSectionIds
-      : activeView === 'portfolio'
+    activeView === 'portfolio'
         ? portfolioSectionIds
         : activeView === 'models'
           ? modelSectionIds
@@ -139,17 +159,27 @@ export default function Dashboard() {
           ? recommendationSectionIds
           : activeView === 'techstack'
             ? techstackSectionIds
-            : homeSectionIds
+            : activeView === 'contact'
+                ? contactSectionIds
+                : activeView === 'aichatbot'
+                  ? aiSectionIds
+                  : activeView === 'journey'
+                    ? journeySectionIds
+                    : homeSectionIds
   );
   useScrollReveal(activeView);
 
-  const scrollToSection = useCallback((sectionId) => {
+  // Same page: smooth scroll straight to the section. Right after a page
+  // switch (`instant`), jump there directly so the new page doesn't animate
+  // down from the top.
+  const scrollToSection = useCallback((sectionId, { instant = false } = {}) => {
+    const behavior = instant ? 'instant' : getScrollBehavior();
     if (viewTopSections.has(sectionId)) {
-      window.scrollTo({ top: 0, behavior: getScrollBehavior() });
+      window.scrollTo({ top: 0, behavior });
       return;
     }
 
-    const section = document.getElementById(sectionId);
+    const section = document.getElementById(resolveSection(sectionId));
     if (!section) {
       console.error(`Cannot navigate to missing section "${sectionId}".`);
       return;
@@ -162,10 +192,11 @@ export default function Dashboard() {
       });
     }
 
-    section.scrollIntoView({ behavior: getScrollBehavior(), block: 'start' });
+    section.scrollIntoView({ behavior, block: 'start' });
   }, []);
 
-  const navigateToSection = (sectionId, { replace = false } = {}) => {
+  const navigateToSection = (rawSectionId, { replace = false } = {}) => {
+    const sectionId = resolveSection(rawSectionId);
     const nextView = getViewForSection(sectionId);
     const nextHash = `#${sectionId}`;
     const currentHash = window.location.hash;
@@ -193,7 +224,7 @@ export default function Dashboard() {
       return;
     }
 
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
     pendingSection.current = sectionId;
     setActiveView(nextView);
   };
@@ -229,7 +260,7 @@ export default function Dashboard() {
         return;
       }
 
-      window.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
       pendingSection.current = sectionId;
       setActiveView(nextView);
     };
@@ -266,7 +297,7 @@ export default function Dashboard() {
     lastHandledHash.current = sectionId;
 
     const frame = window.requestAnimationFrame(() => {
-      scrollToSection(sectionId);
+      scrollToSection(sectionId, { instant: true });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [activeView, scrollToSection]);
@@ -277,9 +308,9 @@ export default function Dashboard() {
     const sectionId = window.location.hash.slice(1);
     const frame = window.requestAnimationFrame(() => {
       if (sectionId) {
-        scrollToSection(sectionId);
+        scrollToSection(sectionId, { instant: true });
       } else {
-        window.scrollTo({ top: 0, behavior: 'auto' });
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }
     });
     return () => {
@@ -292,20 +323,26 @@ export default function Dashboard() {
     document.body.dataset.theme = 'dark';
   }, []);
 
+  // Homepage "Press [Enter] to my journey" button / Enter key: open the
+  // Journey level tree.
+  // Stable callback (latest navigate function via a ref).
+  navigateRef.current = navigateToSection;
+
   return (
     <div className="app-shell" data-theme="dark">
-      <TopNavigation
-        activeSection={activeSection}
-        activeView={activeView}
-        onNavigate={navigateToSection}
-      />
+      {/* No navigation bar on the homepage: it's a distraction-free hero. */}
+      {activeView !== 'home' ? (
+        <TopNavigation
+          activeSection={activeSection}
+          activeView={activeView}
+          onNavigate={navigateToSection}
+        />
+      ) : null}
       <main className="main">
         <div
           key={activeView}
           id={
-            activeView === 'background'
-              ? 'background'
-              : activeView === 'recommendation'
+            activeView === 'recommendation'
                 ? 'recommendation'
                 : activeView === 'projectlist'
                   ? 'projectlist-page'
@@ -318,9 +355,6 @@ export default function Dashboard() {
               <PortfolioHubSection
                 onSelectCategory={navigateToSection}
               />
-              <div className="portfolio-arcade">
-                <ArcadeSection onPlay={openGame} />
-              </div>
             </>
           ) : activeView === 'projectlist' ? (
             <ProjectListSection
@@ -334,28 +368,6 @@ export default function Dashboard() {
             <FreeAssetsSection
               onBack={() => handleSubpageBack(subpageFallbacks.assets)}
             />
-          ) : activeView === 'background' ? (
-            <div className="lower-sections more-page">
-              <div className="lower-sections__inner">
-                <div className="page-topbar">
-                  <BackButton
-                    onClick={() =>
-                      handleSubpageBack(subpageFallbacks.background)
-                    }
-                  />
-                </div>
-                <BackgroundProfileHero
-                  onViewSkills={() => navigateToSection('skills')}
-                />
-                <EducationSection />
-                <AchievementsRecommendationsSection />
-                <SkillsSection />
-                <TechstackPreviewSection
-                  onViewAll={() => navigateToSection('techstack')}
-                />
-                <ExperienceSection />
-              </div>
-            </div>
           ) : activeView === 'techstack' ? (
             <div className="lower-sections techstack-page">
               <div className="lower-sections__inner">
@@ -378,37 +390,77 @@ export default function Dashboard() {
                 <RecommendationsGrid />
               </div>
             </div>
-          ) : (
+          ) : activeView === 'journey' ? (
+            // My Journey: intro + level tree, then the About content below.
             <>
-              <IntroHero />
-
-              <div className="main__inner">
-                <AboutSection
-                  onViewRecommendations={() =>
-                    navigateToSection('recommendation')
-                  }
-                  onViewOverview={() => navigateToSection('background')}
-                />
+              <JourneySection onNavigate={navigateToSection} onHome={goHome} />
+              <SectionIndex sections={journeyIndex} label="Journey page sections" />
+              <TerminalClock />
+              <div className="journey-about">
+                <div className="main__inner main__inner--projects">
+                  <ProjectsSection
+                    onViewProjects={() => navigateToSection('projectlist')}
+                  />
+                </div>
+                {/* Recommendations, directly below Projects. */}
+                <div className="main__inner journey-recommendations">
+                  <RecommendationsCarousel
+                    onViewRecommendations={() => navigateToSection('recommendation')}
+                  />
+                </div>
+                {/* From the Overview page: Education, Achievements, Techstack, Experiences. */}
+                <div className="lower-sections__inner journey-overview">
+                  <EducationSection />
+                  <AchievementsRecommendationsSection />
+                  <TechstackPreviewSection
+                    onViewAll={() => navigateToSection('techstack')}
+                  />
+                  <ExperienceSection />
+                </div>
+                <BackToTop onClick={() => navigateToSection('journey')} />
               </div>
-
-              <div className="main__inner main__inner--projects">
-                <ProjectsSection
-                  onViewProjects={() => navigateToSection('projectlist')}
-                />
+            </>
+          ) : activeView === 'contact' ? (
+            // Contact page.
+            <div className="standalone-page">
+              <div className="main__inner standalone-page__topbar">
+                <div className="page-topbar">
+                  <BackButton
+                    onClick={() => handleSubpageBack(subpageFallbacks.contact)}
+                  />
+                </div>
               </div>
               <ContactSection
                 onAskAssistant={() => navigateToSection('aichatbot')}
               />
+            </div>
+          ) : activeView === 'aichatbot' ? (
+            // AI assistant page.
+            <div className="standalone-page">
+              <div className="main__inner standalone-page__topbar">
+                <div className="page-topbar">
+                  <BackButton
+                    onClick={() => handleSubpageBack(subpageFallbacks.aichatbot)}
+                  />
+                </div>
+              </div>
               <AIChatbotSection />
-              <BackToTop onClick={() => navigateToSection('home')} />
-            </>
+            </div>
+          ) : (
+            // Homepage: a single full-screen hero.
+            <HomeHero
+              onStartJourney={startJourney}
+              onContact={() => navigateToSection('contact')}
+            />
           )}
         </div>
       </main>
-      <SiteFooter onNavigate={navigateToSection} />
+      {/* The homepage is a single screen, so it has no footer. */}
+      {activeView !== 'home' ? <SiteFooter onNavigate={navigateToSection} /> : null}
       <FloatingActions
         onOpenChat={() => navigateToSection('aichatbot')}
         onOpenContact={() => navigateToSection('contact')}
+        onPlayGame={openGame}
       />
       {hasOpenedGame ? (
         <GrappleGame isOpen={isGameOpen} onExit={() => setIsGameOpen(false)} />

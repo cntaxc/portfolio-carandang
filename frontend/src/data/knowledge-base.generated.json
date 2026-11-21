@@ -163,56 +163,6 @@
       ]
     },
     {
-      "category": "BACKEND",
-      "items": [
-        {
-          "name": "Java",
-          "level": "Intermediate",
-          "context": "Backend and academic development"
-        },
-        {
-          "name": "PHP",
-          "level": "Familiar",
-          "context": "Backend web development"
-        },
-        {
-          "name": "Python",
-          "level": "Familiar",
-          "context": "Scripting, AI experiments and tooling"
-        },
-        {
-          "name": "Node.js",
-          "level": "Familiar",
-          "context": "APIs and server-side JavaScript"
-        },
-        {
-          "name": "Laravel",
-          "level": "Familiar",
-          "context": "PHP web applications"
-        },
-        {
-          "name": "PostgreSQL",
-          "level": "Familiar",
-          "context": "Relational data modeling"
-        },
-        {
-          "name": "MySQL",
-          "level": "Familiar",
-          "context": "Relational databases"
-        },
-        {
-          "name": "Lua Script",
-          "level": "Familiar",
-          "context": "Gameplay scripting and systems"
-        },
-        {
-          "name": "C#",
-          "level": "Intermediate",
-          "context": "Unity gameplay and tooling"
-        }
-      ]
-    },
-    {
       "category": "GAME DEVELOPMENT",
       "items": [
         {

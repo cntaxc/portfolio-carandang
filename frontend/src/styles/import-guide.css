@@ -185,7 +185,7 @@
   height: 30px;
   place-items: center;
   color: var(--text);
-  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   border: 1px solid var(--border-strong);
   border-radius: 2px;
@@ -207,7 +207,7 @@
 .import-guide code {
   padding: 1px 6px;
   color: var(--text);
-  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   white-space: nowrap;
   background: rgba(245, 245, 240, 0.06);

@@ -5,7 +5,9 @@ export const SITE_TITLE = 'Carandang Portfolio'; // fallback for unknown pages
 
 export const PAGE_TITLES = {
   home: 'Homepage',
-  background: 'Overview',
+  journey: 'My Journey',
+  contact: 'Contact',
+  aichatbot: 'AI Assistant',
   portfolio: 'Portfolio',
   projectlist: 'Developed Software',
   models: '3D Model Projects',

@@ -159,7 +159,7 @@ export default function ContactSection({ onAskAssistant }) {
             >
               <i className="ri-sparkling-2-line" aria-hidden="true"></i>
               <span>AI assistant</span>
-              <i className="ri-arrow-down-line" aria-hidden="true"></i>
+              <i className="ri-arrow-right-line" aria-hidden="true"></i>
             </a>
           </div>
           <p className="contact-section__status" role="status" aria-live="polite">

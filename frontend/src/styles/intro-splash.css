@@ -249,6 +249,8 @@
 
 /* While the intro plays, hold the hero's entrance animations at their first
    frame so they run when the intro zooms out, not hidden behind it. */
+html.is-intro-playing .home-hero,
+html.is-intro-playing .home-hero *,
 html.is-intro-playing .intro-hero,
 html.is-intro-playing .intro-hero * {
   animation-play-state: paused !important;

@@ -8,8 +8,8 @@
 
 /* ==========================================================================
    Top navigation: edge-to-edge bar flush with the top of the viewport
-   (logo | Home About Projects More | Portfolio), glass-dark so it stays
-   legible over the hero.
+   (robot = Home | section links | AI Assistant, Contact Christian),
+   glass-dark once scrolled so it stays legible over the content.
    ========================================================================== */
 
 .top-navigation {
@@ -24,10 +24,10 @@
 .top-navigation__bar {
   display: grid;
   width: 100%;
-  /* Equal side columns keep the center links truly centered. */
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  /* robot | links (take the free space, centered) | actions */
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding: 22px clamp(18px, 3vw, 36px) 12px;
   color: var(--text);
   /* At the very top: fully transparent, so the hero shows through. The
@@ -50,7 +50,7 @@
    links stay readable over the content. */
 .top-navigation.is-scrolled .top-navigation__bar {
   background: rgba(12, 12, 12, 0.82);
-  border-bottom-color: rgba(245, 245, 240, 0.12);
+  border-bottom-color: var(--ink-28, #4b4b4b);
   box-shadow: 0 12px 38px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -210,45 +210,46 @@
   }
 }
 
-/* ---- Center: main links ------------------------------------------------- */
+/* ---- Center: section links ------------------------------------------------ */
 
 .top-navigation__center {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
 }
 
 .top-navigation__link {
   display: inline-flex;
-  min-height: 42px;
+  min-height: 40px;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 0 18px;
-  color: rgba(245, 245, 240, 0.72);
+  padding: 0 10px;
+  color: var(--ink-72, #aeaeae);
   font: inherit;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.02em;
   text-decoration: none;
   white-space: nowrap;
   position: relative;
   background: transparent;
   border: 0;
-  border-radius: 0;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 /* Underline: hidden at the center, grows out to both sides on hover and
-   stays full width on the current page (and while More is open). */
+   stays full width on the current section. */
 .top-navigation__link::after {
   position: absolute;
-  right: 18px;
+  right: 10px;
   bottom: 6px;
-  left: 18px;
+  left: 10px;
   height: 2px;
   content: '';
-  background: var(--text);
+  background: var(--ink-100, #eeeeee);
   border-radius: 1px;
   transform: scaleX(0);
   transform-origin: center;
@@ -256,147 +257,218 @@
 }
 
 .top-navigation__link:hover,
-.top-navigation__link.is-active,
-.top-navigation__more-toggle[aria-expanded='true'] {
-  color: var(--text);
+.top-navigation__link.is-active {
+  color: var(--ink-100, #eeeeee);
 }
 
 .top-navigation__link:hover::after,
 .top-navigation__link:focus-visible::after,
-.top-navigation__link.is-active::after,
-.top-navigation__more-toggle[aria-expanded='true']::after {
+.top-navigation__link.is-active::after {
   transform: scaleX(1);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .top-navigation__link::after {
-    transition: none;
-  }
-}
-
 .top-navigation__link:focus-visible,
-.top-navigation__dropdown-link:focus-visible {
-  outline: 2px solid var(--text);
+.top-navigation__action:focus-visible,
+.top-navigation__menu-toggle:focus-visible,
+.top-navigation__menu-link:focus-visible {
+  outline: 1px solid var(--ink-100, #eeeeee);
   outline-offset: 2px;
 }
 
-/* ---- Right: Portfolio ------------------------------------------------------ */
+/* ---- Right: AI Assistant / Contact Christian ------------------------------- */
 
-.top-navigation__end {
+.top-navigation__actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   justify-self: end;
-  gap: 6px;
+  gap: 8px;
 }
 
-/* Portfolio: outlined so it reads as the main call to action. */
-/* Portfolio uses the shared "fancy" button (fancy-button.css). Its border
-   gaps are painted dark so they read as gaps over the dark hero and page. */
 .top-navigation__action {
-  --fancy-gap: #0c0c0c;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 14px;
+  color: var(--ink-100, #eeeeee);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: #1f1f1f;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 5px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
-.top-navigation__more {
+.top-navigation__action i {
+  font-size: 15px;
+}
+
+.top-navigation__action:hover,
+.top-navigation__action.is-active {
+  border-color: var(--ink-72, #aeaeae);
+}
+
+/* Contact Christian: the filled (primary) one. */
+.top-navigation__action--primary {
+  color: #0c0c0c;
+  background: var(--ink-100, #eeeeee);
+  border-color: var(--ink-100, #eeeeee);
+}
+
+.top-navigation__action--primary:hover,
+.top-navigation__action--primary.is-active {
+  color: var(--ink-100, #eeeeee);
+  background: #1f1f1f;
+  border-color: var(--ink-100, #eeeeee);
+}
+
+/* ---- Menu dropdown (section links on narrower screens) ---------------------- */
+
+.top-navigation__menu {
   position: relative;
+  display: none;
+  justify-self: center;
 }
 
-.top-navigation__more-toggle i {
+.top-navigation__menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 14px;
+  color: var(--ink-100, #eeeeee);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.top-navigation__menu-toggle i {
   font-size: 16px;
-  transition: transform 0.2s ease;
 }
 
-.top-navigation__more-toggle i.is-open {
-  transform: rotate(180deg);
+.top-navigation__menu-toggle:hover,
+.top-navigation__menu-toggle.is-open {
+  border-color: var(--ink-72, #aeaeae);
 }
 
-.top-navigation__dropdown {
+.top-navigation__menu-panel {
   position: absolute;
-  top: calc(100% + 14px);
+  top: calc(100% + 10px);
   left: 50%;
   display: grid;
-  min-width: 210px;
+  min-width: 230px;
+  padding: 6px;
+  background: #0c0c0c;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 5px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   transform: translateX(-50%);
-  gap: 4px;
-  padding: 8px;
-  background: rgba(12, 12, 12, 0.96);
-  border: 1px solid rgba(245, 245, 240, 0.14);
-  border-radius: 16px;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.48);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  animation: nav-menu-in 0.18s ease both;
 }
 
-.top-navigation__dropdown-group {
-  display: grid;
-  gap: 4px;
-}
-
-/* The center links are only repeated in the dropdown on small screens. */
-.top-navigation__dropdown-group--compact {
-  display: none;
-}
-
-.top-navigation__dropdown-link {
+.top-navigation__menu-link {
   display: flex;
-  min-height: 42px;
   align-items: center;
   gap: 10px;
-  padding: 0 12px;
-  color: rgba(245, 245, 240, 0.76);
-  font-size: 13.5px;
+  padding: 10px 12px;
+  color: var(--ink-72, #aeaeae);
+  font-size: 12px;
+  font-weight: 600;
   text-decoration: none;
-  border-radius: 10px;
+  border-left: 2px solid transparent;
+  border-radius: 3px;
   transition:
     color 0.2s ease,
     background-color 0.2s ease;
 }
 
-.top-navigation__dropdown-link i {
-  width: 17px;
-  color: rgba(245, 245, 240, 0.6);
-  font-size: 16px;
-  text-align: center;
+.top-navigation__menu-link i {
+  color: var(--ink-28, #4b4b4b);
+  font-size: 15px;
+  transition: color 0.2s ease;
 }
 
-.top-navigation__dropdown-link:hover,
-.top-navigation__dropdown-link.is-active {
-  color: var(--text);
-  background: rgba(245, 245, 240, 0.09);
+.top-navigation__menu-link:hover,
+.top-navigation__menu-link.is-active {
+  color: var(--ink-100, #eeeeee);
+  background: #1f1f1f;
 }
 
-.top-navigation__dropdown-link:hover i,
-.top-navigation__dropdown-link.is-active i {
-  color: var(--text);
+.top-navigation__menu-link:hover i,
+.top-navigation__menu-link.is-active i {
+  color: var(--ink-100, #eeeeee);
 }
 
-/* ---- Small screens -------------------------------------------------------- */
+.top-navigation__menu-link.is-active {
+  border-left-color: var(--ink-100, #eeeeee);
+}
 
-/* Not enough room for every link: Home / About / Projects move into More,
-   which stays centered (logo | More | Portfolio). */
-@media (max-width: 720px) {
-  .top-navigation__bar {
-    padding: 14px 14px 8px;
+@keyframes nav-menu-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -4px);
   }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
 
-  .top-navigation__center > .top-navigation__link {
+@media (prefers-reduced-motion: reduce) {
+  .top-navigation__link::after,
+  .top-navigation__menu-panel {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ---- Breakpoints --------------------------------------------------------------- */
+
+/* Not enough room for every link: they move into the Menu dropdown. */
+@media (max-width: 1359px) {
+  .top-navigation__center {
     display: none;
   }
 
-  .top-navigation__dropdown-group--compact {
-    display: grid;
-    padding-bottom: 4px;
-    border-bottom: 1px solid rgba(245, 245, 240, 0.1);
+  .top-navigation__menu {
+    display: block;
   }
 }
 
-@media (max-width: 380px) {
-  .top-navigation__link {
-    padding: 0 12px;
+/* Phones: the action buttons keep only their icons. */
+@media (max-width: 720px) {
+  .top-navigation__bar {
+    gap: 10px;
+    padding: 14px 14px 8px;
   }
 
   .top-navigation__action {
-    padding: 0.8em 1.2em;
+    width: 38px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .top-navigation__action-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 }
 
@@ -517,3 +589,45 @@
 }
 
 /* The quick-actions menu (bottom-right) is styled in floating-actions.css. */
+
+/* About content under the Journey tree (#about, #projects): the same dark
+   grid backdrop as the Journey sections, with a divider above it. */
+.journey-about {
+  position: relative;
+  padding-top: clamp(48px, 7vh, 80px);
+  background-color: #0c0c0c;
+  isolation: isolate;
+}
+
+.journey-about::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(238, 238, 238, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(238, 238, 238, 0.045) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 64px 64px;
+}
+
+/* Section anchors land below the fixed navigation bar. */
+.journey-about .section {
+  scroll-margin-top: 88px;
+}
+
+/* Overview sections at the bottom of the Journey page. */
+.journey-overview {
+  padding-bottom: clamp(32px, 6vh, 64px);
+}
+
+/* Contact and AI assistant pages: a Back button above the section, clear of
+   the fixed navigation bar. */
+.standalone-page {
+  padding-top: 112px;
+}
+
+.standalone-page__topbar {
+  gap: 0;
+}

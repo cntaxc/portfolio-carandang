@@ -1,0 +1,520 @@
+/* ==========================================================================
+   Techstack ("What I work with"), capabilities layout:
+   header + intro · numbered list / detail panel · daily toolkit strip ·
+   divided columns. Terminal palette: #0C0C0C canvas, #1F1F1F surfaces,
+   cream ink tokens, #4B4B4B hairlines, monospace, 5px corners.
+   ========================================================================== */
+
+.stack {
+  --stack-line: var(--ink-28, #4b4b4b);
+  --stack-ink: var(--ink-100, #eeeeee);
+  --stack-muted: var(--ink-72, #aeaeae);
+}
+
+/* ---- Header: eyebrow + title (left), intro (right), divider below -------- */
+
+.stack__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 24px clamp(24px, 5vw, 80px);
+  padding-bottom: clamp(24px, 4vh, 36px);
+  border-bottom: 1px solid var(--stack-line);
+}
+
+
+/* Two lines: solid, then outlined (same treatment as the hero titles). */
+.stack__title {
+  display: grid;
+  margin: 0;
+  color: var(--stack-ink);
+  font-size: clamp(40px, 5.6vw, 88px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.stack__title span + span {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--stack-ink);
+}
+
+
+/* Far right, sitting on the divider line below. */
+.stack__view-all {
+  justify-self: end;
+  margin-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--stack-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--stack-line);
+  padding-bottom: 3px;
+  transition: border-color 0.2s ease;
+}
+
+.stack__view-all:hover,
+.stack__view-all:focus-visible {
+  border-bottom-color: var(--stack-ink);
+}
+
+/* ---- Groups: list (left ~40%) + detail (right ~60%) ----------------------- */
+
+.stack__split {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  margin-top: clamp(28px, 4.5vh, 44px);
+}
+
+.stack-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-right: 1px solid var(--stack-line);
+}
+
+.stack-list__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+  width: 100%;
+  padding: 22px 22px 22px 16px;
+  color: var(--stack-muted);
+  font-family: var(--font-mono);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--stack-line);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.stack-list__item::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  content: '';
+  background: var(--stack-ink);
+  transform: scaleY(0);
+  transition: transform 0.25s ease;
+}
+
+.stack-list__index {
+  padding-top: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.stack-list__text {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.stack-list__title {
+  color: var(--stack-ink);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stack-list__subtitle {
+  font-size: 12px;
+}
+
+/* Small ring on the active row (like the reference's selection marker). */
+.stack-list__ring {
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  border: 1px solid var(--stack-line);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.stack-list__item:hover {
+  background: rgba(244, 236, 216, 0.03);
+}
+
+.stack-list__item.is-active {
+  color: var(--stack-muted);
+  background: #1f1f1f;
+}
+
+.stack-list__item.is-active::before {
+  transform: scaleY(1);
+}
+
+.stack-list__item.is-active .stack-list__index {
+  color: var(--stack-ink);
+}
+
+.stack-list__item.is-active .stack-list__ring {
+  opacity: 1;
+  border-color: var(--stack-muted);
+}
+
+.stack-list__item:focus-visible {
+  outline: 1px solid var(--stack-ink);
+  outline-offset: -3px;
+}
+
+/* Detail panel */
+.stack-detail {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 18px;
+  padding: clamp(24px, 3vw, 40px) 0 clamp(24px, 3vw, 40px) clamp(24px, 3vw, 44px);
+  animation: stack-detail-in 0.35s ease both;
+}
+
+.stack-detail__index {
+  color: var(--stack-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.stack-detail__headline {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--stack-ink);
+  font-size: clamp(30px, 3.8vw, 58px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.stack-detail__desc {
+  max-width: 58ch;
+  margin: 0;
+  color: var(--stack-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.stack-detail__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stack-detail__tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  color: var(--stack-ink);
+  font-size: 11.5px;
+  border: 1px solid var(--stack-line);
+  border-radius: 3px;
+  transition: border-color 0.2s ease;
+}
+
+.stack-detail__tags li:hover {
+  border-color: var(--stack-muted);
+}
+
+.stack-detail__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  color: var(--stack-muted);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  list-style: none;
+}
+
+.stack-detail__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Level dot: filled = proficient, half = intermediate, ring = familiar. */
+.stack-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--stack-ink);
+  border-radius: 50%;
+}
+
+.stack-dot--proficient {
+  background: var(--stack-ink);
+}
+
+.stack-dot--intermediate {
+  background: linear-gradient(90deg, var(--stack-ink) 50%, transparent 50%);
+}
+
+.stack-dot--familiar {
+  border-color: var(--stack-muted);
+}
+
+@keyframes stack-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- Daily toolkit strip ----------------------------------------------------- */
+
+.stack-toolkit {
+  display: grid;
+  gap: 14px;
+  margin-top: clamp(28px, 4.5vh, 44px);
+  padding: 16px 0 18px;
+  background: #1f1f1f;
+  border: 1px solid var(--stack-line);
+  border-radius: 5px;
+}
+
+.stack-toolkit__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+}
+
+.stack-toolkit__label {
+  color: var(--stack-ink);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.stack-toolkit__rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--stack-line);
+}
+
+.stack-toolkit__count {
+  color: var(--stack-muted);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Clipped to the card, edges fade instead of cutting. */
+.stack-toolkit__marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+
+/* Two identical groups; sliding by -50% (exactly one group) loops with no
+   jump. Each group's trailing padding equals the item gap. */
+.stack-toolkit__track {
+  display: flex;
+  width: max-content;
+  animation: stack-marquee var(--marquee-duration, 60s) linear infinite;
+}
+
+.stack-toolkit:hover .stack-toolkit__track {
+  animation-play-state: paused;
+}
+
+.stack-toolkit__group {
+  display: flex;
+  flex: none;
+  gap: clamp(28px, 3vw, 44px);
+  margin: 0;
+  padding: 0 clamp(28px, 3vw, 44px) 0 0;
+  list-style: none;
+}
+
+.stack-toolkit__group li {
+  color: var(--stack-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.stack-toolkit__group li:hover {
+  color: var(--stack-ink);
+}
+
+@keyframes stack-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---- Bottom stats: big numbers split by vertical dividers -------------------- */
+
+.stack-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: clamp(28px, 4.5vh, 44px) 0 0;
+}
+
+.stack-stats__item {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  padding: 8px clamp(16px, 2vw, 28px) 12px;
+  border-left: 1px solid var(--stack-line);
+}
+
+.stack-stats__item:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.stack-stats__label {
+  color: var(--stack-muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.stack-stats__value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+  color: var(--stack-ink);
+  font-size: clamp(44px, 5.4vw, 80px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stack-stats__unit {
+  color: var(--stack-muted);
+  font-size: 0.3em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+/* ---- Tablet: header stacks, list above detail, columns 2 x 2 --------------------- */
+
+@media (max-width: 1023px) {
+  .stack__split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stack-list {
+    border-right: 0;
+  }
+
+  .stack-list__item {
+    padding: 16px 16px 16px 14px;
+  }
+
+  .stack-detail {
+    padding: 28px 0 8px;
+  }
+
+  .stack__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .stack-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 28px;
+  }
+
+  .stack-stats__item:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+/* ---- Phones: one column; dividers turn horizontal ----------------------------- */
+
+@media (max-width: 560px) {
+  .stack__title span + span {
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .stack-list__ring {
+    display: none;
+  }
+
+  .stack-list__item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  /* The link drops under the title on phones, still right-aligned. */
+  .stack__head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stack-stats__value {
+    font-size: clamp(40px, 13vw, 56px);
+  }
+}
+
+/* ---- Reduced motion: no sliding; every tool listed once, wrapped ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-detail,
+  .stack-list__item,
+  .stack-list__item::before {
+    animation: none;
+    transition: none;
+  }
+
+  .stack-toolkit__marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .stack-toolkit__track {
+    width: auto;
+    padding: 0 18px;
+    animation: none;
+  }
+
+  .stack-toolkit__group {
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    padding: 0;
+  }
+
+  .stack-toolkit__group[aria-hidden='true'] {
+    display: none;
+  }
+}

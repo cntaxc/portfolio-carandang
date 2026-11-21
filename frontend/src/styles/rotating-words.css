@@ -1,0 +1,50 @@
+/* Rotating word inside a sentence (RotatingWords.jsx): bold white against the
+   surrounding text. The slot's width (measured from the current word) eases
+   between words. */
+.rotating-words {
+  display: inline-grid;
+  /* One column exactly as wide as the slot, so the current word sits right
+     in it even while longer (hidden) words overflow. */
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+  /* Exactly one line tall, pinned to the top of the line box, so the word
+     sits on the same baseline as the words around it. */
+  height: 1lh;
+  line-height: inherit;
+  vertical-align: top;
+  transition: width 0.45s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.rotating-words__word,
+.rotating-words-static {
+  color: var(--text, #eeeeee);
+  font-weight: 700;
+}
+
+/* Every word sits in the same cell; only the active one is shown. */
+.rotating-words__word {
+  grid-area: 1 / 1;
+  justify-self: start;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(100%);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.rotating-words__word.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.rotating-words__word.is-leaving {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotating-words,
+  .rotating-words__word {
+    transition: none;
+  }
+}

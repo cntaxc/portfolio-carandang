@@ -1,0 +1,217 @@
+/* ==========================================================================
+   Journey page polish: one terminal look from the hero down to Experiences.
+     #0C0C0C canvas · #1F1F1F boxes · #EEEEEE text · #AEAEAE labels ·
+     #4B4B4B borders · 5px corners on boxes · flat
+     (no drop shadows) · the same 64px grid behind every section.
+   Scoped to the Journey page so the other pages keep their own styling.
+   ========================================================================== */
+
+.journey-page,
+.journey-about {
+  --bg: #0c0c0c;
+  --surface: #1f1f1f;
+  --surface-card: #1f1f1f;
+  --surface-card-from: #1f1f1f;
+  --surface-card-to: #1f1f1f;
+  --text: var(--ink-100, #eeeeee);
+  --text-muted: var(--ink-72, #aeaeae);
+  --on-bg: var(--ink-100, #eeeeee);
+  --on-bg-muted: var(--ink-72, #aeaeae);
+  --on-bg-line: var(--ink-28, #4b4b4b);
+  --on-bg-accent: var(--ink-100, #eeeeee);
+  --accent: var(--ink-100, #eeeeee);
+  --border: var(--ink-28, #4b4b4b);
+  --border-strong: var(--ink-28, #4b4b4b);
+  --border-glass: var(--ink-28, #4b4b4b);
+  --border-glass-strong: var(--ink-28, #4b4b4b);
+  --radius-sm: 5px;
+  --radius-md: 5px;
+  --radius-lg: 5px;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-accent: none;
+}
+
+/* ---- Even vertical rhythm between the stacked sections ------------------- */
+
+.journey-about > .main__inner > .section,
+.journey-about .journey-overview > .section {
+  min-height: auto;
+  justify-content: flex-start;
+  padding: clamp(40px, 7vh, 72px) 0;
+}
+
+.journey-about .journey-overview {
+  gap: 0;
+  padding-bottom: clamp(40px, 7vh, 72px);
+}
+
+/* Section titles share one size, colour and tracking. */
+.journey-about :is(.section-heading h2, .split-section__heading h2,
+  .techstack-preview__heading h2) {
+  color: var(--ink-100, #eeeeee);
+  text-transform: uppercase;
+}
+
+.journey-about :is(.split-section__eyebrow, .techstack-preview__subtitle,
+  .achievement-carousel-controls__count, .edu-others__title, .edu-featured__eyebrow) {
+  color: var(--ink-72, #aeaeae);
+}
+
+/* ---- Boxed components: #1F1F1F, #4B4B4B hairline, 5px corners, flat ------ */
+
+.journey-about :is(
+    .edu-featured,
+    .edu-others,
+    .edu-map,
+    .edu-featured__facts,
+    .achievement-feature-card,
+    .experience-timeline__card,
+    .icon-btn
+  ) {
+  background-color: #1f1f1f;
+  background-image: none;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+/* The map keeps its tiles. */
+.journey-about .edu-map {
+  background-color: #0c0c0c;
+}
+
+.journey-about :is(.edu-featured, .edu-others, .edu-map, .achievement-feature-card) {
+  overflow: hidden;
+}
+
+/* Cells inside a box sit on the same surface; hairlines divide them. */
+.journey-about .edu-featured__facts {
+  background-color: var(--ink-28, #4b4b4b);
+}
+
+.journey-about .edu-featured__facts > div {
+  background: #1f1f1f;
+}
+
+.journey-about .edu-featured__media,
+.journey-about :is(.achievement-feature-card__preview, .achievement-feature-card__empty-preview) {
+  background-color: #0c0c0c;
+}
+
+.journey-about .edu-featured__logo {
+  background: #0c0c0c;
+  border-color: var(--ink-28, #4b4b4b);
+  box-shadow: none;
+}
+
+.journey-about :is(.edu-featured__media, .edu-featured__program, .edu-others__item + .edu-others__item,
+  .achievement-highlight__project-details, .experience-timeline__more) {
+  border-color: var(--ink-28, #4b4b4b);
+}
+
+.journey-about :is(.achievement-feature-card__preview) {
+  border-left-color: var(--ink-28, #4b4b4b);
+}
+
+.journey-about .achievement-feature-card__milestone {
+  border-bottom-color: var(--ink-28, #4b4b4b);
+}
+
+/* Small chips and overlay tags: same hairline, tighter corner. */
+.journey-about :is(.edu-featured__status, .edu-map__tag, .edu-map__open) {
+  border-color: var(--ink-28, #4b4b4b);
+  border-radius: 3px;
+}
+
+.journey-about :is(.edu-map__tag, .edu-map__open) {
+  background: rgba(12, 12, 12, 0.9);
+}
+
+/* ---- Text colours: only #EEEEEE and #AEAEAE ------------------------------- */
+
+.journey-about :is(.edu-featured__local-name,
+  .edu-featured__department, .edu-featured__desc, .edu-featured__facts dt, .edu-others__level,
+  .experience-timeline__company, .experience-timeline__summary, .experience-timeline__more p,
+  .achievement-highlight__label, .achievement-highlight__event,
+  .achievement-highlight__project-details p, .techstack-preview__view-all) {
+  color: var(--ink-72, #aeaeae);
+}
+
+.journey-about :is(.edu-featured__photo-placeholder, .achievement-feature-card__empty-preview) {
+  color: var(--ink-28, #4b4b4b);
+}
+
+.journey-about :is(.experience-timeline__head > span, .experience-timeline__more span,
+  .experience-timeline__details summary i, .achievement-highlight__rank strong) {
+  color: var(--ink-100, #eeeeee);
+}
+
+.journey-about .edu-featured__status-dot {
+  background: var(--ink-72, #aeaeae);
+}
+
+.journey-about .edu-featured__status.is-current .edu-featured__status-dot {
+  background: var(--ink-100, #eeeeee);
+  box-shadow: 0 0 0 3px rgba(238, 238, 238, 0.12);
+}
+
+/* Labels, dates and counters: small caps-style meta text. */
+.journey-about :is(.experience-timeline__details summary, .experience-timeline__more span,
+  .experience-timeline__head > span, .achievement-carousel-controls__count) {
+  font-size: var(--type-meta-size);
+  font-weight: 600;
+  letter-spacing: var(--type-meta-tracking);
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.journey-about .achievement-highlight__event {
+  font-size: var(--type-meta-size);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+.journey-about :is(.achievement-highlight__project-details strong, .achievement-highlight__rank span) {
+  font-weight: var(--type-heading-weight);
+  letter-spacing: var(--type-card-tracking);
+}
+
+/* ---- Experience timeline ---------------------------------------------------- */
+
+.journey-about .experience-timeline::before {
+  background: var(--ink-28, #4b4b4b);
+}
+
+.journey-about .experience-timeline__item::before {
+  background: var(--ink-100, #eeeeee);
+  border-color: #0c0c0c;
+  box-shadow: 0 0 0 1px var(--ink-28, #4b4b4b);
+}
+
+.journey-about :is(.experience-timeline__card, .achievement-feature-card.is-clickable):hover,
+.journey-about .achievement-feature-card.is-clickable:focus-visible {
+  border-color: var(--ink-72, #aeaeae);
+  box-shadow: none;
+}
+
+.journey-about .icon-btn:hover,
+.journey-about .icon-btn:focus-visible {
+  color: #0c0c0c;
+  background-color: var(--ink-100, #eeeeee);
+  border-color: var(--ink-100, #eeeeee);
+}
+
+.journey-about .techstack-preview__view-all:hover {
+  color: var(--ink-100, #eeeeee);
+}
+
+.journey-about .recommendations__dot {
+  background-color: var(--ink-28, #4b4b4b);
+  border-radius: 1px;
+}
+
+.journey-about .recommendations__dot.is-active {
+  background-color: var(--ink-100, #eeeeee);
+}

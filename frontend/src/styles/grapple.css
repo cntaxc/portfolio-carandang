@@ -5,7 +5,7 @@
   --grapple-teal: #6ef5d0;
   --grapple-teal-glow: rgba(110, 245, 208, 0.35);
   --grapple-danger: #ff3d6e;
-  --grapple-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
+  --grapple-mono: var(--font-mono);
 
   position: fixed;
   inset: 0;

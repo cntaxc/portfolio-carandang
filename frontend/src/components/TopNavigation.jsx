@@ -1,25 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  backgroundSectionIds,
-  navAction,
-  navPrimary,
-  navSecondary,
-  portfolioViews,
-  recommendationSectionIds,
-} from '../data/portfolio';
-import '../styles/fancy-button.css';
+import { navActions, navPrimary } from '../data/portfolio';
 import PixelRobot from './PixelRobot';
 
-// The GRAPPLE robot in the corner: bobs while idle. A click takes you back to
-// the top of the homepage while the robot launches up out of the top of the
-// window and drops back into place with a bounce.
+// The GRAPPLE robot in the corner is the Home link: it bobs while idle, and a
+// click takes you back to the top of the homepage while the robot launches up
+// out of the top of the window and drops back into place with a bounce.
 function RobotMascot({ onClick }) {
   const [isFlying, setIsFlying] = useState(false);
   return (
     <button
       type="button"
       className={`top-navigation__robot${isFlying ? ' is-flying' : ''}`}
-      aria-label="Back to the top of the homepage"
+      aria-label="Home"
+      title="Home"
       onClick={() => {
         setIsFlying(true);
         onClick?.();
@@ -36,25 +29,24 @@ function RobotMascot({ onClick }) {
   );
 }
 
-/**
- * Edge-to-edge top navigation bar, flush with the top of the viewport:
- *   left   - GRAPPLE robot (click: back to the top of the homepage while
- *            it flies up and drops back)
- *   center - Home, About, Projects, More (dropdown)
- *   right  - Portfolio button
- * On small screens Home / About / Projects move into the More dropdown so
- * the bar never wraps.
- */
 // Scrolled further than this (px), the bar gets its dark background.
 const SCROLL_THRESHOLD = 12;
 
+/**
+ * Edge-to-edge top navigation bar, flush with the top of the viewport:
+ *   left   - GRAPPLE robot = Home (back to the top of the homepage)
+ *   center - section links (About … Recommendations)
+ *   right  - Resume (PDF, new tab) and Contact Christian action buttons
+ * Below 1360px the section links move into a "Menu" dropdown; on phones the
+ * two action buttons become icon-only.
+ */
 export default function TopNavigation({ activeSection, activeView, onNavigate }) {
-  const [isMoreOpen, setIsMoreOpen] = useState(false);
   // Transparent at the very top; dark glass once the page has scrolled.
   const [isScrolled, setIsScrolled] = useState(
     () => typeof window !== 'undefined' && window.scrollY > SCROLL_THRESHOLD
   );
-  const navigationRef = useRef(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const headerRef = useRef(null);
 
   useEffect(() => {
     let frame = 0;
@@ -73,130 +65,134 @@ export default function TopNavigation({ activeSection, activeView, onNavigate })
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
-  const moreLinks = navSecondary;
 
-  const isItemActive = (item) =>
-    item.id === activeSection ||
-    (item.id === 'portfolio' && portfolioViews.includes(activeView)) ||
-    (item.id === 'background' &&
-      (activeView === 'background' || backgroundSectionIds.includes(activeSection))) ||
-    (item.id === 'recommendation' && recommendationSectionIds.includes(activeSection));
-  const isMoreActive = moreLinks.some(isItemActive);
-  const isPortfolioActive = isItemActive(navAction);
-
+  // Close the menu on outside click or Escape.
   useEffect(() => {
-    const handlePointerDown = (event) => {
-      if (!navigationRef.current?.contains(event.target)) {
-        setIsMoreOpen(false);
-      }
+    if (!isMenuOpen) return undefined;
+    const onPointerDown = (event) => {
+      if (!headerRef.current?.contains(event.target)) setIsMenuOpen(false);
     };
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setIsMoreOpen(false);
-      }
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setIsMenuOpen(false);
     };
-    document.addEventListener('pointerdown', handlePointerDown);
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
     };
-  }, []);
+  }, [isMenuOpen]);
 
-  const handleNavigate = (event, sectionId) => {
+  // Section links follow the scroll-spy (the section in view). A link that
+  // opens its own page (Recommendation, Contact) is active on
+  // that page. "Overview" (#journey) shares its id with the Journey page, so
+  // it must not match the page name, or it would stay lit everywhere.
+  const isActive = (id) =>
+    id === activeSection || (id === activeView && activeView !== 'journey');
+
+  const go = (event, id) => {
     event.preventDefault();
-    setIsMoreOpen(false);
-    onNavigate(sectionId);
+    setIsMenuOpen(false);
+    onNavigate(id);
   };
 
-  const dropdownLink = (item, extraClass = '') => (
+  const link = (item, className) => (
     <a
       key={item.id}
+      className={`${className}${isActive(item.id) ? ' is-active' : ''}`}
       href={`#${item.id}`}
-      className={`top-navigation__dropdown-link${extraClass}${
-        isItemActive(item) ? ' is-active' : ''
-      }`}
-      aria-current={isItemActive(item) ? 'page' : undefined}
-      onClick={(event) => handleNavigate(event, item.id)}
+      aria-current={isActive(item.id) ? 'page' : undefined}
+      onClick={(event) => go(event, item.id)}
     >
-      <i className={item.icon} aria-hidden="true"></i>
+      {className === 'top-navigation__menu-link' ? (
+        <i className={item.icon} aria-hidden="true"></i>
+      ) : null}
       <span>{item.label}</span>
     </a>
   );
 
   return (
     <header
+      ref={headerRef}
       className={`top-navigation${isScrolled ? ' is-scrolled' : ''}`}
-      ref={navigationRef}
     >
       <nav className="top-navigation__bar" aria-label="Main navigation">
-        {/* Left: robot mascot */}
         <div className="top-navigation__brand">
           <RobotMascot
             onClick={() => {
-              setIsMoreOpen(false);
+              setIsMenuOpen(false);
               onNavigate('home');
             }}
           />
         </div>
 
-        {/* Center: main links */}
+        {/* Section links (wide screens) */}
         <div className="top-navigation__center">
-          {navPrimary.map((item) => (
-            <a
-              key={item.id}
-              className={`top-navigation__link${activeSection === item.id ? ' is-active' : ''}`}
-              href={`#${item.id}`}
-              aria-current={activeSection === item.id ? 'page' : undefined}
-              onClick={(event) => handleNavigate(event, item.id)}
-            >
-              {item.label}
-            </a>
-          ))}
-
-          <div className="top-navigation__more">
-            <button
-              type="button"
-              className={`top-navigation__link top-navigation__more-toggle${
-                isMoreActive ? ' is-active' : ''
-              }`}
-              aria-expanded={isMoreOpen}
-              aria-haspopup="true"
-              onClick={() => setIsMoreOpen((open) => !open)}
-            >
-              More
-              <i
-                className={`ri-arrow-down-s-line${isMoreOpen ? ' is-open' : ''}`}
-                aria-hidden="true"
-              ></i>
-            </button>
-            {isMoreOpen ? (
-              <div className="top-navigation__dropdown">
-                {/* Small screens only: the center links live here. */}
-                <div className="top-navigation__dropdown-group top-navigation__dropdown-group--compact">
-                  {navPrimary.map((item) => dropdownLink(item))}
-                </div>
-                <div className="top-navigation__dropdown-group">
-                  {moreLinks.map((item) => dropdownLink(item))}
-                </div>
-              </div>
-            ) : null}
-          </div>
+          {navPrimary.map((item) => link(item, 'top-navigation__link'))}
         </div>
 
-        {/* Right: Portfolio */}
-        <div className="top-navigation__end">
-          <a
-            className={`fancy-button top-navigation__action${isPortfolioActive ? ' is-active' : ''}`}
-            href={`#${navAction.id}`}
-            aria-current={isPortfolioActive ? 'page' : undefined}
-            onClick={(event) => handleNavigate(event, navAction.id)}
+        {/* Section links in a dropdown (narrower screens) */}
+        <div className="top-navigation__menu">
+          <button
+            type="button"
+            className={`top-navigation__menu-toggle${isMenuOpen ? ' is-open' : ''}`}
+            aria-expanded={isMenuOpen}
+            aria-controls="top-navigation-menu"
+            onClick={() => setIsMenuOpen((open) => !open)}
           >
-            <span className="fancy-button__top-key" aria-hidden="true"></span>
-            <span className="fancy-button__text">{navAction.label}</span>
-            <span className="fancy-button__bottom-key-1" aria-hidden="true"></span>
-            <span className="fancy-button__bottom-key-2" aria-hidden="true"></span>
-          </a>
+            <i className={isMenuOpen ? 'ri-close-line' : 'ri-menu-line'} aria-hidden="true"></i>
+            <span>Menu</span>
+          </button>
+          {isMenuOpen ? (
+            <div id="top-navigation-menu" className="top-navigation__menu-panel">
+              {navPrimary.map((item) => link(item, 'top-navigation__menu-link'))}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Right: action buttons */}
+        <div className="top-navigation__actions">
+          {navActions.map((item, index) => {
+            const className = `top-navigation__action${
+              index === navActions.length - 1 ? ' top-navigation__action--primary' : ''
+            }${!item.href && isActive(item.id) ? ' is-active' : ''}`;
+            const content = (
+              <>
+                <i className={item.icon} aria-hidden="true"></i>
+                <span className="top-navigation__action-label">{item.label}</span>
+              </>
+            );
+            // A file (the resume PDF): opens in a new tab.
+            if (item.href) {
+              return (
+                <a
+                  key={item.id}
+                  className={className}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${item.label} (opens in a new tab)`}
+                  title={item.label}
+                >
+                  {content}
+                </a>
+              );
+            }
+            // A page (Contact): in-app navigation.
+            return (
+              <a
+                key={item.id}
+                className={className}
+                href={`#${item.id}`}
+                aria-label={item.label}
+                title={item.label}
+                aria-current={isActive(item.id) ? 'page' : undefined}
+                onClick={(event) => go(event, item.id)}
+              >
+                {content}
+              </a>
+            );
+          })}
         </div>
       </nav>
     </header>

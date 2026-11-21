@@ -1,0 +1,39 @@
+/* ==========================================================================
+   Typography: one family, the OpenCode mono stack (--font-mono), for every
+   title, body text, button, tag and label. Display titles are the bold mono
+   (weight 700); the hero's second line (CARANDANG, INTERACTIVE) is outlined
+   with -webkit-text-stroke in home-hero.css / journey.css.
+   ========================================================================== */
+
+/* Crisp text everywhere. */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-family: var(--font-mono);
+}
+
+/* Long, multi-line descriptions are justified; short labels and headings
+   are left alone. The last line stays left-aligned, and hyphenation keeps
+   the monospace word gaps from stretching too wide. */
+:root :is(
+    .journey-intro__bio p,
+    .journey__summary,
+    .home-hero__subtitle,
+    .stack__intro p,
+    .stack-detail__desc,
+    .project-desk__desc,
+    .edu-featured__desc,
+    .achievement-highlight__project-details p,
+    .experience-timeline__summary,
+    .experience-timeline__more p,
+    .recommendation-card__message,
+    .contact-section__intro,
+    .project-list-card__description,
+    .asset-card__description
+  ) {
+  text-align: justify;
+  text-align-last: left;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

@@ -1,0 +1,721 @@
+/* ==========================================================================
+   Projects "work desk": showcase on the left, title list on the right.
+   Monochrome terminal: #0C0C0C canvas · #1F1F1F boxes · #EEEEEE / #AEAEAE
+   ink · #4B4B4B hairlines · monospace · 5px corners.
+   ========================================================================== */
+
+.project-desk {
+  --desk-line: var(--ink-28, #4b4b4b);
+  --desk-ink: var(--ink-100, #eeeeee);
+  --desk-muted: var(--ink-72, #aeaeae);
+  --desk-surface: #1f1f1f;
+  font-family: var(--font-mono);
+}
+
+/* ---- Header ----------------------------------------------------------------- */
+
+.project-desk__head {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--desk-line);
+}
+
+.project-desk__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--desk-muted);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.project-desk__meta-dot {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--desk-ink);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px #0c0c0c;
+  background: var(--desk-ink);
+}
+
+.project-desk__title {
+  margin: 0;
+  color: var(--desk-ink);
+  font-size: var(--type-section-size, clamp(36px, 5vw, 64px));
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.project-desk__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
+
+.project-desk__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--desk-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.project-desk__hint i {
+  font-size: 13px;
+}
+
+.project-desk__hint i + i {
+  margin-right: 6px;
+}
+
+.project-desk__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 0 14px;
+  color: var(--desk-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid var(--desk-line);
+  border-radius: 5px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.project-desk__button:hover,
+.project-desk__button:focus-visible {
+  color: #0c0c0c;
+  background: var(--desk-ink);
+  border-color: var(--desk-ink);
+}
+
+.project-desk__filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 18px;
+}
+
+.project-desk__filter-row .project-desk__button {
+  margin-left: auto;
+}
+
+.project-desk__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-desk__filter {
+  min-height: 32px;
+  padding: 0 14px;
+  color: var(--desk-muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.project-desk__filter:hover {
+  color: var(--desk-ink);
+  border-color: var(--desk-line);
+}
+
+.project-desk__filter.is-active {
+  color: #0c0c0c;
+  background: var(--desk-ink);
+  border-color: var(--desk-ink);
+}
+
+/* ---- Body: showcase | list ------------------------------------------------------- */
+
+.project-desk__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+  grid-template-areas: 'showcase list';
+  /* The list panel stretches to the showcase's full height. */
+  align-items: stretch;
+  gap: 18px;
+}
+
+.project-desk__showcase {
+  grid-area: showcase;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--desk-surface);
+  border: 1px solid var(--desk-line);
+  border-radius: 5px;
+}
+
+/* Preview frame with corner brackets */
+.project-desk__frame {
+  position: relative;
+  aspect-ratio: 16 / 8;
+  min-height: 300px;
+  overflow: hidden;
+  background: #0c0c0c;
+  animation: project-desk-in 0.45s ease both;
+}
+
+.project-desk__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: project-desk-zoom 6s ease-out both;
+}
+
+.project-desk__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(12, 12, 12, 0.7) 0%, rgba(12, 12, 12, 0) 26%),
+    linear-gradient(0deg, rgba(12, 12, 12, 0.94) 0%, rgba(12, 12, 12, 0.35) 45%, rgba(12, 12, 12, 0) 70%);
+}
+
+.project-desk__corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 0 solid var(--desk-ink);
+}
+
+.project-desk__corner--tl {
+  top: 10px;
+  left: 10px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.project-desk__corner--tr {
+  top: 10px;
+  right: 10px;
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.project-desk__corner--bl {
+  bottom: 10px;
+  left: 10px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.project-desk__corner--br {
+  right: 10px;
+  bottom: 10px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.project-desk__frame-top {
+  position: absolute;
+  top: 22px;
+  left: 28px;
+  display: grid;
+  gap: 4px;
+  color: var(--desk-ink);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  /* Readable over bright screenshots too. */
+  text-shadow: 0 1px 8px rgba(12, 12, 12, 0.95), 0 0 2px rgba(12, 12, 12, 0.9);
+}
+
+.project-desk__frame-sub {
+  color: var(--desk-muted);
+}
+
+.project-desk__frame-bottom {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  left: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'tags tags'
+    'name platforms';
+  align-items: end;
+  gap: 10px 18px;
+}
+
+.project-desk__tags {
+  grid-area: tags;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.project-desk__status,
+.project-desk__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 9px;
+  color: var(--desk-ink);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(12, 12, 12, 0.85);
+  border: 1px solid var(--desk-line);
+  border-radius: 3px;
+}
+
+.project-desk__status.is-live {
+  color: #0c0c0c;
+  background: var(--desk-ink);
+  border-color: var(--desk-ink);
+}
+
+.project-desk__status-dot {
+  width: 6px;
+  height: 6px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.project-desk__status.is-live .project-desk__status-dot {
+  background: currentColor;
+}
+
+.project-desk__name {
+  grid-area: name;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  margin: 0;
+  color: var(--desk-ink);
+  font-size: clamp(30px, 4.4vw, 64px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.project-desk__logo {
+  flex: none;
+  width: clamp(36px, 3.6vw, 52px);
+  height: clamp(36px, 3.6vw, 52px);
+  object-fit: cover;
+  border: 1px solid var(--desk-line);
+  border-radius: 5px;
+}
+
+.project-desk__platforms {
+  grid-area: platforms;
+  display: flex;
+  gap: 12px;
+  color: var(--desk-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.project-desk__platforms span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Case file | links */
+.project-desk__details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
+  border-top: 1px solid var(--desk-line);
+}
+
+.project-desk__case,
+.project-desk__links {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 20px 24px 24px;
+}
+
+.project-desk__links {
+  gap: 0;
+  padding: 20px 0 0;
+  border-left: 1px solid var(--desk-line);
+}
+
+.project-desk__label {
+  margin: 0;
+  color: var(--desk-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.project-desk__links .project-desk__label {
+  padding: 0 20px 12px;
+  border-bottom: 1px solid var(--desk-line);
+}
+
+.project-desk__role {
+  margin: 0;
+  color: var(--desk-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.project-desk__role span {
+  margin-right: 8px;
+  color: var(--desk-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.project-desk__desc {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--desk-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.project-desk__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-desk__tools li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  color: var(--desk-ink);
+  font-size: 11px;
+  background: #0c0c0c;
+  border: 1px solid var(--desk-line);
+  border-radius: 3px;
+}
+
+.project-desk__tools i {
+  color: var(--desk-muted);
+}
+
+.project-desk__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  color: var(--desk-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--desk-line);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+a.project-desk__link:hover,
+a.project-desk__link:focus-visible {
+  color: #0c0c0c;
+  background: var(--desk-ink);
+}
+
+.project-desk__link.is-disabled {
+  color: var(--desk-line);
+}
+
+/* ---- Title list (right) ------------------------------------------------------------ */
+
+.project-desk__list {
+  grid-area: list;
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+  background: var(--desk-surface);
+  border: 1px solid var(--desk-line);
+  border-radius: 5px;
+}
+
+/* Absolutely filled, so the number of titles never changes the row height:
+   the panel always matches the showcase and the titles scroll. */
+.project-desk__list-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-desk__list-head {
+  flex: none;
+}
+
+.project-desk__list-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 16px;
+  color: var(--desk-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--desk-line);
+}
+
+.project-desk__list-head span + span {
+  color: var(--desk-ink);
+}
+
+.project-desk__items {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 6px 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  scrollbar-color: var(--desk-line) transparent;
+  scrollbar-width: thin;
+}
+
+.project-desk__items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-desk__items::-webkit-scrollbar-thumb {
+  background: var(--desk-line);
+  border-radius: 3px;
+}
+
+.project-desk__items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-desk__item {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  padding: 12px 16px;
+  color: var(--desk-muted);
+  font-family: var(--font-mono);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.project-desk__item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.project-desk__item-dash {
+  width: 8px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.25s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.project-desk__item-sub {
+  padding-left: 16px;
+  color: var(--desk-line);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.project-desk__item:hover {
+  color: var(--desk-ink);
+  background: rgba(238, 238, 238, 0.03);
+}
+
+.project-desk__item:hover .project-desk__item-sub {
+  color: var(--desk-muted);
+}
+
+.project-desk__item.is-active {
+  color: var(--desk-ink);
+  background: rgba(238, 238, 238, 0.06);
+  border-left-color: var(--desk-ink);
+}
+
+.project-desk__item.is-active .project-desk__item-dash {
+  width: 16px;
+}
+
+.project-desk__item.is-active .project-desk__item-sub {
+  color: var(--desk-muted);
+}
+
+.project-desk__item:focus-visible,
+.project-desk__filter:focus-visible,
+.project-desk__button:focus-visible,
+.project-desk__link:focus-visible {
+  outline: 1px solid var(--desk-ink);
+  outline-offset: -3px;
+}
+
+@keyframes project-desk-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes project-desk-zoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ---- Tablet: list becomes a strip above the showcase -------------------------------- */
+
+@media (max-width: 1023px) {
+  .project-desk__body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'list'
+      'showcase';
+  }
+
+  .project-desk__list {
+    min-height: 0;
+  }
+
+  /* Strip mode: back in normal flow, scrolling sideways. */
+  .project-desk__list-inner {
+    position: static;
+  }
+
+  .project-desk__items {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0;
+  }
+
+  .project-desk__items li {
+    flex: 0 0 auto;
+  }
+
+  .project-desk__item {
+    min-width: 180px;
+    border-bottom: 2px solid transparent;
+    border-left: 0;
+  }
+
+  .project-desk__item.is-active {
+    border-bottom-color: var(--desk-ink);
+  }
+}
+
+/* ---- Phones ------------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .project-desk__frame {
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+  }
+
+  .project-desk__frame-top {
+    top: 18px;
+    left: 20px;
+  }
+
+  .project-desk__frame-bottom {
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'tags'
+      'name'
+      'platforms';
+  }
+
+  .project-desk__details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-desk__case {
+    padding: 18px 18px 20px;
+  }
+
+  .project-desk__links {
+    padding-top: 16px;
+    border-top: 1px solid var(--desk-line);
+    border-left: 0;
+  }
+
+  .project-desk__item {
+    min-width: 150px;
+  }
+
+  /* The keyboard hint is the only thing left in the toolbar. */
+  .project-desk__toolbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-desk__frame,
+  .project-desk__image {
+    animation: none;
+  }
+
+  .project-desk__item,
+  .project-desk__item-dash {
+    transition: none;
+  }
+}

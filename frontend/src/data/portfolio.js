@@ -60,54 +60,82 @@ export const professionalSummary = {
   ],
 };
 
+// Top navigation links (the robot logo on the left is the Home link). Each
+// id is a section on the Journey page, except Recommendations (its page).
 export const navPrimary = [
-  { id: 'home', label: 'Home', icon: 'ri-home-4-line' },
-  { id: 'about', label: 'About', icon: 'ri-user-3-line' },
-  { id: 'projects', label: 'Projects', icon: 'ri-code-s-slash-line' },
+  { id: 'journey', label: 'Overview', icon: 'ri-home-office-line' },
+  { id: 'journey-map', label: 'Journey', icon: 'ri-route-line' },
+  { id: 'projects', label: 'Project', icon: 'ri-code-s-slash-line' },
+  { id: 'educations', label: 'Education', icon: 'ri-graduation-cap-line' },
+  { id: 'certificates', label: 'Achievements', icon: 'ri-trophy-line' },
+  { id: 'techstack-preview', label: 'Techstack', icon: 'ri-code-box-line' },
+  { id: 'experiences', label: 'Experience', icon: 'ri-briefcase-4-line' },
+  { id: 'recommendation', label: 'Recommendation', icon: 'ri-chat-quote-line' },
 ];
 
-// Top-level button on the right of the navigation bar.
-export const navAction = { id: 'portfolio', label: 'Portfolio', icon: 'ri-layout-grid-line' };
+// The homepage is a single full-screen hero.
+export const homeSectionIds = ['home'];
 
-// Links inside the "More" dropdown.
-export const navSecondary = [
-  { id: 'background', label: 'Overview', icon: 'ri-user-3-line' },
-  { id: 'techstack', label: 'Techstack', icon: 'ri-code-box-line' },
-  {
-    id: 'recommendation',
-    label: 'Recommendations',
-    icon: 'ri-chat-quote-line',
-  },
-];
-
-export const homeSectionIds = [
-  'home',
-  'about',
+// The Journey page (#journey): the intro, the level tree, the About content
+// (About card + Projects), then Education, Achievements, Techstack and
+// Experiences. Links to any of these open the Journey and scroll there.
+export const journeySectionIds = [
+  'journey',
+  'journey-map',
   'projects',
-  'contact',
-  'aichatbot',
+  'educations',
+  'certificates',
+  'techstack-preview',
+  'experiences',
 ];
+
+// Numbered index on the left of the Journey page, in page order.
+export const journeyIndex = [
+  { id: 'journey', label: 'Overview' },
+  { id: 'journey-map', label: 'My Journey' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'educations', label: 'Education' },
+  { id: 'certificates', label: 'Achievements' },
+  { id: 'techstack-preview', label: 'Techstack' },
+  { id: 'experiences', label: 'Experiences' },
+];
+
+// Small "NN / LABEL" eyebrows above section titles on the Journey page. The
+// number is the section's position in journeyIndex; the label is set here.
+export const sectionEyebrows = {
+  'journey-map': 'College expedition',
+  educations: 'Schools',
+  certificates: 'Milestone',
+  'techstack-preview': 'Techstack',
+  experiences: 'Leardership & Organization',
+};
+
+// Old links to the removed Overview page land on the matching Journey section.
+export const sectionAliases = {
+  arcade: 'portfolio', // Grapple now launches from Quick actions
+  about: 'journey', // the bio now sits in the Overview intro
+  background: 'educations',
+  moreinfos: 'educations',
+  skills: 'techstack-preview',
+};
+
+// Contact (#contact) and the AI assistant (#aichatbot) each have their own
+// page, like Recommendations. They're not in the top navigation; buttons and
+// links around the site open them.
+export const contactSectionIds = ['contact'];
+export const aiSectionIds = ['aichatbot'];
 
 export const projectListSectionIds = ['projectlist'];
 
-export const portfolioSectionIds = ['portfolio', 'arcade'];
+export const portfolioSectionIds = ['portfolio'];
 
 export const modelSectionIds = ['models'];
 
 // Views under the "Portfolio" nav item (shown as active while one is open).
-// Overview (#background) is also reachable from the hub but has its own nav
-// item, so it isn't listed here.
 export const assetSectionIds = ['assets'];
 
 export const portfolioViews = ['portfolio', 'projectlist', 'models', 'assets'];
 
-export const backgroundSectionIds = [
-  'educations',
-  'certificates',
-  'skills',
-  'techstack-preview',
-  'experiences',
-];
 
 export const techstackSectionIds = ['techstack'];
 
@@ -121,6 +149,13 @@ export const recommendationSectionIds = [
 // shortcut. The file name has spaces and a comma, so the URL is encoded.
 const RESUME_FILE = 'CARANDANG, CHRISTIAN RAPHAEL CV.pdf';
 const RESUME_URL = `${process.env.PUBLIC_URL || ''}/${encodeURIComponent(RESUME_FILE)}`;
+
+// Right-side action buttons in the top navigation. `href` = a file opened in
+// a new tab (the resume PDF); otherwise `id` is the page to open.
+export const navActions = [
+  { id: 'resume', label: 'Resume', icon: 'ri-file-user-line', href: RESUME_URL },
+  { id: 'contact', label: 'Contact Christian', icon: 'ri-mail-send-line' },
+];
 
 export const about = {
   title: 'About Me',
@@ -148,9 +183,16 @@ export const floatingActions = {
 export const showcaseProjects = {
   title: 'PROJECTS',
   eyebrow: 'Things I\'ve built',
+  // Filter tabs in the Projects section (by each item's `type`).
+  filters: [
+    { id: 'all', label: 'All titles' },
+    { id: 'game', label: 'Games' },
+    { id: 'web', label: 'Web / UI' },
+  ],
   items: [
     {
       id: 'outrun',
+      type: 'game', // Projects filter: 'game' or 'web'
       title: 'OUTRUN',
       published: true,
       category: 'SCHOOL PROJECT',
@@ -169,6 +211,7 @@ export const showcaseProjects = {
     },
     {
       id: 'muted',
+      type: 'game', // Projects filter: 'game' or 'web'
       title: 'MUTED',
       published: false,
       category: 'SCHOOL PROJECT',
@@ -189,6 +232,7 @@ export const showcaseProjects = {
     },
     {
       id: 'triggr',
+      type: 'game', // Projects filter: 'game' or 'web'
       title: 'TRIGGR',
       published: false,
       category: 'SCHOOL PROJECT',
@@ -206,6 +250,7 @@ export const showcaseProjects = {
     },
     {
       id: 'lunas',
+      type: 'web', // Projects filter: 'game' or 'web'
       title: 'LUNAS',
       published: true,
       category: 'HACKATHON',
@@ -228,6 +273,7 @@ export const showcaseProjects = {
     },
     {
       id: 'alalay-barangray',
+      type: 'web', // Projects filter: 'game' or 'web'
       title: 'Alalay Barangay',
       published: true,
       category: 'SCHOOL PROJECT',
@@ -259,13 +305,6 @@ const techstackSkillMeta = {
   'UI Toolkit': { level: 'Intermediate', context: 'Unity interface construction' },
   'Lua Script': { level: 'Familiar', context: 'Gameplay scripting and systems' },
   'C#': { level: 'Intermediate', context: 'Unity gameplay and tooling' },
-  Java: { level: 'Intermediate', context: 'Backend and academic development' },
-  PHP: { level: 'Familiar', context: 'Backend web development' },
-  Python: { level: 'Familiar', context: 'Scripting, AI experiments and tooling' },
-  'Node.js': { level: 'Familiar', context: 'APIs and server-side JavaScript' },
-  Laravel: { level: 'Familiar', context: 'PHP web applications' },
-  PostgreSQL: { level: 'Familiar', context: 'Relational data modeling' },
-  MySQL: { level: 'Familiar', context: 'Relational databases' },
   Unity: { level: 'Proficient', context: 'Game development and prototyping' },
   GameMaker: { level: 'Familiar', context: '2D game development' },
   Godot: { level: 'Familiar', context: 'Game prototypes and experiments' },
@@ -305,20 +344,6 @@ const techstackCategories = [
       'Tailwind CSS',
       'USS',
       'UI Toolkit',
-      'Lua Script',
-      'C#',
-    ],
-  },
-  {
-    title: 'BACKEND',
-    tags: [
-      'Java',
-      'PHP',
-      'Python',
-      'Node.js',
-      'Laravel',
-      'PostgreSQL',
-      'MySQL',
       'Lua Script',
       'C#',
     ],
@@ -385,12 +410,53 @@ const techstackPreviewSkills = Array.from(
   ).values()
 );
 
+// Techstack section on the Journey page ("What I work with"):
+//   header  - eyebrow, two-line title, View all tools
+//   groups  - left list / right detail panel; one per techstack category
+//             above (same order), with the copy below and that category's
+//             tools as tags
+//   toolkit - looping strip of every tool (each once)
+//   stats   - Projects / Competition / Certification / Years of exp,
+//             counted from the data below (see TechstackPreviewSection)
+const techstackGroupCopy = [
+  {
+    title: 'Frontend & UI',
+    subtitle: 'Interfaces, layouts, game UI',
+    headline: 'Building the interface',
+    description:
+      'I turn designs into responsive, accessible screens: web layouts in React and Next.js, and in-game interfaces with Unity UI Toolkit and USS.',
+  },
+  {
+    title: 'Game Development',
+    subtitle: 'Engines, gameplay, multiplayer',
+    headline: 'Making it playable',
+    description:
+      'From prototype to playable build: gameplay systems in Unity, Godot and GameMaker, multiplayer with Photon, and on-device AI with ONNX Runtime.',
+  },
+  {
+    title: '3D & Creative',
+    subtitle: 'Models, textures, audio, design',
+    headline: 'Crafting the assets',
+    description:
+      'I model, texture and prepare low-poly assets, edit sprites and audio, and design the UI mockups before anything gets built.',
+  },
+  {
+    title: 'Dev Tools & Workflow',
+    subtitle: 'Version control, editors, deploy',
+    headline: 'Shipping it cleanly',
+    description:
+      'Git and GitHub for every project, containerised setups with Docker, and quick deploys on Vercel, so work stays tracked and easy to ship.',
+  },
+];
+
 export const techstackPreview = {
-  title: 'TECHSTACK',
-  subtitle: 'The languages, frameworks and tools I work with most.',
-  visibleCount: 12,
-  rotationInterval: 4000,
+  titleLines: ['What I', 'work with'],
+  toolkitLabel: 'Stacks',
   skills: techstackPreviewSkills,
+  groups: techstack.categories.map((category, index) => ({
+    ...techstackGroupCopy[index],
+    items: category.items,
+  })),
 };
 
 // Skills on the Overview page (above the Techstack): craft and technical
@@ -612,6 +678,11 @@ export const education = {
 export const portfolioHub = {
   title: 'Portfolio',
   prompt: 'Select a category',
+  // Page header (same layout as the Techstack section).
+  eyebrow: 'Portfolio // Select a category',
+  titleLines: ['Selected', 'work'],
+  intro:
+    'Everything I have built and shared in one place: games and apps I developed, the 3D models behind them, and free assets you can download for your own projects.',
   categories: [
     {
       id: 'projectlist',

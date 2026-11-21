@@ -1,0 +1,156 @@
+/* ==========================================================================
+   Numbered section index ("— 01 Overview") fixed on the left of the page.
+     · 1200–1719px: numbers only, in the side margin; the label shows in a
+       small tag on hover / keyboard focus.
+     · 1720px and up: the side margin is wide enough for the labels too.
+     · Below 1200px: hidden, so it never covers content.
+   ========================================================================== */
+
+.section-index {
+  position: fixed;
+  top: 50%;
+  left: 10px;
+  z-index: 50;
+  display: none;
+  transform: translateY(-50%);
+  animation: section-index-in 0.4s ease 0.3s both;
+}
+
+@media (min-width: 1200px) {
+  .section-index {
+    display: block;
+  }
+}
+
+.section-index__list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.section-index__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 0;
+  color: var(--ink-28, #4b4b4b);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.section-index__dash {
+  width: 8px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.25s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.section-index__item:hover,
+.section-index__item:focus-visible {
+  color: var(--ink-72, #aeaeae);
+}
+
+.section-index__item.is-active {
+  color: var(--ink-100, #eeeeee);
+}
+
+.section-index__item.is-active .section-index__dash {
+  width: 14px;
+}
+
+.section-index__item:focus-visible {
+  outline: 1px solid var(--ink-100, #eeeeee);
+  outline-offset: 2px;
+}
+
+/* Compact: the label is a tag beside the number, shown on hover / focus. */
+.section-index__label {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 8px);
+  padding: 4px 8px;
+  color: var(--ink-100, #eeeeee);
+  white-space: nowrap;
+  pointer-events: none;
+  background: #0c0c0c;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 3px;
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.section-index__item:hover .section-index__label,
+.section-index__item:focus-visible .section-index__label {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Wide screens: labels sit inline, always visible. */
+@media (min-width: 1720px) {
+  .section-index {
+    left: 28px;
+  }
+
+  .section-index__item {
+    gap: 8px;
+  }
+
+  .section-index__item.is-active .section-index__dash {
+    width: 20px;
+  }
+
+  .section-index__label {
+    position: static;
+    padding: 0;
+    color: var(--ink-72, #aeaeae);
+    background: none;
+    border: 0;
+    opacity: 1;
+    transform: none;
+    transition: color 0.2s ease;
+  }
+
+  .section-index__item:hover .section-index__label,
+  .section-index__item:focus-visible .section-index__label {
+    color: var(--ink-100, #eeeeee);
+    transform: none;
+  }
+
+  .section-index__item.is-active .section-index__label {
+    color: var(--ink-100, #eeeeee);
+  }
+}
+
+@keyframes section-index-in {
+  from {
+    opacity: 0;
+    transform: translate(-6px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-index,
+  .section-index__dash,
+  .section-index__label {
+    animation: none;
+    transition: none;
+  }
+}

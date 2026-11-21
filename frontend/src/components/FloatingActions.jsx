@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { floatingActions } from '../data/portfolio';
+import { isSfxMuted, playSfx, setSfxMuted } from '../audio/sfx';
 import '../styles/floating-actions.css';
 
 const linkFor = (id) => floatingActions.actions.find((action) => action.id === id);
@@ -7,11 +8,14 @@ const linkFor = (id) => floatingActions.actions.find((action) => action.id === i
 /**
  * Quick-actions menu (bottom-right). A compact button opens a labelled panel
  * above it: every action shows its name and a one-line description, grouped
- * into Connect, Resume and Profiles. Closes after an action, on an outside
+ * into Connect, Resume, Play (Grapple) and Profiles. Closes after an action, on an outside
  * click, or with Escape; arrow keys move between actions.
+ * Hover / click sounds come from the site-wide SFX (src/audio); the Sound
+ * effects switch here mutes them and plays a notification when turned on.
  */
-export default function FloatingActions({ onOpenChat, onOpenContact }) {
+export default function FloatingActions({ onOpenChat, onOpenContact, onPlayGame }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSoundOn, setIsSoundOn] = useState(() => !isSfxMuted());
   const rootRef = useRef(null);
   const toggleRef = useRef(null);
   const panelRef = useRef(null);
@@ -53,6 +57,18 @@ export default function FloatingActions({ onOpenChat, onOpenContact }) {
       ],
     },
     {
+      title: 'Play',
+      items: [
+        {
+          id: 'grapple',
+          label: 'Play Grapple',
+          hint: 'Endless magnet-climbing mini-game',
+          icon: 'ri-gamepad-line',
+          onSelect: onPlayGame,
+        },
+      ],
+    },
+    {
       title: 'Profiles',
       items: [
         {
@@ -76,6 +92,15 @@ export default function FloatingActions({ onOpenChat, onOpenContact }) {
       ],
     },
   ];
+
+  // Sound effects switch: stays open so the change is visible. Turning it
+  // on plays the on-sfx-notification sound; turning it off is silent.
+  const toggleSound = () => {
+    const next = !isSoundOn;
+    setSfxMuted(!next);
+    setIsSoundOn(next);
+    if (next) playSfx('enabled');
+  };
 
   const close = ({ returnFocus = false } = {}) => {
     setIsOpen(false);
@@ -204,6 +229,39 @@ export default function FloatingActions({ onOpenChat, onOpenContact }) {
             </ul>
           </section>
         ))}
+
+        <section className="quick-menu__group" aria-label="Settings">
+          <h3 className="quick-menu__group-title">Settings</h3>
+          <ul>
+            <li>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={isSoundOn}
+                className="quick-menu__item quick-menu__item--switch"
+                style={{ '--item-index': itemIndex }}
+                data-sfx-click="none"
+                onClick={toggleSound}
+              >
+                <span className="quick-menu__icon" aria-hidden="true">
+                  <i className={isSoundOn ? 'ri-volume-up-line' : 'ri-volume-mute-line'}></i>
+                </span>
+                <span className="quick-menu__text">
+                  <span className="quick-menu__label">Sound effects</span>
+                  <span className="quick-menu__hint">
+                    {isSoundOn ? 'On: hover and click sounds' : 'Off: muted'}
+                  </span>
+                </span>
+                <span
+                  className={`quick-menu__switch${isSoundOn ? ' is-on' : ''}`}
+                  aria-hidden="true"
+                >
+                  <span className="quick-menu__switch-knob"></span>
+                </span>
+              </button>
+            </li>
+          </ul>
+        </section>
       </div>
 
       <button

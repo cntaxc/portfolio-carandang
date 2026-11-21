@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SectionHeading from '../SectionHeading';
+import SectionEyebrow from '../SectionEyebrow';
 import { education } from '../../data/portfolio';
 
 // Education on the Overview page: a featured card for the current college
@@ -122,7 +123,10 @@ export default function EducationSection() {
       className="section section-panel section-panel--educations"
       data-reveal
     >
-      <SectionHeading title={education.title} />
+      <SectionHeading
+        title={education.title}
+        eyebrow={<SectionEyebrow sectionId="educations" />}
+      />
 
       <div className="edu-layout">
         <article className="edu-featured" aria-labelledby="edu-featured-school">

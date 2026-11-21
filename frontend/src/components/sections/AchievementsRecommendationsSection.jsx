@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SectionEyebrow from '../SectionEyebrow';
 import { achievementHighlights } from '../../data/portfolio';
 
 export default function AchievementsRecommendationsSection() {
@@ -24,7 +25,7 @@ export default function AchievementsRecommendationsSection() {
     >
       <div className="achievements-recommendations__head">
         <div className="split-section__heading">
-          <p className="split-section__eyebrow">Milestone</p>
+          <SectionEyebrow sectionId="certificates" />
           <h2>Achievements</h2>
         </div>
       </div>

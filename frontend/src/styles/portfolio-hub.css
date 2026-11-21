@@ -1,0 +1,366 @@
+/* ==========================================================================
+   Portfolio hub (#portfolio): same look as the Journey page sections.
+   #0C0C0C canvas + 64px grid · #1F1F1F cards · cream ink tokens ·
+   #4B4B4B hairlines · monospace · 5px corners.
+   ========================================================================== */
+
+.hub-page {
+  position: relative;
+  min-height: 100vh;
+  background-color: #0c0c0c;
+  isolation: isolate;
+}
+
+/* The same subtle grid as the Journey page. */
+.hub-page::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(238, 238, 238, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(238, 238, 238, 0.045) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 64px 64px;
+}
+
+.hub {
+  width: 100%;
+  min-height: auto;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 120px var(--content-gutter) clamp(56px, 9vh, 96px);
+  justify-content: flex-start;
+}
+
+/* ---- Header -------------------------------------------------------------------- */
+
+.hub__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 440px);
+  align-items: end;
+  gap: 24px clamp(24px, 5vw, 80px);
+  padding-bottom: clamp(24px, 4vh, 36px);
+  border-bottom: 1px solid var(--ink-28, #4b4b4b);
+  animation: hub-rise 0.5s ease both;
+}
+
+.hub__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  color: var(--ink-72, #aeaeae);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hub__eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--ink-100, #eeeeee);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px #0c0c0c;
+  outline: 1px solid var(--ink-100, #eeeeee);
+}
+
+/* Solid line, then an outlined line (like the hero titles). */
+.hub__title {
+  display: grid;
+  margin: 0;
+  color: var(--ink-100, #eeeeee);
+  font-size: clamp(40px, 5.6vw, 88px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.hub__title span + span {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink-100, #eeeeee);
+}
+
+.hub__intro {
+  margin: 0;
+  padding-bottom: 8px;
+  color: var(--ink-72, #aeaeae);
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+}
+
+/* ---- Cards ------------------------------------------------------------------------ */
+
+.hub__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  margin: clamp(28px, 4.5vh, 44px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hub__item {
+  display: flex;
+  min-width: 0;
+  animation: hub-rise 0.5s ease both;
+  animation-delay: calc(var(--item-index, 0) * 70ms + 80ms);
+}
+
+.hub-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  color: var(--ink-100, #eeeeee);
+  text-decoration: none;
+  background: #1f1f1f;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 5px;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.hub-card:hover,
+.hub-card:focus-visible {
+  border-color: var(--ink-72, #aeaeae);
+  transform: translateY(-3px);
+}
+
+.hub-card:focus-visible {
+  outline: 1px solid var(--ink-100, #eeeeee);
+  outline-offset: 3px;
+}
+
+/* Framed artwork */
+.hub-card__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #0c0c0c;
+  border-bottom: 1px solid var(--ink-28, #4b4b4b);
+}
+
+.hub-card__image,
+.hub-card__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.hub-card__slideshow {
+  position: absolute;
+  inset: 0;
+}
+
+.hub-card__slide {
+  opacity: 0;
+  transition:
+    opacity 0.9s ease,
+    transform 0.6s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.hub-card__slide.is-active {
+  opacity: 1;
+}
+
+.hub-card:hover .hub-card__image,
+.hub-card:hover .hub-card__slide {
+  transform: scale(1.04);
+}
+
+/* No artwork (Free Assets): icon on a diagonal hatch. */
+.hub-card__placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ink-28, #4b4b4b);
+  font-size: clamp(56px, 6vw, 88px);
+  background: repeating-linear-gradient(135deg, rgba(244, 236, 216, 0.04) 0 1px, transparent 1px 14px), #141414;
+  transition: color 0.25s ease;
+}
+
+.hub-card:hover .hub-card__placeholder {
+  color: var(--ink-72, #aeaeae);
+}
+
+.hub-card__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 12, 12, 0.55) 0%, rgba(12, 12, 12, 0) 35%);
+  pointer-events: none;
+}
+
+.hub-card__corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 0 solid var(--ink-100, #eeeeee);
+}
+
+.hub-card__corner--tl { top: 10px; left: 10px; border-top-width: 1px; border-left-width: 1px; }
+.hub-card__corner--tr { top: 10px; right: 10px; border-top-width: 1px; border-right-width: 1px; }
+.hub-card__corner--bl { bottom: 10px; left: 10px; border-bottom-width: 1px; border-left-width: 1px; }
+.hub-card__corner--br { right: 10px; bottom: 10px; border-right-width: 1px; border-bottom-width: 1px; }
+
+.hub-card__index {
+  position: absolute;
+  top: 18px;
+  left: 24px;
+  color: var(--ink-100, #eeeeee);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-shadow: 0 1px 6px rgba(12, 12, 12, 0.9);
+}
+
+/* Text */
+.hub-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 22px 18px;
+}
+
+.hub-card__title {
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.hub-card__desc {
+  flex: 1;
+  color: var(--ink-72, #aeaeae);
+  font-size: 12.5px;
+  line-height: 1.7;
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+}
+
+.hub-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-28, #4b4b4b);
+}
+
+.hub-card__count {
+  color: var(--ink-72, #aeaeae);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hub-card__count strong {
+  color: var(--ink-100, #eeeeee);
+  font-size: 14px;
+}
+
+.hub-card__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-100, #eeeeee);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hub-card__open i {
+  transition: transform 0.2s ease;
+}
+
+.hub-card:hover .hub-card__open i {
+  transform: translateX(4px);
+}
+
+/* ---- Leaving: the chosen card lifts, the rest fades -------------------------------- */
+
+.hub-page.is-leaving .hub__head,
+.hub-page.is-leaving .hub__item:not(.is-chosen) {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.hub-page.is-leaving .hub__item.is-chosen .hub-card {
+  border-color: var(--ink-100, #eeeeee);
+  transform: translateY(-8px);
+}
+
+@keyframes hub-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- Tablet / phone ------------------------------------------------------------------ */
+
+@media (max-width: 1023px) {
+  .hub {
+    padding-top: 104px;
+  }
+
+  .hub__head {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .hub__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .hub {
+    padding-top: 96px;
+  }
+
+  .hub__title span + span {
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .hub__cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub__head,
+  .hub__item {
+    animation: none;
+  }
+
+  .hub-card,
+  .hub-card__image,
+  .hub-card__slide,
+  .hub-card__open i {
+    transition: none;
+  }
+}
