@@ -62,37 +62,152 @@
   }
 }
 
-/* ---- Left: logo -------------------------------------------------------- */
+/* ---- Left: GRAPPLE robot mascot ----------------------------------------- */
 
 .top-navigation__brand {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  flex: 0 0 auto;
+  display: flex;
   align-items: center;
-  justify-content: center;
   justify-self: start;
-  border-radius: 50%;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
-.top-navigation__brand img {
-  display: block;
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
+.top-navigation__robot {
+  display: inline-flex;
+  padding: 2px 4px;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.top-navigation__brand:hover {
-  box-shadow: 0 0 0 2px rgba(245, 245, 240, 0.25);
-  transform: scale(1.04);
-}
-
-.top-navigation__brand:focus-visible {
+.top-navigation__robot:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
+}
+
+/* Body: bobs gently while idle. */
+.top-navigation__robot-body {
+  position: relative;
+  display: block;
+  transform-origin: 50% 100%;
+  animation: nav-robot-bob 1.2s ease-in-out infinite alternate;
+}
+
+.top-navigation__robot-sprite {
+  display: block;
+  width: 34px;
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(110, 245, 208, 0.18));
+  transition: filter 0.2s ease;
+}
+
+.top-navigation__robot:hover .top-navigation__robot-sprite {
+  filter: drop-shadow(0 0 10px rgba(110, 245, 208, 0.45));
+}
+
+/* Thruster flame under the feet; only visible during the climb. */
+.top-navigation__robot-flame {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 10px;
+  height: 14px;
+  margin-left: -5px;
+  background: linear-gradient(#fdfecc 0%, #f4f880 30%, #f2a33a 65%, rgba(242, 163, 58, 0) 100%);
+  clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%);
+  opacity: 0;
+  transform-origin: 50% 0;
+}
+
+/* Click: crouch, blast off out of the top of the window, then drop back
+   down into place and settle with a little bounce. */
+.top-navigation__robot.is-flying .top-navigation__robot-body {
+  animation: nav-robot-flight 1.6s both;
+}
+
+.top-navigation__robot.is-flying .top-navigation__robot-flame {
+  animation: nav-robot-flame 1.6s linear both;
+}
+
+@keyframes nav-robot-bob {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes nav-robot-flight {
+  0% {
+    transform: translateY(0) scale(1, 1);
+    animation-timing-function: ease-out;
+  }
+  12% {
+    /* crouch */
+    transform: translateY(3px) scale(1.12, 0.84);
+    animation-timing-function: ease-in;
+  }
+  20% {
+    /* launch stretch */
+    transform: translateY(-14px) scale(0.9, 1.14);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.4);
+  }
+  46% {
+    /* gone, above the top of the window */
+    transform: translateY(-170px) scale(0.94, 1.08);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.6);
+  }
+  72% {
+    /* lands with a squash */
+    transform: translateY(4px) scale(1.14, 0.84);
+    animation-timing-function: ease-out;
+  }
+  84% {
+    transform: translateY(-7px) scale(0.96, 1.05);
+    animation-timing-function: ease-in;
+  }
+  93% {
+    transform: translateY(1px) scale(1.04, 0.96);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+}
+
+@keyframes nav-robot-flame {
+  0%,
+  14% {
+    opacity: 0;
+    transform: scaleY(0.3);
+  }
+  20% {
+    opacity: 1;
+    transform: scaleY(1.2);
+  }
+  26% {
+    transform: scaleY(0.85);
+  }
+  32% {
+    transform: scaleY(1.25);
+  }
+  38% {
+    opacity: 1;
+    transform: scaleY(0.9);
+  }
+  46%,
+  100% {
+    opacity: 0;
+    transform: scaleY(0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-navigation__robot-body,
+  .top-navigation__robot.is-flying .top-navigation__robot-body,
+  .top-navigation__robot.is-flying .top-navigation__robot-flame {
+    animation: none;
+  }
 }
 
 /* ---- Center: main links ------------------------------------------------- */

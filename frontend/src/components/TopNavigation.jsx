@@ -8,13 +8,38 @@ import {
   recommendationSectionIds,
 } from '../data/portfolio';
 import '../styles/fancy-button.css';
+import PixelRobot from './PixelRobot';
 
-// Small copy of src/assets/images/logos/portfolioLogo.png (served from public/).
-const LOGO_SRC = `${process.env.PUBLIC_URL || ''}/portfolioLogo-180.png`;
+// The GRAPPLE robot in the corner: bobs while idle. A click takes you back to
+// the top of the homepage while the robot launches up out of the top of the
+// window and drops back into place with a bounce.
+function RobotMascot({ onClick }) {
+  const [isFlying, setIsFlying] = useState(false);
+  return (
+    <button
+      type="button"
+      className={`top-navigation__robot${isFlying ? ' is-flying' : ''}`}
+      aria-label="Back to the top of the homepage"
+      onClick={() => {
+        setIsFlying(true);
+        onClick?.();
+      }}
+      onAnimationEnd={(event) => {
+        if (event.animationName === 'nav-robot-flight') setIsFlying(false);
+      }}
+    >
+      <span className="top-navigation__robot-body">
+        <PixelRobot className="top-navigation__robot-sprite" />
+        <span className="top-navigation__robot-flame" aria-hidden="true"></span>
+      </span>
+    </button>
+  );
+}
 
 /**
  * Edge-to-edge top navigation bar, flush with the top of the viewport:
- *   left   - logo (goes Home)
+ *   left   - GRAPPLE robot (click: back to the top of the homepage while
+ *            it flies up and drops back)
  *   center - Home, About, Projects, More (dropdown)
  *   right  - Portfolio button
  * On small screens Home / About / Projects move into the More dropdown so
@@ -105,15 +130,15 @@ export default function TopNavigation({ activeSection, activeView, onNavigate })
       ref={navigationRef}
     >
       <nav className="top-navigation__bar" aria-label="Main navigation">
-        {/* Left: logo */}
-        <a
-          className="top-navigation__brand"
-          href="#home"
-          aria-label="Christian Carandang, back to Home"
-          onClick={(event) => handleNavigate(event, 'home')}
-        >
-          <img src={LOGO_SRC} alt="" width="36" height="36" />
-        </a>
+        {/* Left: robot mascot */}
+        <div className="top-navigation__brand">
+          <RobotMascot
+            onClick={() => {
+              setIsMoreOpen(false);
+              onNavigate('home');
+            }}
+          />
+        </div>
 
         {/* Center: main links */}
         <div className="top-navigation__center">
