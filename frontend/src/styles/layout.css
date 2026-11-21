@@ -6,61 +6,180 @@
   background-color: var(--bg);
 }
 
+/* ==========================================================================
+   Top navigation: edge-to-edge bar flush with the top of the viewport
+   (logo | Home About Projects More | Portfolio), glass-dark so it stays
+   legible over the hero.
+   ========================================================================== */
+
 .top-navigation {
   position: fixed;
-  top: 18px;
-  left: 50%;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 60;
-  transform: translateX(-50%);
+  width: 100%;
 }
 
 .top-navigation__bar {
-  display: flex;
+  display: grid;
+  width: 100%;
+  /* Equal side columns keep the center links truly centered. */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 4px;
-  padding: 7px;
+  gap: 12px;
+  padding: 22px clamp(18px, 3vw, 36px) 12px;
   color: var(--text);
-  background: rgba(12, 12, 12, 0.84);
-  border: 1px solid rgba(245, 245, 240, 0.14);
-  border-radius: 999px;
-  box-shadow: 0 12px 38px rgba(0, 0, 0, 0.32);
+  /* At the very top: fully transparent, so the hero shows through. The
+     bottom border is always there (transparent) so nothing shifts when it
+     becomes visible. */
+  background: rgba(12, 12, 12, 0);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    backdrop-filter 0.3s ease,
+    -webkit-backdrop-filter 0.3s ease;
+}
+
+/* Once the page has scrolled (see TopNavigation.jsx): dark glass bar so the
+   links stay readable over the content. */
+.top-navigation.is-scrolled .top-navigation__bar {
+  background: rgba(12, 12, 12, 0.82);
+  border-bottom-color: rgba(245, 245, 240, 0.12);
+  box-shadow: 0 12px 38px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .top-navigation__bar {
+    transition: none;
+  }
+}
+
+/* ---- Left: logo -------------------------------------------------------- */
+
+.top-navigation__brand {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  border-radius: 50%;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.top-navigation__brand img {
+  display: block;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.top-navigation__brand:hover {
+  box-shadow: 0 0 0 2px rgba(245, 245, 240, 0.25);
+  transform: scale(1.04);
+}
+
+.top-navigation__brand:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* ---- Center: main links ------------------------------------------------- */
+
+.top-navigation__center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .top-navigation__link {
   display: inline-flex;
-  min-height: 38px;
+  min-height: 42px;
   align-items: center;
   justify-content: center;
   gap: 5px;
-  padding: 0 16px;
+  padding: 0 18px;
   color: rgba(245, 245, 240, 0.72);
   font: inherit;
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
+  position: relative;
   background: transparent;
   border: 0;
-  border-radius: 999px;
+  border-radius: 0;
   cursor: pointer;
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+/* Underline: hidden at the center, grows out to both sides on hover and
+   stays full width on the current page (and while More is open). */
+.top-navigation__link::after {
+  position: absolute;
+  right: 18px;
+  bottom: 6px;
+  left: 18px;
+  height: 2px;
+  content: '';
+  background: var(--text);
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.2, 0.72, 0.24, 1);
 }
 
 .top-navigation__link:hover,
 .top-navigation__link.is-active,
 .top-navigation__more-toggle[aria-expanded='true'] {
   color: var(--text);
-  background: rgba(245, 245, 240, 0.1);
+}
+
+.top-navigation__link:hover::after,
+.top-navigation__link:focus-visible::after,
+.top-navigation__link.is-active::after,
+.top-navigation__more-toggle[aria-expanded='true']::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-navigation__link::after {
+    transition: none;
+  }
 }
 
 .top-navigation__link:focus-visible,
 .top-navigation__dropdown-link:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--text);
   outline-offset: 2px;
+}
+
+/* ---- Right: Portfolio ------------------------------------------------------ */
+
+.top-navigation__end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  justify-self: end;
+  gap: 6px;
+}
+
+/* Portfolio: outlined so it reads as the main call to action. */
+/* Portfolio uses the shared "fancy" button (fancy-button.css). Its border
+   gaps are painted dark so they read as gaps over the dark hero and page. */
+.top-navigation__action {
+  --fancy-gap: #0c0c0c;
 }
 
 .top-navigation__more {
@@ -68,7 +187,7 @@
 }
 
 .top-navigation__more-toggle i {
-  font-size: 15px;
+  font-size: 16px;
   transition: transform 0.2s ease;
 }
 
@@ -78,10 +197,11 @@
 
 .top-navigation__dropdown {
   position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
+  top: calc(100% + 14px);
+  left: 50%;
   display: grid;
-  min-width: 205px;
+  min-width: 210px;
+  transform: translateX(-50%);
   gap: 4px;
   padding: 8px;
   background: rgba(12, 12, 12, 0.96);
@@ -92,17 +212,29 @@
   -webkit-backdrop-filter: blur(18px);
 }
 
+.top-navigation__dropdown-group {
+  display: grid;
+  gap: 4px;
+}
+
+/* The center links are only repeated in the dropdown on small screens. */
+.top-navigation__dropdown-group--compact {
+  display: none;
+}
+
 .top-navigation__dropdown-link {
   display: flex;
-  min-height: 40px;
+  min-height: 42px;
   align-items: center;
   gap: 10px;
   padding: 0 12px;
   color: rgba(245, 245, 240, 0.76);
-  font-size: 12px;
+  font-size: 13.5px;
   text-decoration: none;
   border-radius: 10px;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .top-navigation__dropdown-link i {
@@ -120,7 +252,37 @@
 
 .top-navigation__dropdown-link:hover i,
 .top-navigation__dropdown-link.is-active i {
-  color: var(--accent);
+  color: var(--text);
+}
+
+/* ---- Small screens -------------------------------------------------------- */
+
+/* Not enough room for every link: Home / About / Projects move into More,
+   which stays centered (logo | More | Portfolio). */
+@media (max-width: 720px) {
+  .top-navigation__bar {
+    padding: 14px 14px 8px;
+  }
+
+  .top-navigation__center > .top-navigation__link {
+    display: none;
+  }
+
+  .top-navigation__dropdown-group--compact {
+    display: grid;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(245, 245, 240, 0.1);
+  }
+}
+
+@media (max-width: 380px) {
+  .top-navigation__link {
+    padding: 0 12px;
+  }
+
+  .top-navigation__action {
+    padding: 0.8em 1.2em;
+  }
 }
 
 .main {
@@ -218,27 +380,6 @@
 }
 
 @media (max-width: 560px) {
-  .top-navigation {
-    top: 12px;
-    width: calc(100% - 24px);
-  }
-
-  .top-navigation__bar {
-    justify-content: center;
-    gap: 1px;
-    padding: 5px;
-  }
-
-  .top-navigation__link {
-    min-height: 36px;
-    padding: 0 clamp(9px, 3vw, 14px);
-    font-size: 11px;
-  }
-
-  .top-navigation__dropdown {
-    right: -5px;
-  }
-
   .main__inner {
     gap: 0;
     padding: 0 16px;
@@ -260,235 +401,4 @@
 
 }
 
-/* ==========================================================================
-   Floating quick-actions dock (bottom-right)
-   One glass column: the hamburger toggle is the bottom cell, and opening it
-   expands the same column upward to reveal icon-only actions.
-   ========================================================================== */
-
-.floating-actions {
-  --dock-width: 50px;
-
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  z-index: 70;
-  display: flex;
-  width: var(--dock-width);
-  flex-direction: column;
-  background: rgba(12, 12, 12, 0.86);
-  border: 1px solid var(--border-glass-strong);
-  border-radius: 4px;
-  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(245, 245, 240, 0.05);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  transition: transform 0.25s cubic-bezier(0.2, 0.72, 0.24, 1),
-    border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.floating-actions:not(.is-open):hover {
-  border-color: rgba(245, 245, 240, 0.42);
-  box-shadow: 0 22px 44px -16px rgba(0, 0, 0, 0.9),
-    0 0 22px -8px rgba(245, 245, 240, 0.22);
-  transform: translateY(-2px);
-}
-
-/* Drawer: grows from 0 to its full height above the toggle. */
-.floating-actions__menu {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.34s cubic-bezier(0.2, 0.72, 0.24, 1);
-}
-
-.floating-actions.is-open .floating-actions__menu {
-  grid-template-rows: 1fr;
-}
-
-.floating-actions__menu ul {
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  list-style: none;
-}
-
-/* Once fully open, let tooltips extend outside the column. */
-.floating-actions.is-settled .floating-actions__menu ul {
-  overflow: visible;
-}
-
-.floating-actions__item {
-  position: relative;
-  display: grid;
-  width: 100%;
-  height: 46px;
-  place-items: center;
-  padding: 0;
-  color: var(--text-muted);
-  text-decoration: none;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--border-glass);
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: color 0.18s ease, background-color 0.18s ease,
-    opacity 0.22s ease, transform 0.28s cubic-bezier(0.2, 0.72, 0.24, 1);
-}
-
-/* Icons fade up one after another, bottom (nearest the toggle) first. */
-.floating-actions.is-open .floating-actions__item {
-  opacity: 1;
-  transform: none;
-  transition-delay: calc((4 - var(--item-index, 0)) * 30ms + 60ms);
-}
-
-.floating-actions__item i {
-  font-size: 18px;
-  line-height: 1;
-}
-
-.floating-actions__glyph {
-  font-family: var(--font-heading);
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.floating-actions__item:hover,
-.floating-actions__item:focus-visible {
-  color: var(--text);
-  background: rgba(245, 245, 240, 0.07);
-  outline: none;
-}
-
-.floating-actions__item:focus-visible {
-  box-shadow: inset 0 0 0 1px rgba(245, 245, 240, 0.4);
-}
-
-/* Tooltip to the left of each icon. */
-.floating-actions__tooltip {
-  position: absolute;
-  top: 50%;
-  right: calc(100% + 12px);
-  padding: 6px 10px;
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-  pointer-events: none;
-  background: rgba(12, 12, 12, 0.92);
-  border: 1px solid var(--border-glass-strong);
-  border-radius: 2px;
-  opacity: 0;
-  transform: translate(6px, -50%);
-  transition: opacity 0.16s ease, transform 0.2s ease;
-}
-
-.floating-actions.is-settled .floating-actions__item:hover .floating-actions__tooltip,
-.floating-actions.is-settled .floating-actions__item:focus-visible .floating-actions__tooltip {
-  opacity: 1;
-  transform: translate(0, -50%);
-}
-
-/* Toggle: the bottom cell of the column; bars morph into an X. */
-.floating-actions__toggle {
-  display: grid;
-  width: 100%;
-  height: var(--dock-width);
-  place-items: center;
-  padding: 0;
-  color: var(--text);
-  background: transparent;
-  border: 0;
-  border-radius: 0 0 3px 3px;
-  cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease;
-}
-
-.floating-actions__toggle:hover {
-  background: rgba(245, 245, 240, 0.06);
-}
-
-.floating-actions__toggle:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.floating-actions.is-open .floating-actions__toggle {
-  color: var(--bg);
-  background: var(--text);
-}
-
-.floating-actions__bars {
-  position: relative;
-  width: 18px;
-  height: 14px;
-}
-
-.floating-actions__bars span {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: currentColor;
-  border-radius: 1px;
-  transition: transform 0.3s cubic-bezier(0.2, 0.72, 0.24, 1),
-    opacity 0.2s ease, top 0.3s cubic-bezier(0.2, 0.72, 0.24, 1);
-}
-
-.floating-actions__bars span:nth-child(1) {
-  top: 0;
-}
-
-.floating-actions__bars span:nth-child(2) {
-  top: 6px;
-}
-
-.floating-actions__bars span:nth-child(3) {
-  top: 12px;
-}
-
-.floating-actions.is-open .floating-actions__bars span:nth-child(1) {
-  top: 6px;
-  transform: rotate(45deg);
-}
-
-.floating-actions.is-open .floating-actions__bars span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0.3);
-}
-
-.floating-actions.is-open .floating-actions__bars span:nth-child(3) {
-  top: 6px;
-  transform: rotate(-45deg);
-}
-
-@media (max-width: 640px) {
-  .floating-actions {
-    --dock-width: 46px;
-
-    right: 14px;
-    bottom: 14px;
-  }
-
-  .floating-actions__item {
-    height: 44px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .floating-actions,
-  .floating-actions__menu,
-  .floating-actions__item,
-  .floating-actions__tooltip,
-  .floating-actions__bars span {
-    transition: none;
-  }
-
-  .floating-actions:not(.is-open):hover {
-    transform: none;
-  }
-}
+/* The quick-actions menu (bottom-right) is styled in floating-actions.css. */

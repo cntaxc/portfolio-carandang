@@ -476,6 +476,73 @@
   margin-bottom: 24px;
 }
 
+/* "Overview →" text link on the right of the About heading. On hover the
+   text brightens, the arrow slides right and an underline draws in. */
+.about-section__overview {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding: 6px 0;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.about-section__overview-label {
+  position: relative;
+}
+
+.about-section__overview-label::after {
+  position: absolute;
+  right: 0;
+  bottom: -3px;
+  left: 0;
+  height: 1px;
+  content: '';
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.about-section__overview i {
+  font-size: 16px;
+  transition: transform 0.25s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.about-section__overview:hover,
+.about-section__overview:focus-visible {
+  color: var(--text);
+}
+
+.about-section__overview:hover .about-section__overview-label::after,
+.about-section__overview:focus-visible .about-section__overview-label::after {
+  transform: scaleX(1);
+}
+
+.about-section__overview:hover i,
+.about-section__overview:focus-visible i {
+  transform: translateX(4px);
+}
+
+.about-section__overview:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-section__overview-label::after,
+  .about-section__overview i {
+    transition: none;
+  }
+}
+
 .about-section__index {
   display: inline-flex;
   flex: 0 0 auto;

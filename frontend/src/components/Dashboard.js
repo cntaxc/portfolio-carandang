@@ -23,7 +23,9 @@ import GrappleGame from './grapple/GrappleGame';
 import RecommendationSubmissionForm from './RecommendationSubmissionForm';
 import RecommendationsGrid from './RecommendationsGrid';
 import SiteFooter from './SiteFooter';
+import BackToTop from './BackToTop';
 import useActiveSection from '../hooks/useActiveSection';
+import useDocumentTitle from '../hooks/useDocumentTitle';
 import useScrollReveal from '../hooks/useScrollReveal';
 import {
   assetSectionIds,
@@ -113,6 +115,8 @@ export default function Dashboard() {
   // GRAPPLE: mounted on first launch, then kept so leaving pauses the run.
   const [isGameOpen, setIsGameOpen] = useState(false);
   const [hasOpenedGame, setHasOpenedGame] = useState(false);
+  // Browser tab title follows the current page (or the game while it's open).
+  useDocumentTitle(isGameOpen ? 'game' : activeView);
   const openGame = () => {
     setHasOpenedGame(true);
     // Open on the next frame so the view fades in even on first launch.
@@ -383,6 +387,7 @@ export default function Dashboard() {
                   onViewRecommendations={() =>
                     navigateToSection('recommendation')
                   }
+                  onViewOverview={() => navigateToSection('background')}
                 />
               </div>
 
@@ -395,6 +400,7 @@ export default function Dashboard() {
                 onAskAssistant={() => navigateToSection('aichatbot')}
               />
               <AIChatbotSection />
+              <BackToTop onClick={() => navigateToSection('home')} />
             </>
           )}
         </div>

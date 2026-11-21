@@ -66,8 +66,11 @@ export const navPrimary = [
   { id: 'projects', label: 'Projects', icon: 'ri-code-s-slash-line' },
 ];
 
+// Top-level button on the right of the navigation bar.
+export const navAction = { id: 'portfolio', label: 'Portfolio', icon: 'ri-layout-grid-line' };
+
+// Links inside the "More" dropdown.
 export const navSecondary = [
-  { id: 'portfolio', label: 'Portfolio', icon: 'ri-layout-grid-line' },
   { id: 'background', label: 'Overview', icon: 'ri-user-3-line' },
   { id: 'techstack', label: 'Techstack', icon: 'ri-code-box-line' },
   {

@@ -129,8 +129,18 @@ export function createGrappleGame(canvas, callbacks = {}) {
     player = { x: VIEW_WIDTH / 2, y: START_Y, vx: 0, vy: 0 };
     rope = null;
     holding = false;
-    pegs = [];
-    lastPeg = { x: VIEW_WIDTH / 2, y: START_Y - 4 };
+    // A fixed starter peg straight above the player, so the first press
+    // always has something in reach (random pegs could land out of range).
+    const starter = {
+      x: VIEW_WIDTH / 2,
+      y: START_Y - 36,
+      baseX: VIEW_WIDTH / 2,
+      amplitude: 0,
+      speed: 1,
+      phase: 0,
+    };
+    pegs = [starter];
+    lastPeg = starter;
     particles = [];
     camY = START_Y - viewHeight * 0.72;
     hazardY = camY + viewHeight + 30;

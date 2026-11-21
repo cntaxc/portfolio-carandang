@@ -1020,3 +1020,133 @@
     animation: none;
   }
 }
+
+/* ==========================================================================
+   Portfolio hub: page transitions
+   Enter: the wordmark glides in, the three cards rise in one after another
+   (each artwork wiping up like a curtain), then the GRAPPLE banner follows.
+   Leave (a card was clicked): the chosen card lifts while the rest sinks
+   away, then the category page opens (see PortfolioHubSection.jsx).
+   Entrance animations use `backwards` fill so, once finished, the normal
+   styles (hover tilt, leaving transitions) take over again.
+   ========================================================================== */
+
+@keyframes hub-rise-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(48px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes hub-curtain {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes hub-wordmark-in {
+  from {
+    opacity: 0;
+    transform: translate(-24px, -50%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+@keyframes hub-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.portfolio-hub__item {
+  animation: hub-rise-in 0.8s cubic-bezier(0.2, 0.72, 0.24, 1) backwards;
+  animation-delay: calc(var(--item-index, 0) * 120ms + 150ms);
+  transition:
+    opacity 0.35s ease,
+    filter 0.35s ease,
+    transform 0.45s cubic-bezier(0.2, 0.72, 0.24, 1);
+}
+
+.portfolio-hub__item .portfolio-category__media {
+  animation: hub-curtain 0.9s cubic-bezier(0.65, 0, 0.35, 1) backwards;
+  animation-delay: calc(var(--item-index, 0) * 120ms + 250ms);
+}
+
+.portfolio-hub__wordmark {
+  animation: hub-wordmark-in 0.9s cubic-bezier(0.2, 0.72, 0.24, 1) 0.1s backwards;
+  transition: opacity 0.3s ease;
+}
+
+.portfolio-hub__prompt {
+  animation: hub-fade-in 0.6s ease 0.05s backwards;
+  transition: opacity 0.3s ease;
+}
+
+/* The GRAPPLE banner (rendered right after the hub) comes in last. */
+.portfolio-hub-page + .portfolio-arcade {
+  animation: hub-rise-in 0.9s cubic-bezier(0.2, 0.72, 0.24, 1) 0.6s backwards;
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s ease;
+}
+
+/* ---- Leaving ---------------------------------------------------------- */
+
+.portfolio-hub-page.is-leaving {
+  pointer-events: none;
+}
+
+.portfolio-hub-page.is-leaving .portfolio-hub__item:not(.is-chosen) {
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(28px) scale(0.94);
+}
+
+.portfolio-hub-page.is-leaving .portfolio-hub__item.is-chosen {
+  transform: translateY(-10px) scale(1.04);
+}
+
+/* The chosen card brightens, then fades just before the page changes. */
+.portfolio-hub-page.is-leaving .is-chosen .portfolio-category {
+  opacity: 0;
+  filter: brightness(1.25);
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease 0.24s;
+}
+
+.portfolio-hub-page.is-leaving .portfolio-hub__wordmark,
+.portfolio-hub-page.is-leaving .portfolio-hub__prompt {
+  opacity: 0;
+}
+
+.portfolio-hub-page.is-leaving + .portfolio-arcade {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-hub__item,
+  .portfolio-hub__item .portfolio-category__media,
+  .portfolio-hub__wordmark,
+  .portfolio-hub__prompt,
+  .portfolio-hub-page + .portfolio-arcade {
+    animation: none;
+    transition: none;
+  }
+}

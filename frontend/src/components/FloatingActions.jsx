@@ -1,161 +1,222 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { floatingActions } from '../data/portfolio';
+import '../styles/floating-actions.css';
 
 const linkFor = (id) => floatingActions.actions.find((action) => action.id === id);
 
 /**
- * Floating quick-actions dock (bottom-right). One glass column whose bottom
- * cell is the hamburger toggle; opening it expands the same column upward to
- * reveal icon-only actions (AI Assistant, Contact Form, Download Resume,
- * GitHub, LinkedIn) with tooltips. Closes after an action, on outside click,
- * or with Escape.
+ * Quick-actions menu (bottom-right). A compact button opens a labelled panel
+ * above it: every action shows its name and a one-line description, grouped
+ * into Connect, Resume and Profiles. Closes after an action, on an outside
+ * click, or with Escape; arrow keys move between actions.
  */
 export default function FloatingActions({ onOpenChat, onOpenContact }) {
   const [isOpen, setIsOpen] = useState(false);
-  // True once the expand animation has finished; tooltips (which sit outside
-  // the column) are only shown then, because the column clips while moving.
-  const [isSettled, setIsSettled] = useState(false);
   const rootRef = useRef(null);
   const toggleRef = useRef(null);
-  const firstItemRef = useRef(null);
-  const menuId = useId();
+  const panelRef = useRef(null);
+  const panelId = useId();
+  const titleId = useId();
 
-  const items = [
-    { id: 'ai', label: 'AI Assistant', glyph: 'R', onSelect: onOpenChat },
-    { id: 'contact', label: 'Contact Form', icon: 'ri-mail-line', onSelect: onOpenContact },
+  const groups = [
     {
-      id: 'resume',
-      label: 'Download Resume',
-      icon: 'ri-download-2-line',
-      href: linkFor('cv')?.url,
-      download: true,
+      title: 'Connect',
+      items: [
+        {
+          id: 'ai',
+          label: 'AI Assistant',
+          hint: 'Ask about my work and skills',
+          glyph: 'R',
+          onSelect: onOpenChat,
+        },
+        {
+          id: 'contact',
+          label: 'Contact Form',
+          hint: 'Send me a message',
+          icon: 'ri-mail-line',
+          onSelect: onOpenContact,
+        },
+      ],
     },
-    { id: 'github', label: 'GitHub', icon: 'ri-github-line', href: linkFor('github')?.url, external: true },
-    { id: 'linkedin', label: 'LinkedIn', icon: 'ri-linkedin-line', href: linkFor('linkedin')?.url, external: true },
+    {
+      title: 'Resume',
+      items: [
+        {
+          id: 'resume',
+          label: 'Download Resume',
+          hint: 'PDF copy of my CV',
+          icon: 'ri-file-user-line',
+          trailing: 'ri-download-2-line',
+          href: linkFor('cv')?.url,
+          download: true,
+        },
+      ],
+    },
+    {
+      title: 'Profiles',
+      items: [
+        {
+          id: 'github',
+          label: 'GitHub',
+          hint: 'Code and repositories',
+          icon: 'ri-github-line',
+          trailing: 'ri-arrow-right-up-line',
+          href: linkFor('github')?.url,
+          external: true,
+        },
+        {
+          id: 'linkedin',
+          label: 'LinkedIn',
+          hint: 'Professional profile',
+          icon: 'ri-linkedin-line',
+          trailing: 'ri-arrow-right-up-line',
+          href: linkFor('linkedin')?.url,
+          external: true,
+        },
+      ],
+    },
   ];
 
-  const open = () => setIsOpen(true);
   const close = ({ returnFocus = false } = {}) => {
-    setIsSettled(false);
     setIsOpen(false);
-    if (returnFocus) {
-      toggleRef.current?.focus();
-    }
+    if (returnFocus) toggleRef.current?.focus();
   };
 
-  // Close on outside click/tap and on Escape while open.
+  // While open: focus the first action, close on outside click or Escape,
+  // and let the arrow keys (and Home/End) move between actions.
   useEffect(() => {
-    if (!isOpen) {
-      return undefined;
-    }
+    if (!isOpen) return undefined;
+    const items = () => [...(panelRef.current?.querySelectorAll('.quick-menu__item') || [])];
+    items()[0]?.focus({ preventScroll: true });
+
     const handlePointerDown = (event) => {
-      if (!rootRef.current?.contains(event.target)) {
-        setIsSettled(false);
-        setIsOpen(false);
-      }
+      if (!rootRef.current?.contains(event.target)) setIsOpen(false);
     };
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
-        setIsSettled(false);
+        event.preventDefault();
         setIsOpen(false);
         toggleRef.current?.focus();
+        return;
+      }
+      const list = items();
+      const current = list.indexOf(document.activeElement);
+      if (current === -1) return;
+      const next = {
+        ArrowDown: (current + 1) % list.length,
+        ArrowUp: (current - 1 + list.length) % list.length,
+        Home: 0,
+        End: list.length - 1,
+      }[event.key];
+      if (next !== undefined) {
+        event.preventDefault();
+        list[next].focus();
       }
     };
     document.addEventListener('pointerdown', handlePointerDown);
     document.addEventListener('keydown', handleKeyDown);
-    firstItemRef.current?.focus({ preventScroll: true });
-    // Fallback in case transitionend doesn't fire (e.g. reduced motion).
-    const settleTimer = window.setTimeout(() => setIsSettled(true), 400);
     return () => {
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('keydown', handleKeyDown);
-      window.clearTimeout(settleTimer);
     };
   }, [isOpen]);
 
-  return (
-    <div
-      className={`floating-actions${isOpen ? ' is-open' : ''}${
-        isOpen && isSettled ? ' is-settled' : ''
-      }`}
-      ref={rootRef}
-    >
-      <nav
-        id={menuId}
-        className="floating-actions__menu"
-        aria-label="Quick actions"
-        aria-hidden={!isOpen}
-        onTransitionEnd={(event) => {
-          if (event.target === event.currentTarget && isOpen) {
-            setIsSettled(true);
-          }
-        }}
-      >
-        <ul>
-          {items.map((item, index) => {
-            const content = (
-              <>
-                {item.glyph ? (
-                  <span className="floating-actions__glyph" aria-hidden="true">
-                    {item.glyph}
-                  </span>
-                ) : (
-                  <i className={item.icon} aria-hidden="true"></i>
-                )}
-                <span className="floating-actions__tooltip" aria-hidden="true">
-                  {item.label}
-                </span>
-              </>
-            );
-            const shared = {
-              ref: index === 0 ? firstItemRef : undefined,
-              className: 'floating-actions__item',
-              style: { '--item-index': index },
-              tabIndex: isOpen ? 0 : -1,
-              'aria-label': item.external ? `${item.label} (opens in a new tab)` : item.label,
-            };
+  let itemIndex = 0;
 
-            return (
-              <li key={item.id}>
-                {item.href ? (
-                  <a
-                    {...shared}
-                    href={item.href}
-                    download={item.download ? '' : undefined}
-                    target={item.external ? '_blank' : undefined}
-                    rel={item.external ? 'noreferrer' : undefined}
-                    onClick={() => close()}
-                  >
-                    {content}
-                  </a>
-                ) : (
-                  <button
-                    {...shared}
-                    type="button"
-                    onClick={() => {
-                      close();
-                      item.onSelect?.();
-                    }}
-                  >
-                    {content}
-                  </button>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+  return (
+    <div className={`quick-menu${isOpen ? ' is-open' : ''}`} ref={rootRef}>
+      <div
+        ref={panelRef}
+        id={panelId}
+        className="quick-menu__panel"
+        role="dialog"
+        aria-labelledby={titleId}
+        aria-hidden={!isOpen}
+        inert={isOpen ? undefined : ''}
+      >
+        <header className="quick-menu__header">
+          <p id={titleId} className="quick-menu__title">
+            Quick actions
+          </p>
+          <p className="quick-menu__subtitle">Get in touch or grab my resume.</p>
+        </header>
+
+        {groups.map((group) => (
+          <section className="quick-menu__group" key={group.title} aria-label={group.title}>
+            <h3 className="quick-menu__group-title">{group.title}</h3>
+            <ul>
+              {group.items.map((item) => {
+                const index = itemIndex++;
+                const content = (
+                  <>
+                    <span className="quick-menu__icon" aria-hidden="true">
+                      {item.glyph ? (
+                        <span className="quick-menu__glyph">{item.glyph}</span>
+                      ) : (
+                        <i className={item.icon}></i>
+                      )}
+                    </span>
+                    <span className="quick-menu__text">
+                      <span className="quick-menu__label">{item.label}</span>
+                      <span className="quick-menu__hint">{item.hint}</span>
+                    </span>
+                    <i
+                      className={`quick-menu__trailing ${item.trailing || 'ri-arrow-right-s-line'}`}
+                      aria-hidden="true"
+                    ></i>
+                  </>
+                );
+                const shared = {
+                  className: 'quick-menu__item',
+                  style: { '--item-index': index },
+                };
+                return (
+                  <li key={item.id}>
+                    {item.href ? (
+                      <a
+                        {...shared}
+                        href={item.href}
+                        download={item.download ? '' : undefined}
+                        target={item.external ? '_blank' : undefined}
+                        rel={item.external ? 'noopener noreferrer' : undefined}
+                        aria-label={
+                          item.external ? `${item.label} (opens in a new tab)` : undefined
+                        }
+                        onClick={() => close()}
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <button
+                        {...shared}
+                        type="button"
+                        onClick={() => {
+                          close();
+                          item.onSelect?.();
+                        }}
+                      >
+                        {content}
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
+      </div>
 
       <button
         ref={toggleRef}
         type="button"
-        className="floating-actions__toggle"
+        className="quick-menu__toggle"
         aria-expanded={isOpen}
-        aria-controls={menuId}
+        aria-controls={panelId}
         aria-label={isOpen ? 'Close quick actions' : 'Open quick actions'}
-        onClick={() => (isOpen ? close() : open())}
+        title={isOpen ? undefined : 'Quick actions'}
+        onClick={() => (isOpen ? close() : setIsOpen(true))}
       >
-        <span className="floating-actions__bars" aria-hidden="true">
+        <span className="quick-menu__bars" aria-hidden="true">
           <span></span>
           <span></span>
           <span></span>

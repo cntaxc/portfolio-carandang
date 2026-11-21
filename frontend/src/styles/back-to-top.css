@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Back to top (homepage, just above the footer)
+   Adapted from Uiverse.io by vinodjangid07: a dark round arrow button that
+   widens into a white "Back to Top" pill on hover or keyboard focus.
+   ========================================================================== */
+
+.back-to-top {
+  display: flex;
+  justify-content: center;
+  padding: clamp(24px, 4vw, 48px) var(--content-gutter, 24px) clamp(40px, 6vw, 72px);
+}
+
+.back-to-top__button {
+  position: relative;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  background-color: #141414;
+  border: 1px solid rgba(245, 245, 240, 0.2);
+  border-radius: 50%;
+  /* Soft white ring (the original used purple). */
+  box-shadow: 0 0 0 4px rgba(245, 245, 240, 0.1);
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+
+.back-to-top__icon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
+
+.back-to-top__icon path {
+  fill: var(--text);
+  transition: fill 0.3s;
+}
+
+/* The label, hidden (0px) until hover. */
+.back-to-top__button::before {
+  position: absolute;
+  bottom: -20px;
+  content: 'Back to Top';
+  color: #0c0c0c;
+  font-size: 0;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Hover / focus: widen into a white pill, arrow slides up, label appears. */
+.back-to-top__button:hover,
+.back-to-top__button:focus-visible {
+  width: 150px;
+  background-color: var(--text);
+  border-color: var(--text);
+  border-radius: 50px;
+  box-shadow: 0 0 0 4px rgba(245, 245, 240, 0.18);
+}
+
+.back-to-top__button:hover .back-to-top__icon,
+.back-to-top__button:focus-visible .back-to-top__icon {
+  transform: translateY(-200%);
+}
+
+.back-to-top__button:hover .back-to-top__icon path,
+.back-to-top__button:focus-visible .back-to-top__icon path {
+  fill: #0c0c0c;
+}
+
+.back-to-top__button:hover::before,
+.back-to-top__button:focus-visible::before {
+  bottom: unset;
+  font-size: 13px;
+  transition-duration: 0.3s;
+}
+
+.back-to-top__button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top__button,
+  .back-to-top__icon,
+  .back-to-top__button::before {
+    transition-duration: 0s;
+  }
+}

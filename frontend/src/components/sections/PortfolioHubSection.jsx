@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import usePrefersReducedMotion from '../../hooks/usePrefersReducedMotion';
 import useTypewriter from '../../hooks/useTypewriter';
 import { portfolioHub } from '../../data/portfolio';
@@ -85,13 +85,37 @@ function CategoryMedia({ category, animate }) {
   );
 }
 
+// How long the "leaving" animation plays before the category page opens.
+const LEAVE_DURATION_MS = 450;
+
 export default function PortfolioHubSection({ onSelectCategory }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const prompt = portfolioHub.prompt.toUpperCase();
   const typedPrompt = useTypewriter([prompt], { enabled: !prefersReducedMotion });
+  // The category being opened: the chosen card lifts while the rest of the
+  // page sinks away, then we navigate.
+  const [leavingId, setLeavingId] = useState(null);
+  // Latest callback in a ref, so parent re-renders don't restart the timer.
+  const onSelectRef = useRef(onSelectCategory);
+  onSelectRef.current = onSelectCategory;
+
+  useEffect(() => {
+    if (!leavingId) return undefined;
+    const timer = window.setTimeout(() => onSelectRef.current(leavingId), LEAVE_DURATION_MS);
+    return () => window.clearTimeout(timer);
+  }, [leavingId]);
+
+  const openCategory = (categoryId) => {
+    if (leavingId) return; // already on the way out
+    if (prefersReducedMotion) {
+      onSelectCategory(categoryId);
+    } else {
+      setLeavingId(categoryId);
+    }
+  };
 
   return (
-    <div className="portfolio-hub-page">
+    <div className={`portfolio-hub-page${leavingId ? ' is-leaving' : ''}`}>
       {/* Decorative vertical wordmark in the page's left margin. It is
           absolutely positioned, so it never affects the card layout. */}
       <span className="portfolio-hub__wordmark" aria-hidden="true">
@@ -120,15 +144,21 @@ export default function PortfolioHubSection({ onSelectCategory }) {
           </p>
 
           <ul className="portfolio-hub__cards">
-            {portfolioHub.categories.map((category) => (
-              <li className="portfolio-hub__item" key={category.id}>
+            {portfolioHub.categories.map((category, index) => (
+              <li
+                className={`portfolio-hub__item${
+                  leavingId === category.id ? ' is-chosen' : ''
+                }`}
+                key={category.id}
+                style={{ '--item-index': index }}
+              >
                 <a
                   className={`portfolio-category portfolio-category--${category.tone}`}
                   href={`#${category.id}`}
                   aria-describedby={`portfolio-category-${category.id}`}
                   onClick={(event) => {
                     event.preventDefault();
-                    onSelectCategory(category.id);
+                    openCategory(category.id);
                   }}
                   onPointerMove={prefersReducedMotion ? undefined : updateCardPointer}
                   onPointerLeave={resetCardPointer}

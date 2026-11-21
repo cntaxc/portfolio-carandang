@@ -22,7 +22,7 @@ const aboutStats = [
   },
 ];
 
-export default function AboutSection({ onViewRecommendations }) {
+export default function AboutSection({ onViewRecommendations, onViewOverview }) {
   return (
     <section id="about" className="about-section section" data-reveal>
       <div className="about-section__content">
@@ -34,7 +34,20 @@ export default function AboutSection({ onViewRecommendations }) {
               >
                 <i className="ri-message-2-line" aria-hidden="true"></i>
               </span>
-              <h2>ABOUT ME</h2>
+              <h2>ABOUT</h2>
+              {onViewOverview ? (
+                <a
+                  className="about-section__overview"
+                  href="#background"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onViewOverview();
+                  }}
+                >
+                  <span className="about-section__overview-label">Overview</span>
+                  <i className="ri-arrow-right-line" aria-hidden="true"></i>
+                </a>
+              ) : null}
             </div>
             <div className="about-section__copy">
               {about.paragraphs.map((paragraph) => (
