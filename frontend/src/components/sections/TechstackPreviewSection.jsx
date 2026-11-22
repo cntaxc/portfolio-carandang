@@ -17,10 +17,12 @@ const { titleLines, groups, toolkitLabel, skills } = techstackPreview;
 const competitionCount = achievementHighlights.filter(({ label, event }) =>
   /hackathon|competition|game jam/i.test(`${label} ${event}`)
 ).length;
+// Only filled-in certification slots count; a dash until there is one.
+const certificationCount = certificates.items.filter((item) => item.title).length;
 const STATS = [
   { label: 'Projects', value: pad2(showcaseProjects.items.length) },
   { label: 'Competition', value: pad2(competitionCount) },
-  { label: 'Certification', value: pad2(certificates.items.length) },
+  { label: 'Certification', value: certificationCount ? pad2(certificationCount) : '—' },
   { label: 'Years of exp', value: professionalSummary.yearsOfExperience, unit: 'YRS' },
 ];
 

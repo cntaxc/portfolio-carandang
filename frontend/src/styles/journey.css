@@ -186,7 +186,7 @@
 .journey-intro__bio {
   display: grid;
   gap: 12px;
-  max-width: 62ch;
+  max-width: 80ch;
   margin-top: clamp(20px, 3.5vh, 32px);
 }
 
@@ -1296,5 +1296,27 @@
 
   .journey__node--diamond:hover .journey__node-shape {
     transform: rotate(45deg);
+  }
+}
+
+/* Short desktop screens (e.g. 1366 x 768): tighter spacing, so the bio, the
+   buttons and the "Scroll to map" cue all fit in the first screen. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .journey-intro__inner {
+    padding-top: 88px;
+    padding-bottom: 84px;
+  }
+
+  .journey-intro__bio {
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .journey-intro__bio p {
+    line-height: 1.6;
+  }
+
+  .journey-intro__actions {
+    margin-top: 18px;
   }
 }

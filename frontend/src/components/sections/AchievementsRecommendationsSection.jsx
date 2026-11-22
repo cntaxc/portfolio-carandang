@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import SectionEyebrow from '../SectionEyebrow';
-import { achievementHighlights } from '../../data/portfolio';
+import CertificationCard from '../CertificationCard';
+import { achievementHighlights, certificates } from '../../data/portfolio';
+import '../../styles/certifications.css';
 
 export default function AchievementsRecommendationsSection() {
   const [activeAchievementIndex, setActiveAchievementIndex] = useState(0);
@@ -124,6 +126,17 @@ export default function AchievementsRecommendationsSection() {
             </button>
           </div>
         ) : null}
+
+        {/* Certifications: part of Achievements, directly under the highlight */}
+        <ul className="cert-grid" aria-label="Certifications">
+          {certificates.items.map((certificate, index) => (
+            <CertificationCard
+              key={certificate.id}
+              certificate={certificate}
+              number={index + 1}
+            />
+          ))}
+        </ul>
       </div>
     </section>
   );

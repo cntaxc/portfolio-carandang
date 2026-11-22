@@ -12,6 +12,14 @@ import triggrPfp from '../assets/images/logos/triggr.png';
 import schoolPhoto from '../assets/images/logos/schoolimg.jpg';
 import universityLogo from '../assets/images/logos/University-of-Cabuyao-logo.jpg';
 import departmentLogoImage from '../assets/images/logos/College-of-Computing-Logo.jpg';
+import sikaptalaPdf from '../assets/images/certificates/CHRISTIAN_RAPHAEL_A__CARANDANG_6a1b0d0854e849cf649d97a1.pdf';
+import sikaptalaPreview from '../assets/images/certificates/previews/sikaptala-2026.jpg';
+import orientationPdf from '../assets/images/certificates/PALD-PNC PRE-CE-85.492-Christian Raphael A. Carandang.pdf';
+import orientationPreview from '../assets/images/certificates/previews/internship-orientation-2026.jpg';
+import pantryPdf from '../assets/images/certificates/PNC_Kalikasan_Community_Pantry_Christian Raphael A. Carandang.pdf';
+import pantryPreview from '../assets/images/certificates/previews/kalikasan-community-pantry-2026.jpg';
+import ignitePdf from '../assets/images/certificates/Wadhwani Foundation Certificate - 69f5ac8db36cdf49a0e69dd8.pdf';
+import ignitePreview from '../assets/images/certificates/previews/ignite-philippines-2026.jpg';
 import generatedModels from './models.generated.json';
 import generatedDownloads from './downloads.generated.json';
 
@@ -166,8 +174,8 @@ export const about = {
   cvUrl: RESUME_URL,
   mailUrl: 'mailto:carandangchristianra@gmail.com',
   paragraphs: [
-    "Hello! I'm Christian Raphael A. Carandang, a passionate Computer Science student who enjoys exploring the creative and technical sides of technology. I'm particularly interested in 3D modeling, animation, C# programming, and visual design, where I get to combine creativity with problem-solving to bring ideas to life.",
-    "I enjoy working on hands-on projects that allow me to develop my skills, experiment with new technologies, and turn concepts into meaningful digital experiences. I'm always eager to learn, take on new challenges, and collaborate with others who share the same passion for creating innovative and engaging projects.",
+    "Hello! I'm Christian Raphael A. Carandang, a Computer Science student at the University of Cabuyao with a passion for both game development and web development. I enjoy creating interactive experiences, whether it's building 3D environments, designing game mechanics, developing user interfaces, or building responsive websites. Through projects like OUTRUN, MUTED, and TRIGGR, I've gained experience in 3D modeling, game design, UI development, and programming. I've also worked on Alalay Barangay and contributed to the front-end development of LUNAS, which placed 8th overall at SIKAPTala 2026.",
+    "I'm passionate about combining creativity and technical skills to build engaging digital experiences. I'm currently seeking an internship where I can further develop my skills in either game development or web development, collaborate with experienced teams, and contribute to meaningful projects.",
   ],
 };
 
@@ -585,12 +593,67 @@ export const experiences = {
   ],
 };
 
+// The cards under the main achievement. A slot without a `title` shows as a
+// placeholder and isn't counted in the Techstack "Certification" stat.
+//   title    - what it was for, as printed on the certificate
+//   type     - kind of certificate (the tag): Participation, Attendance...
+//   issuer   - issuing organization
+//   date     - as printed on the certificate
+//   badge    - optional Remix icon class or image path
+//   pdf      - imported PDF from assets/images/certificates (opens in a new tab)
+//   preview  - imported image of the PDF's first page (certificates/previews)
+//   pages, fileSize - shown on the card
 export const certificates = {
   title: 'Certificates',
   items: [
-    { id: 1, name: 'React Fundamentals', issuer: 'Coursera', date: '2024' },
-    { id: 2, name: 'Web Development', issuer: 'Udemy', date: '2024' },
-    { id: 3, name: 'UI/UX Design', issuer: 'Figma Academy', date: '2023' },
+    {
+      id: 1,
+      title: 'SIKAPTala 2026: Virtual Hackathon',
+      type: 'Participation',
+      issuer: 'De La Salle University-Dasmariñas, CICS Student Government',
+      date: 'May 31, 2026',
+      badge: 'ri-code-s-slash-line',
+      pdf: sikaptalaPdf,
+      preview: sikaptalaPreview,
+      pages: 2,
+      fileSize: '1.2 MB',
+    },
+    {
+      id: 2,
+      title: 'Internship Onboarding Orientation 2026',
+      type: 'Attendance',
+      issuer: 'University of Cabuyao (Pamantasan ng Cabuyao)',
+      date: 'Nov 10, 2026',
+      badge: 'ri-briefcase-4-line',
+      pdf: orientationPdf,
+      preview: orientationPreview,
+      pages: 1,
+      fileSize: '208 KB',
+    },
+    {
+      id: 3,
+      title: 'PNC Kalikasan Community Pantry',
+      type: 'Involvement',
+      issuer: 'University of Cabuyao (Pamantasan ng Cabuyao)',
+      date: 'Sep 9–10, 2026',
+      badge: 'ri-leaf-line',
+      pdf: pantryPdf,
+      preview: pantryPreview,
+      pages: 1,
+      fileSize: '203 KB',
+    },
+    {
+      id: 4,
+      title: 'Ignite Philippines',
+      type: 'Completion · 42 hours',
+      issuer: 'Wadhwani Foundation',
+      date: 'May 2, 2026',
+      badge: 'ri-lightbulb-line',
+      pdf: ignitePdf,
+      preview: ignitePreview,
+      pages: 1,
+      fileSize: '35 KB',
+    },
   ],
 };
 

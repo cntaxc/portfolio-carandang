@@ -1,0 +1,271 @@
+/* ==========================================================================
+   Certification cards inside Achievements, under the main highlight.
+   Sharp terminal boxes: #0C0C0C title bar, #1F1F1F body, #4B4B4B hairlines,
+   cream ink tokens, a preview frame. Empty slots are dashed.
+   Four across on wide screens, 2 x 2 below that, one per row on phones.
+   ========================================================================== */
+
+/* The highlight no longer fills the column: the grid sits under it. */
+.achievement-column > .achievement-feature-card {
+  height: auto;
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  margin: clamp(12px, 1.6vw, 20px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cert-card {
+  /* Positioned for the stretched "View PDF" link. */
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  color: var(--ink-100, #eeeeee);
+  font-family: var(--font-mono);
+  background: #1f1f1f;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 0;
+}
+
+.cert-card.is-empty {
+  border-style: dashed;
+}
+
+.cert-card__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  color: var(--ink-72, #aeaeae);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  background: #0c0c0c;
+  border-bottom: 1px solid var(--ink-28, #4b4b4b);
+}
+
+.cert-card__squares {
+  display: flex;
+  gap: 4px;
+}
+
+.cert-card__squares > span {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--ink-72, #aeaeae);
+}
+
+.cert-card:not(.is-empty) .cert-card__squares > span:last-child {
+  background: var(--ink-100, #eeeeee);
+}
+
+/* Preview frame: 10:7 matches the certificates (1.41 and 1.44), so cover
+   crops about 1% and names printed edge to edge stay whole. */
+.cert-card__preview {
+  position: relative;
+  flex: none;
+  aspect-ratio: 10 / 7;
+  margin: 12px 12px 0;
+  overflow: hidden;
+  background: #0c0c0c;
+  border: 1px dashed var(--ink-28, #4b4b4b);
+}
+
+.cert-card__preview.has-image {
+  border-style: solid;
+}
+
+.cert-card__preview img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cert-card__preview-empty {
+  position: absolute;
+  inset: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--ink-72, #aeaeae);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cert-card__preview-empty i {
+  color: var(--ink-28, #4b4b4b);
+  font-size: 40px;
+  line-height: 1;
+}
+
+.cert-card__preview-empty small {
+  font-size: 9px;
+  opacity: 0.65;
+}
+
+/* File info under the preview. */
+.cert-card__file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 12px 0;
+  color: var(--ink-72, #aeaeae);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cert-card__format {
+  padding: 1px 5px;
+  color: #0c0c0c;
+  font-weight: 700;
+  background: var(--ink-100, #eeeeee);
+}
+
+/* Grows, so footers in a row line up whatever the title length. */
+.cert-card__body {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 16px;
+}
+
+.cert-card__badge {
+  display: grid;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  overflow: hidden;
+  font-size: 22px;
+  background: #0c0c0c;
+  border: 1px solid var(--ink-28, #4b4b4b);
+}
+
+.cert-card__badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cert-card__text {
+  display: grid;
+  justify-items: start;
+  gap: 7px;
+  min-width: 0;
+}
+
+.cert-card__tag {
+  padding: 2px 6px;
+  color: var(--ink-72, #aeaeae);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--ink-28, #4b4b4b);
+}
+
+.cert-card__title {
+  margin: 0;
+  color: var(--ink-100, #eeeeee);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.cert-card__issuer {
+  margin: 0;
+  color: var(--ink-72, #aeaeae);
+  font-size: 11.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.cert-card.is-empty :is(.cert-card__badge, .cert-card__title) {
+  color: var(--ink-72, #aeaeae);
+}
+
+.cert-card__foot {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 16px;
+  color: var(--ink-72, #aeaeae);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--ink-28, #4b4b4b);
+}
+
+.cert-card__link {
+  display: inline-flex;
+  flex: none;
+  /* 40px footer minus its 1px top border, so linked and unlinked cards match. */
+  min-height: 39px;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-100, #eeeeee);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Stretched over the whole card, so clicking anywhere opens the PDF. */
+.cert-card__link::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: '';
+}
+
+.cert-card.is-openable {
+  transition: border-color 0.2s ease;
+}
+
+.cert-card.is-openable:hover {
+  border-color: var(--ink-72, #aeaeae);
+}
+
+.cert-card.is-openable:hover .cert-card__link {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.cert-card__link:focus-visible {
+  outline: none;
+}
+
+.cert-card__link:focus-visible::after {
+  outline: 1px solid var(--ink-100, #eeeeee);
+  outline-offset: 2px;
+}
+
+/* Laptops and tablets: 2 x 2, so the previews stay legible. */
+@media (max-width: 1279px) {
+  .cert-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Phones: one per row. */
+@media (max-width: 640px) {
+  .cert-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

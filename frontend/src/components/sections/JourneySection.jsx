@@ -130,6 +130,7 @@ export default function JourneySection({ onNavigate, onHome }) {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key !== 'Escape') return;
+      if (event.defaultPrevented) return; // already closed a menu / dialog
       if (event.target?.closest?.('input, textarea, select, [contenteditable="true"]')) return;
       if (document.querySelector('[aria-modal="true"]')) return;
       onHome();
