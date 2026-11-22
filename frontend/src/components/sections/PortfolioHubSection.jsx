@@ -44,7 +44,50 @@ function CategorySlideshow({ slides, enabled }) {
   );
 }
 
+// Download Free Assets: a silent looping clip over its poster. Reduced motion
+// keeps it paused on the first frame.
+function CategoryVideo({ src, poster, animate }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    // React sets `muted` only as a property. The file has an audio track, so
+    // set the default too, or some browsers refuse to autoplay it.
+    video.defaultMuted = true;
+    video.muted = true;
+    if (animate) {
+      // Rejected when autoplay is blocked (e.g. Low Power Mode): poster stays.
+      video.play()?.catch(() => {});
+    } else {
+      video.pause();
+      video.currentTime = 0;
+    }
+  }, [animate]);
+
+  return (
+    <span className="hub-card__video-frame">
+      <video
+        ref={videoRef}
+        className="hub-card__video"
+        src={src}
+        poster={poster}
+        autoPlay={animate}
+        loop
+        muted
+        playsInline
+        preload={animate ? 'auto' : 'none'}
+        disablePictureInPicture
+        disableRemotePlayback
+        tabIndex={-1}
+      />
+    </span>
+  );
+}
+
 function CategoryMedia({ category, animate }) {
+  if (category.video) {
+    return <CategoryVideo src={category.video} poster={category.poster} animate={animate} />;
+  }
   if (category.slides?.length) {
     return <CategorySlideshow slides={category.slides} enabled={animate} />;
   }
@@ -121,9 +164,13 @@ export default function PortfolioHubSection({ onSelectCategory }) {
                     openCategory(category.id);
                   }}
                 >
-                  <span className="hub-card__media" aria-hidden="true">
+                  <span
+                    className={`hub-card__media${category.video ? ' hub-card__media--video' : ''}`}
+                    aria-hidden="true"
+                  >
                     <CategoryMedia category={category} animate={!prefersReducedMotion} />
-                    <span className="hub-card__shade"></span>
+                    {/* The video plays clear: no tint over it. */}
+                    {category.video ? null : <span className="hub-card__shade"></span>}
                     <span className="hub-card__corner hub-card__corner--tl"></span>
                     <span className="hub-card__corner hub-card__corner--tr"></span>
                     <span className="hub-card__corner hub-card__corner--bl"></span>

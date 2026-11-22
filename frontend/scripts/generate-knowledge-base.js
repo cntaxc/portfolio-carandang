@@ -7,7 +7,7 @@
 //     -> api/_lib/knowledge-base.json             (optional Claude /api/chat)
 //
 // Runs automatically before `npm start` and `npm run build` (package.json).
-// Images and PDFs are not needed, so those imports are replaced with null.
+// Images, videos and PDFs are not needed, so those imports are replaced with null.
 
 const fs = require('fs');
 const os = require('os');
@@ -30,7 +30,7 @@ async function loadPortfolioData() {
   const models = fs.existsSync(MODELS_FILE) ? fs.readFileSync(MODELS_FILE, 'utf8') : '[]';
 
   source = source.replace(
-    /^import (\w+) from ['"][^'"]+\.(png|jpe?g|gif|webp|svg|pdf)['"];?$/gm,
+    /^import (\w+) from ['"][^'"]+\.(png|jpe?g|gif|webp|svg|pdf|mp4|webm)['"];?$/gm,
     'const $1 = null;'
   );
   source = source.replace(

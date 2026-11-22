@@ -3,6 +3,8 @@ import OutrunLoadingBackground from '../assets/images/projects/outrun.png';
 import Triggr from '../assets/images/projects/triggr.png';
 import alalaybarangay from '../assets/images/projects/alalay-barangay.png';
 import modelsHubBackground from '../assets/images/projects/3dbgm.jpg';
+import assetsHubVideo from '../assets/video/3DModelsVideoBG.mp4';
+import assetsHubPoster from '../assets/video/3DModelsVideoBG-poster.jpg';
 import mutedImage from '../assets/images/projects/MutedBackground.png';
 import mutedLogo from '../assets/images/logos/mutedapplogo.png';
 import outrunPfp from '../assets/images/logos/outrun.png';
@@ -776,6 +778,9 @@ export const portfolioHub = {
         'Free 3D models from my projects. Preview them in 3D, then download them for your own games and scenes.',
       icon: 'ri-download-2-line',
       image: null,
+      video: assetsHubVideo,
+      // The video's first frame: shown while it loads, and for reduced motion.
+      poster: assetsHubPoster,
       tone: 'overview',
     },
   ],
