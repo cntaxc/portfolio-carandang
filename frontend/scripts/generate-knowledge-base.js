@@ -127,7 +127,7 @@ function buildKnowledgeBase(data) {
     skillLevelsMeaning: 'Proficient > Intermediate > Familiar',
     projects: showcaseProjects.items.map((project) => ({
       name: project.title,
-      status: project.published ? 'Released' : 'Unreleased',
+      status: project.status || (project.published ? 'Released' : 'Unreleased'),
       category: project.category,
       role: project.role,
       timeline: project.timeline,

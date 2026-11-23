@@ -142,7 +142,7 @@ export default function ProjectsSection({ onViewProjects }) {
               <div className="project-desk__tags">
                 <span className={`project-desk__status${selected.published ? ' is-live' : ''}`}>
                   <span className="project-desk__status-dot" aria-hidden="true"></span>
-                  {selected.published ? 'Live' : 'Private build'}
+                  {selected.status || (selected.published ? 'Live' : 'Private build')}
                 </span>
                 {selected.badge && selected.badge !== selected.category ? (
                   <span className="project-desk__tag">{selected.badge}</span>
@@ -191,12 +191,12 @@ export default function ProjectsSection({ onViewProjects }) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <span>01 · Open project</span>
+                  <span>01 · {selected.linkLabel || 'Open project'}</span>
                   <i className="ri-arrow-right-up-line" aria-hidden="true"></i>
                 </a>
               ) : (
                 <span className="project-desk__link is-disabled">
-                  <span>01 · Not public yet</span>
+                  <span>01 · {selected.pendingLabel || 'Not public yet'}</span>
                   <i className="ri-lock-line" aria-hidden="true"></i>
                 </span>
               )}

@@ -10,6 +10,7 @@ import mutedLogo from '../assets/images/logos/mutedapplogo.png';
 import outrunPfp from '../assets/images/logos/outrun.png';
 import lunasPfp from '../assets/images/logos/lunas.png';
 import alalayBarangayPfp from '../assets/images/logos/alalay-barangay.jpg';
+import breworaImage from '../assets/images/projects/Brewora_bg.jpg';
 import triggrPfp from '../assets/images/logos/triggr.png';
 import schoolPhoto from '../assets/images/logos/schoolimg.jpg';
 import universityLogo from '../assets/images/logos/University-of-Cabuyao-logo.jpg';
@@ -157,6 +158,11 @@ export const recommendationSectionIds = [
 
 // Resume PDF in public/, used by the hero's "My Resume" button and the CV
 // shortcut. The file name has spaces and a comma, so the URL is encoded.
+// Brewora's Figma design: paste the share link here when it's finished,
+// e.g. 'https://www.figma.com/design/...'. While empty, the project shows
+// "Figma design coming soon" instead of a link.
+const BREWORA_FIGMA_URL = '';
+
 const RESUME_FILE = 'CARANDANG, CHRISTIAN RAPHAEL CV.pdf';
 const RESUME_URL = `${process.env.PUBLIC_URL || ''}/${encodeURIComponent(RESUME_FILE)}`;
 
@@ -301,6 +307,25 @@ export const showcaseProjects = {
       image: alalaybarangay,
       logo: alalayBarangayPfp,
       url: 'https://angelitoflordeliza.github.io/alalay-barangay-ui/',
+    },
+    {
+      id: 'brewora',
+      type: 'web', // Projects filter: 'game' or 'web'
+      title: 'Brewora',
+      published: false,
+      // Shown instead of "Live" / "Private build": a design concept, no app.
+      status: 'Concept',
+      category: 'SELF PROJECT',
+      role: 'UI/UX Designer',
+      description:
+        'Brewora is a coffee-ordering app concept, created as a UI/UX design exploration. I mapped the user flow and designed wireframes and an interactive prototype, from browsing the menu to choosing size and taste before checkout. There is no official app: the project lives entirely in Figma as a design and prototyping study.',
+      tools: [{ label: 'Figma', icon: 'ri-layout-4-line' }],
+      platforms: ['Mobile'],
+      image: breworaImage,
+      logoIcon: 'ri-cup-line',
+      url: BREWORA_FIGMA_URL,
+      linkLabel: 'View Figma design',
+      pendingLabel: 'Figma design coming soon',
     },
   ],
 };

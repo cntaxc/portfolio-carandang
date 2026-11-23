@@ -398,6 +398,19 @@
       ],
       "description": "A unique feature of this system is that it has a text-to-speech assistant that would read the labels of the required fields that users need to enter.",
       "url": "https://angelitoflordeliza.github.io/alalay-barangay-ui/"
+    },
+    {
+      "name": "Brewora",
+      "status": "Concept",
+      "category": "SELF PROJECT",
+      "role": "UI/UX Designer",
+      "platforms": [
+        "Mobile"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "description": "Brewora is a coffee-ordering app concept, created as a UI/UX design exploration. I mapped the user flow and designed wireframes and an interactive prototype, from browsing the menu to choosing size and taste before checkout. There is no official app: the project lives entirely in Figma as a design and prototyping study."
     }
   ],
   "achievements": [

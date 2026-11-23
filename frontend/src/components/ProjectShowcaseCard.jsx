@@ -82,7 +82,7 @@ export default function ProjectShowcaseCard({ onOpenProjects }) {
           <span className="showcase-card__tags">
             <span className={`showcase-card__status${project.published ? ' is-live' : ''}`}>
               <span className="showcase-card__status-dot" aria-hidden="true"></span>
-              {project.published ? 'LIVE' : 'PRIVATE BUILD'}
+              {(project.status || (project.published ? 'Live' : 'Private build')).toUpperCase()}
             </span>
             <span className="showcase-card__category">{project.category}</span>
           </span>
