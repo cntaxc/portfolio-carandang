@@ -65,7 +65,7 @@
     {
       "position": "Procurement and Vendor Negotiator",
       "organization": "DEVCON Laguna",
-      "year": "2026",
+      "year": "Jul 2026 – Present",
       "type": "Organization",
       "summary": "Negotiating and establishing mutually beneficial supplier agreements.",
       "details": "I'm responsible for negotiating and establishing mutually beneficial agreements between buyers and suppliers when acquiring goods or services. My role goes beyond simple price negotiations, covering pricing structures, delivery schedules, quality standards, payment terms, and service level agreements (SLAs) to ensure that both parties reach a fair and effective agreement."
@@ -87,12 +87,12 @@
       "details": "I coordinated suppliers, managed inventory, and handled transportation to procure food, strengthening my organization and coordination skills."
     },
     {
-      "position": "Logistics Officer",
+      "position": "Logistics Lead",
       "organization": "AWS Cloud Club - University of Cabuyao",
-      "year": "2024 - 2025",
+      "year": "Mar 2024 – May 2025",
       "type": "Organization",
-      "summary": "Supported supplier, inventory, and booth operations.",
-      "details": "I handled suppliers, managed inventory, and oversaw booth operations, improving my organization and coordination skills."
+      "summary": "Led booth setup, merchandise inventory, and event logistics.",
+      "details": "I organized event booths, managed merchandise inventory, tracked available stock, and coordinated logistical preparations to keep event operations running smoothly."
     },
     {
       "position": "Volunteer",
@@ -105,7 +105,7 @@
     {
       "position": "Data Encoder",
       "organization": "CITECH: Cabuyao Institute of Technology",
-      "year": "2023",
+      "year": "Jan 2024",
       "type": "Work Immersion",
       "summary": "Managed student registration and grade records.",
       "details": "Accurately encoded and managed student registrations and grades, ensuring data integrity and efficiency."
@@ -122,7 +122,7 @@
         },
         {
           "name": "JavaScript",
-          "level": "Intermediate",
+          "level": "Proficient",
           "context": "Interactive frontend behavior"
         },
         {
@@ -134,6 +134,11 @@
           "name": "Next.js",
           "level": "Familiar",
           "context": "Full-stack React applications"
+        },
+        {
+          "name": "React Native",
+          "level": "Familiar",
+          "context": "Cross-platform mobile apps"
         },
         {
           "name": "Tailwind CSS",
@@ -157,7 +162,7 @@
         },
         {
           "name": "C#",
-          "level": "Intermediate",
+          "level": "Proficient",
           "context": "Unity gameplay and tooling"
         }
       ]
@@ -227,12 +232,22 @@
         },
         {
           "name": "Paint.NET",
-          "level": "Intermediate",
+          "level": "Familiar",
           "context": "Texture and image editing"
         },
         {
+          "name": "GIMP",
+          "level": "Familiar",
+          "context": "Image editing and texture work"
+        },
+        {
+          "name": "Photopea",
+          "level": "Familiar",
+          "context": "Browser-based image editing"
+        },
+        {
           "name": "Shoebox",
-          "level": "Intermediate",
+          "level": "Familiar",
           "context": "Sprite sheet preparation"
         },
         {
@@ -289,6 +304,11 @@
           "name": "Vercel",
           "level": "Intermediate",
           "context": "Frontend deployment"
+        },
+        {
+          "name": "Unity Version Control",
+          "level": "Familiar",
+          "context": "Version control for Unity projects"
         }
       ]
     }
@@ -299,7 +319,7 @@
       "name": "OUTRUN",
       "status": "Released",
       "category": "SCHOOL PROJECT",
-      "role": "UI Designer & 3D Artist",
+      "role": "UI Designer, Front-End Developer & 3D Artist",
       "platforms": [
         "PC",
         "Mobile"
@@ -315,7 +335,7 @@
     {
       "name": "MUTED",
       "status": "Unreleased",
-      "category": "SCHOOL PROJECT",
+      "category": "BSCS THESIS",
       "role": "Junior Programmer & 3D Artist",
       "platforms": [
         "PC"
@@ -347,13 +367,14 @@
       "name": "LUNAS",
       "status": "Released",
       "category": "HACKATHON",
-      "role": "Front-End Developer",
+      "role": "Junior Front-End Developer",
       "platforms": [
         "PC"
       ],
       "tools": [
         "React.js",
         "Next.js",
+        "TypeScript",
         "Tailwind CSS",
         "PostgreSQL",
         "Prisma ORM",

@@ -206,7 +206,8 @@ export const showcaseProjects = {
       title: 'OUTRUN',
       published: true,
       category: 'SCHOOL PROJECT',
-      role: 'UI Designer & 3D Artist',
+      role: 'UI Designer, Front-End Developer & 3D Artist',
+      badge: 'SOFTWARE EXPO CANDIDATE',
       description:
         'a 2.5D isometric chase game set in a dense city. Ride through traffic, manage battery and durability, and stay ahead of a police pursuit that grows stronger the longer you survive.',
       platforms: ['PC', 'Mobile'],
@@ -224,7 +225,7 @@ export const showcaseProjects = {
       type: 'game', // Projects filter: 'game' or 'web'
       title: 'MUTED',
       published: false,
-      category: 'SCHOOL PROJECT',
+      category: 'BSCS THESIS',
       role: 'Junior Programmer & 3D Artist',
       description:
         'MUTED is a 3D interactive PC game that allows players to complete six spacecraft repair missions using real-time hand gestures through a webcam. Powered by computer vision and AI-based gesture recognition, the game translates physical hand movements into in-game actions, creating a touchless and immersive gameplay experience. It also integrates CNN and CNN+GRU models to evaluate gesture recognition accuracy, stability, and responsiveness during live gameplay.',
@@ -264,7 +265,7 @@ export const showcaseProjects = {
       title: 'LUNAS',
       published: true,
       category: 'HACKATHON',
-      role: 'Front-End Developer',
+      role: 'Junior Front-End Developer',
       badge: 'HACKATHON',
       description:
         'Lunas is a secure, web-based emergency medical information platform that gives licensed medical professionals instant access to a patient\'s critical health data via a QR code — even when the patient is unconscious or unable to speak.',
@@ -272,6 +273,7 @@ export const showcaseProjects = {
       tools: [
         { label: 'React.js', icon: 'ri-reactjs-line' },
         { label: 'Next.js', icon: 'ri-css3-line' },
+        { label: 'TypeScript', icon: 'ri-code-s-slash-line' },
         { label: 'Tailwind CSS', icon: 'ri-server-line' },
         { label: 'PostgreSQL', icon: 'ri-server-line' },
         { label: 'Prisma ORM', icon: 'ri-server-line' },
@@ -307,14 +309,15 @@ export const techstackLevels = ['Proficient', 'Intermediate', 'Familiar'];
 
 const techstackSkillMeta = {
   'HTML/CSS': { level: 'Proficient', context: 'Semantic, responsive interfaces' },
-  JavaScript: { level: 'Intermediate', context: 'Interactive frontend behavior' },
+  JavaScript: { level: 'Proficient', context: 'Interactive frontend behavior' },
   React: { level: 'Intermediate', context: 'Component-driven interfaces' },
   'Next.js': { level: 'Familiar', context: 'Full-stack React applications' },
+  'React Native': { level: 'Familiar', context: 'Cross-platform mobile apps' },
   'Tailwind CSS': { level: 'Familiar', context: 'Utility-first UI development' },
   USS: { level: 'Intermediate', context: 'Unity Style Sheets for game interfaces' },
   'UI Toolkit': { level: 'Intermediate', context: 'Unity interface construction' },
   'Lua Script': { level: 'Familiar', context: 'Gameplay scripting and systems' },
-  'C#': { level: 'Intermediate', context: 'Unity gameplay and tooling' },
+  'C#': { level: 'Proficient', context: 'Unity gameplay and tooling' },
   Unity: { level: 'Proficient', context: 'Game development and prototyping' },
   GameMaker: { level: 'Familiar', context: '2D game development' },
   Godot: { level: 'Familiar', context: 'Game prototypes and experiments' },
@@ -329,8 +332,10 @@ const techstackSkillMeta = {
   'ONNX Runtime': { level: 'Familiar', context: 'On-device AI inference' },
   Blender: { level: 'Proficient', context: '3D modeling and asset preparation' },
   Blockbench: { level: 'Familiar', context: 'Low-poly 3D modeling and texturing' },
-  'Paint.NET': { level: 'Intermediate', context: 'Texture and image editing' },
-  Shoebox: { level: 'Intermediate', context: 'Sprite sheet preparation' },
+  'Paint.NET': { level: 'Familiar', context: 'Texture and image editing' },
+  GIMP: { level: 'Familiar', context: 'Image editing and texture work' },
+  Photopea: { level: 'Familiar', context: 'Browser-based image editing' },
+  Shoebox: { level: 'Familiar', context: 'Sprite sheet preparation' },
   Audacity: { level: 'Intermediate', context: 'Audio editing' },
   Canva: { level: 'Proficient', context: 'Quick visual assets' },
   Figma: { level: 'Proficient', context: 'UI/UX design and prototyping' },
@@ -341,6 +346,7 @@ const techstackSkillMeta = {
   'VS Code': { level: 'Intermediate', context: 'Primary code editor' },
   Docker: { level: 'Intermediate', context: 'Containerized deployment' },
   Vercel: { level: 'Intermediate', context: 'Frontend deployment' },
+  'Unity Version Control': { level: 'Familiar', context: 'Version control for Unity projects' },
 };
 
 const techstackCategories = [
@@ -351,6 +357,7 @@ const techstackCategories = [
       'JavaScript',
       'React',
       'Next.js',
+      'React Native',
       'Tailwind CSS',
       'USS',
       'UI Toolkit',
@@ -378,6 +385,8 @@ const techstackCategories = [
       'Blender',
       'Blockbench',
       'Paint.NET',
+      'GIMP',
+      'Photopea',
       'Shoebox',
       'Audacity',
       'Canva',
@@ -394,6 +403,7 @@ const techstackCategories = [
       'VS Code',
       'Docker',
       'Vercel',
+      'Unity Version Control',
     ],
   },
 ];
@@ -539,7 +549,7 @@ export const experiences = {
   items: [
     {
       position: 'Procurement and Vendor Negotiator',
-      date: '2026',
+      date: 'Jul 2026 – Present',
       company: 'DEVCON Laguna',
       type: 'Organization',
       summary:
@@ -566,13 +576,13 @@ export const experiences = {
         'I coordinated suppliers, managed inventory, and handled transportation to procure food, strengthening my organization and coordination skills.',
     },
     {
-      position: 'Logistics Officer',
-      date: '2024 - 2025',
+      position: 'Logistics Lead',
+      date: 'Mar 2024 – May 2025',
       company: 'AWS Cloud Club - University of Cabuyao',
       type: 'Organization',
-      summary: 'Supported supplier, inventory, and booth operations.',
+      summary: 'Led booth setup, merchandise inventory, and event logistics.',
       description:
-        'I handled suppliers, managed inventory, and oversaw booth operations, improving my organization and coordination skills.',
+        'I organized event booths, managed merchandise inventory, tracked available stock, and coordinated logistical preparations to keep event operations running smoothly.',
     },
     {
       position: 'Volunteer',
@@ -585,7 +595,7 @@ export const experiences = {
     },
     {
       position: 'Data Encoder',
-      date: '2023',
+      date: 'Jan 2024',
       company: 'CITECH: Cabuyao Institute of Technology',
       type: 'Work Immersion',
       summary: 'Managed student registration and grade records.',

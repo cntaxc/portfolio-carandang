@@ -41,7 +41,7 @@ describe('portfolio assistant', () => {
   test('answers about a project by name, with its link', () => {
     const { text, topic, context } = answerQuestion('Tell me about OUTRUN');
     expect(topic).toBe('project');
-    expect(text).toContain('UI Designer & 3D Artist');
+    expect(text).toContain('UI Designer, Front-End Developer & 3D Artist');
     expect(text).toContain('https://ninesixfour.itch.io/outrun');
     expect(context.project).toBe('OUTRUN');
   });
