@@ -16,7 +16,7 @@ const COUNTS = {
   assets: [freeAssets.items.length, 'assets'],
 };
 
-// Developed Software: the project artwork, cross-fading every 5 seconds.
+// Projects: the project artwork, cross-fading every 5 seconds.
 function CategorySlideshow({ slides, enabled }) {
   const [activeIndex, setActiveIndex] = useState(0);
 

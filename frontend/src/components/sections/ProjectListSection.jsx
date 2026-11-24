@@ -19,7 +19,7 @@ export default function ProjectListSection({ onBack }) {
           </div>
 
           <header className="project-list__header">
-            <h2>DEVELOPED SOFTWARE</h2>
+            <h2>PROJECTS</h2>
             <div className="project-list__divider"></div>
             <p>Stay tuned with my latest updates.</p>
           </header>

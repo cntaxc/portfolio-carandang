@@ -787,7 +787,7 @@ export const portfolioHub = {
   categories: [
     {
       id: 'projectlist',
-      title: 'Developed Software',
+      title: 'Projects',
       description:
         'Games, web and mobile apps I have designed and built, from published titles to personal projects.',
       icon: 'ri-code-s-slash-line',
