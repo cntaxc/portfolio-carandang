@@ -85,7 +85,7 @@ export default function HomeHero({ onStartJourney, onContact }) {
         <div className="home-hero__copy">
           <p className="home-hero__meta">
             <span className="home-hero__meta-dot" aria-hidden="true"></span>
-            CAN BUILD <span aria-hidden="true">{'//'}</span> GAME ASSETS, WEB DESIGN &amp; UI/UX
+            CAN BUILD <span aria-hidden="true">{'//'}</span> GAME ASSETS, INTERACTIVE EXPERIENCES &amp; UI/UX
             DESIGN
           </p>
 

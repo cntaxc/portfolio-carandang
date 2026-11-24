@@ -266,7 +266,7 @@ export default function JourneySection({ onNavigate, onHome }) {
           </div>
         </div>
         <button type="button" className="journey-intro__scroll" onClick={scrollToMap}>
-          <span>SCROLL TO MAP</span>
+          <span>SCROLL DOWN</span>
           <i className="ri-arrow-down-s-line" aria-hidden="true"></i>
         </button>
       </section>

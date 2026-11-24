@@ -11,6 +11,7 @@ import outrunPfp from '../assets/images/logos/outrun.png';
 import lunasPfp from '../assets/images/logos/lunas.png';
 import alalayBarangayPfp from '../assets/images/logos/alalay-barangay.jpg';
 import breworaImage from '../assets/images/projects/Brewora_bg.jpg';
+import breworaLogo from '../assets/images/logos/brewora_logo.png';
 import triggrPfp from '../assets/images/logos/triggr.png';
 import schoolPhoto from '../assets/images/logos/schoolimg.jpg';
 import universityLogo from '../assets/images/logos/University-of-Cabuyao-logo.jpg';
@@ -322,7 +323,7 @@ export const showcaseProjects = {
       tools: [{ label: 'Figma', icon: 'ri-layout-4-line' }],
       platforms: ['Mobile'],
       image: breworaImage,
-      logoIcon: 'ri-cup-line',
+      logo: breworaLogo,
       url: BREWORA_FIGMA_URL,
       linkLabel: 'View Figma design',
       pendingLabel: 'Figma design coming soon',
