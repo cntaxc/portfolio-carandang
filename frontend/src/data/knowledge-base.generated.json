@@ -126,6 +126,11 @@
           "context": "Interactive frontend behavior"
         },
         {
+          "name": "TypeScript",
+          "level": "Familiar",
+          "context": "Typed React and Next.js front ends"
+        },
+        {
           "name": "React",
           "level": "Intermediate",
           "context": "Component-driven interfaces"
@@ -179,6 +184,11 @@
           "name": "GameMaker",
           "level": "Familiar",
           "context": "2D game development"
+        },
+        {
+          "name": "Roblox Studio",
+          "level": "Familiar",
+          "context": "Roblox experiences scripted in Lua"
         },
         {
           "name": "Godot",

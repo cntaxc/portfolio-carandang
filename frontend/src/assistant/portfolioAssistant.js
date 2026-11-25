@@ -145,10 +145,12 @@ const canonical = (value) =>
 const SKILL_ALIASES = {
   'HTML/CSS': ['html', 'css', 'html/css'],
   JavaScript: ['javascript', 'js'],
+  TypeScript: ['typescript', 'ts'],
   React: ['react', 'react.js', 'reactjs'],
   'Next.js': ['next.js', 'nextjs', 'next js'],
   'Tailwind CSS': ['tailwind', 'tailwind css'],
-  'Lua Script': ['lua', 'lua script'],
+  'Lua Script': ['lua', 'lua script', 'lua scripts'],
+  'Roblox Studio': ['roblox', 'roblox studio'],
   'C#': ['c#', 'c sharp', 'csharp'],
   'GML (GameMaker Language)': ['gml', 'gamemaker language'],
   'ONNX Runtime': ['onnx', 'onnx runtime'],

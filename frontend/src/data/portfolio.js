@@ -336,6 +336,7 @@ export const techstackLevels = ['Proficient', 'Intermediate', 'Familiar'];
 const techstackSkillMeta = {
   'HTML/CSS': { level: 'Proficient', context: 'Semantic, responsive interfaces' },
   JavaScript: { level: 'Proficient', context: 'Interactive frontend behavior' },
+  TypeScript: { level: 'Familiar', context: 'Typed React and Next.js front ends' },
   React: { level: 'Intermediate', context: 'Component-driven interfaces' },
   'Next.js': { level: 'Familiar', context: 'Full-stack React applications' },
   'React Native': { level: 'Familiar', context: 'Cross-platform mobile apps' },
@@ -346,6 +347,7 @@ const techstackSkillMeta = {
   'C#': { level: 'Proficient', context: 'Unity gameplay and tooling' },
   Unity: { level: 'Proficient', context: 'Game development and prototyping' },
   GameMaker: { level: 'Familiar', context: '2D game development' },
+  'Roblox Studio': { level: 'Familiar', context: 'Roblox experiences scripted in Lua' },
   Godot: { level: 'Familiar', context: 'Game prototypes and experiments' },
   Photon: { level: 'Intermediate', context: 'Multiplayer networking' },
   GDScript: { level: 'Familiar', context: 'Godot gameplay scripting' },
@@ -381,6 +383,7 @@ const techstackCategories = [
     tags: [
       'HTML/CSS',
       'JavaScript',
+      'TypeScript',
       'React',
       'Next.js',
       'React Native',
@@ -396,6 +399,7 @@ const techstackCategories = [
     tags: [
       'Unity',
       'GameMaker',
+      'Roblox Studio',
       'Godot',
       'Photon',
       'GDScript',
