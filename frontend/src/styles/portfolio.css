@@ -26,6 +26,60 @@
   margin-bottom: clamp(20px, 3vh, 28px);
 }
 
+/* 3D Projects / 2D Projects switch: centred above the category filters. */
+.models-modes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.models-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  color: var(--ink-72, #bcb39e);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--ink-28, #4b4b4b);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.models-mode i {
+  font-size: 16px;
+}
+
+.models-mode:hover,
+.models-mode:focus-visible {
+  color: var(--ink-100, #f4ecd8);
+  border-color: var(--ink-72, #bcb39e);
+}
+
+.models-mode:focus-visible {
+  outline: 1px solid var(--ink-100, #f4ecd8);
+  outline-offset: 3px;
+}
+
+.models-mode.is-active {
+  color: #0c0c0c;
+  background: var(--ink-100, #f4ecd8);
+  border-color: var(--ink-100, #f4ecd8);
+}
+
+.models-mode__count {
+  font-size: 10.5px;
+  opacity: 0.7;
+}
+
 /* Category filters: centred row under the subtitle. Buttons reuse the
    .techstack-filter style so every filter on the site looks the same. */
 .models-filters {
@@ -97,6 +151,24 @@
   justify-content: center;
   gap: 6px;
   margin-top: clamp(28px, 4vh, 40px);
+}
+
+/* 2D sprite: a still image, centred and contained, with crisp pixels. */
+.model-card__stage--sprite {
+  --sprite-pad: clamp(18px, 2.4vw, 32px);
+}
+
+/* Positioned inside the 4:3 stage, so tall or wide art never stretches it. */
+.model-card__sprite {
+  position: absolute;
+  top: var(--sprite-pad);
+  left: var(--sprite-pad);
+  display: block;
+  width: calc(100% - 2 * var(--sprite-pad));
+  height: calc(100% - 2 * var(--sprite-pad));
+  object-fit: contain;
+  image-rendering: pixelated;
+  user-select: none;
 }
 
 .models-pagination .techstack-filter:disabled {

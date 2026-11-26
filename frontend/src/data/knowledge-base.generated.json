@@ -433,7 +433,7 @@
     }
   ],
   "models3d": {
-    "total": 26,
+    "total": 29,
     "byCategory": [
       {
         "category": "Character",
@@ -449,11 +449,14 @@
       },
       {
         "category": "Props",
-        "count": 5,
+        "count": 8,
         "models": [
           "Basyo",
           "Garbage",
           "Gasul",
+          "Low-Poly PC",
+          "Military Laptop",
+          "Stylized Crate",
           "Vintage Monitor",
           "Vintage PC"
         ]

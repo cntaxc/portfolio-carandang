@@ -70,6 +70,13 @@
     "size": 611976
   },
   {
+    "id": "lowpolypc",
+    "file": "LowpolyPC.glb",
+    "title": "Lowpoly PC",
+    "category": null,
+    "size": 1093012
+  },
+  {
     "id": "lowpolytrees-enviroment",
     "file": "LowPolyTrees_Enviroment.glb",
     "title": "Low Poly Trees",
@@ -89,6 +96,13 @@
     "title": "Marites",
     "category": "Character",
     "size": 462468
+  },
+  {
+    "id": "militarylaptop",
+    "file": "MilitaryLaptop.glb",
+    "title": "Military Laptop",
+    "category": null,
+    "size": 950208
   },
   {
     "id": "noparking-environment",
@@ -152,6 +166,13 @@
     "title": "Spaceship",
     "category": "Vehicle",
     "size": 40104
+  },
+  {
+    "id": "stylizedcrate",
+    "file": "StylizedCrate.glb",
+    "title": "Stylized Crate",
+    "category": null,
+    "size": 1093396
   },
   {
     "id": "totoy-character",

@@ -1,20 +1,31 @@
 import { useRef, useState } from 'react';
 import BackButton from '../BackButton';
 import ThreeDModelViewer from '../ThreeDModelViewer';
-import { modelShowcase } from '../../data/portfolio';
+import { modelShowcase, spriteShowcase } from '../../data/portfolio';
 
 const ALL = 'All';
-const FILTERS = [ALL, ...modelShowcase.categories];
-const PAGE_SIZE = modelShowcase.pageSize;
+
+// "3D Projects" shows the interactive model viewers; "2D Projects" shows the
+// sprites as static images. Each tab has its own filters and pages.
+const MODES = [
+  { id: '3d', label: '3D Projects', icon: 'ri-box-3-line', showcase: modelShowcase, noun: 'model' },
+  { id: '2d', label: '2D Projects', icon: 'ri-image-line', showcase: spriteShowcase, noun: 'asset' },
+];
 
 export default function ModelsSection({ onBack }) {
+  const [modeId, setModeId] = useState('3d');
   const [activeCategory, setActiveCategory] = useState(ALL);
   const [page, setPage] = useState(0);
   const filtersRef = useRef(null);
+  const mode = MODES.find((option) => option.id === modeId);
+  const showcase = mode.showcase;
+  const is3d = mode.id === '3d';
+  const FILTERS = [ALL, ...showcase.categories];
+  const PAGE_SIZE = showcase.pageSize;
   const matchingItems =
     activeCategory === ALL
-      ? modelShowcase.items
-      : modelShowcase.items.filter((item) => item.category === activeCategory);
+      ? showcase.items
+      : showcase.items.filter((item) => item.category === activeCategory);
   // Nine cards (a 3 x 3 grid) per page. This also caps how many live 3D
   // viewers exist at once; browsers only allow a limited number of WebGL
   // contexts per page.
@@ -27,6 +38,12 @@ export default function ModelsSection({ onBack }) {
 
   const selectCategory = (category) => {
     setActiveCategory(category);
+    setPage(0);
+  };
+
+  const selectMode = (id) => {
+    setModeId(id);
+    setActiveCategory(ALL);
     setPage(0);
   };
 
@@ -48,16 +65,37 @@ export default function ModelsSection({ onBack }) {
           </div>
 
           <header className="project-list__header models-section__header">
-            <h2 id="models-title">{modelShowcase.title}</h2>
+            <h2 id="models-title">{showcase.title}</h2>
             <div className="project-list__divider"></div>
-            <p>{modelShowcase.subtitle}</p>
+            <p>{showcase.subtitle}</p>
           </header>
+
+          <div className="models-modes" role="group" aria-label="Choose 3D or 2D projects">
+            {MODES.map((option) => {
+              const isActive = option.id === modeId;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={`models-mode${isActive ? ' is-active' : ''}`}
+                  aria-pressed={isActive}
+                  onClick={() => selectMode(option.id)}
+                >
+                  <i className={option.icon} aria-hidden="true"></i>
+                  {option.label}
+                  <span className="models-mode__count">
+                    {String(option.showcase.items.length).padStart(2, '0')}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
           <div
             className="models-filters"
             ref={filtersRef}
             role="group"
-            aria-label="Filter 3D models by category"
+            aria-label={`Filter ${is3d ? '3D models' : '2D assets'} by category`}
           >
             {FILTERS.map((category) => {
               const isActive = category === activeCategory;
@@ -79,31 +117,45 @@ export default function ModelsSection({ onBack }) {
 
           <p className="sr-only" role="status">
             Showing {visibleItems.length} of {matchingItems.length}{' '}
-            {matchingItems.length === 1 ? 'model' : 'models'}
+            {matchingItems.length === 1 ? mode.noun : `${mode.noun}s`}
             {activeCategory === ALL ? '' : ` in ${activeCategory}`}
             {pageCount > 1 ? `, page ${currentPage + 1} of ${pageCount}` : ''}.
           </p>
 
           {visibleItems.length ? (
             // Re-keyed per filter so the cards fade back in on every change.
-            <ul className="models-grid" key={`${activeCategory}-${currentPage}`}>
+            <ul className="models-grid" key={`${modeId}-${activeCategory}-${currentPage}`}>
               {visibleItems.map((item, index) => (
                 <li
                   className="model-card"
                   key={item.id}
                   style={{ '--card-index': index }}
                 >
-                  <div className="model-card__stage">
-                    <ThreeDModelViewer
-                      model={item.model}
-                      focus={item.focus}
-                      label={`${item.title} 3D model`}
-                    />
-                    <span className="model-card__hint" aria-hidden="true">
-                      <i className="ri-drag-move-2-line"></i>
-                      Drag to rotate
-                    </span>
-                  </div>
+                  {is3d ? (
+                    <div className="model-card__stage">
+                      <ThreeDModelViewer
+                        model={item.model}
+                        focus={item.focus}
+                        label={`${item.title} 3D model`}
+                      />
+                      <span className="model-card__hint" aria-hidden="true">
+                        <i className="ri-drag-move-2-line"></i>
+                        Drag to rotate
+                      </span>
+                    </div>
+                  ) : (
+                    // 2D: a still image, no drag or rotation.
+                    <div className="model-card__stage model-card__stage--sprite">
+                      <img
+                        className="model-card__sprite"
+                        src={item.image}
+                        alt={`${item.title} sprite`}
+                        loading="lazy"
+                        decoding="async"
+                        draggable="false"
+                      />
+                    </div>
+                  )}
                   <div className="model-card__info">
                     <span className="model-card__category">
                       {item.category}
@@ -115,11 +167,11 @@ export default function ModelsSection({ onBack }) {
               ))}
             </ul>
           ) : (
-            <p className="models-empty">No models in this category yet.</p>
+            <p className="models-empty">No {mode.noun}s in this category yet.</p>
           )}
 
           {pageCount > 1 ? (
-            <nav className="models-pagination" aria-label="3D model pages">
+            <nav className="models-pagination" aria-label={`${is3d ? '3D model' : '2D asset'} pages`}>
               <button
                 type="button"
                 className="techstack-filter"

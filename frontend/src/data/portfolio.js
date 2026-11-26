@@ -804,7 +804,7 @@ export const portfolioHub = {
     },
     {
       id: 'models',
-      title: '3D Model Projects',
+      title: 'Asset Collection',
       description:
         'Interactive 3D model showcase. Drag any model to rotate it and inspect it from every angle.',
       icon: 'ri-box-3-line',
@@ -854,6 +854,11 @@ const modelOverrides = {
   'Sorbetero_Environment.glb': { focus: ['Vendor_1'] },
   'Basyo_Props.glb': { focus: ['WaterGalon'] },
   'Gasul_Props.glb': { focus: ['GASUL'] },
+  // These three .glb files each hold the whole Blender scene (laptop, PC,
+  // crate, dummies, chair); each card shows only its own object.
+  'LowpolyPC.glb': { title: 'Low-Poly PC', category: 'Props', focus: ['pc'] },
+  'MilitaryLaptop.glb': { title: 'Military Laptop', category: 'Props', focus: ['Base'] },
+  'StylizedCrate.glb': { title: 'Stylized Crate', category: 'Props', focus: ['Crate'] },
 };
 
 const MODEL_CATEGORIES = ['Character', 'Props', 'Environment', 'Vehicle'];
@@ -935,6 +940,37 @@ export const modelShowcase = {
         merged.description || `${category === 'Props' ? 'Prop' : category} model.`,
     };
   }),
+};
+
+// 2D projects (#models, "2D Projects" tab): static sprites from
+// public/2dassets. To add one, drop the PNG in that folder and add a line
+// here: file, title, category (one of SPRITE_CATEGORIES) and a description.
+const SPRITE_CATEGORIES = ['Vehicles', 'Items', 'UI & HUD'];
+const SPRITE_ENTRIES = [
+  { file: 'Outrun - Police Car.png', title: 'Police Car', category: 'Vehicles', description: 'A pixel-art police car sprite, with top and side views, I created on my own using Piskel.' },
+  { file: 'Outrun - NPC Blue Car.png', title: 'NPC Blue Car', category: 'Vehicles', description: 'A pixel-art blue car sprite, with top and side views, I created on my own using Piskel.' },
+  { file: 'Outrun - Coin.png', title: 'Coin', category: 'Items', description: 'A pixel-art gold coin sprite I created on my own using Piskel.' },
+  { file: 'Outrun - Collectible Energy.png', title: 'Collectible Energy', category: 'Items', description: 'A pixel-art lightning bolt sprite I created on my own using Piskel.' },
+  { file: 'Outrun - Collectible Tool.png', title: 'Collectible Tool', category: 'Items', description: 'A pixel-art wrench sprite I created on my own using Piskel.' },
+  { file: 'Outrun - Vehicle Capsule.png', title: 'Vehicle Capsule', category: 'Items', description: 'A set of pixel-art capsule sprites in four colours I created on my own using Piskel.' },
+  { file: 'Outrun - Battery.png', title: 'Battery', category: 'UI & HUD', description: 'A pixel-art battery icon I created on my own using Piskel.' },
+  { file: 'Outrun - BatteryFillBarV2.png', title: 'Battery Fill Bar', category: 'UI & HUD', description: 'A set of pixel-art battery level icons, from full to empty, I created on my own using Piskel.' },
+  { file: 'Outrun - Durability.png', title: 'Durability', category: 'UI & HUD', description: 'A pixel-art shield icon I created on my own using Piskel.' },
+  { file: 'Outrun - Wheel.png', title: 'Wheel', category: 'UI & HUD', description: 'A pixel-art wheel sprite I created on my own using Piskel.' },
+  { file: 'Outrun - Police Badge.png', title: 'Police Badge', category: 'UI & HUD', description: 'A pixel-art police badge icon I created on my own using Piskel.' },
+  { file: 'Outrun - Settings.png', title: 'Settings', category: 'UI & HUD', description: 'A pixel-art gear icon I created on my own using Piskel.' },
+];
+
+export const spriteShowcase = {
+  title: '2D ASSETS',
+  subtitle: 'Pixel-art sprites and icons I created on my own using Piskel.',
+  categories: SPRITE_CATEGORIES,
+  pageSize: 9,
+  items: SPRITE_ENTRIES.map((entry) => ({
+    ...entry,
+    id: entry.file.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    image: `${process.env.PUBLIC_URL || ''}/2dassets/${encodeURIComponent(entry.file)}`,
+  })),
 };
 
 // ---------------------------------------------------------------------------
