@@ -222,6 +222,10 @@ export default function JourneySection({ onNavigate, onHome }) {
               ))}
             </div>
             <div className="journey-intro__actions">
+              <button type="button" className="journey__home" onClick={onHome}>
+                <i className="ri-arrow-left-line" aria-hidden="true"></i>
+                Home
+              </button>
               <button
                 type="button"
                 className="journey-intro__cta"
@@ -229,10 +233,6 @@ export default function JourneySection({ onNavigate, onHome }) {
               >
                 <span>View portfolio</span>
                 <i className="ri-arrow-right-line" aria-hidden="true"></i>
-              </button>
-              <button type="button" className="journey__home" onClick={onHome}>
-                <i className="ri-arrow-left-line" aria-hidden="true"></i>
-                Home
               </button>
             </div>
           </div>
